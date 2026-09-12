@@ -1,176 +1,91 @@
 import { useState } from 'react'
+import desktopRoom from './assets/room/studio-desktop.png'
+import mobileRoom from './assets/room/studio-mobile.png'
 
-type CaseStudy = {
-  title: string
-  description: string
-  tags: string[]
-  metric: string
-  tone: 'amber' | 'violet' | 'blue'
+type View = 'home' | 'projects' | 'certifications' | 'about'
+
+const projects = [
+  { title: 'Asistente de ventas IA', description: 'Clasifica conversaciones, recupera contexto y prepara la siguiente acción comercial.', stack: ['n8n', 'OpenAI', 'HubSpot'], tone: 'warm' },
+  { title: 'Pipeline autónomo', description: 'Convierte formularios y mensajes en leads enriquecidos, ordenados y listos para el equipo.', stack: ['Make', 'Airtable', 'Apollo'], tone: 'blue' },
+  { title: 'Radar de operaciones', description: 'Detecta incidencias, resume la información y avisa a la persona correcta con contexto.', stack: ['Python', 'Slack', 'PostgreSQL'], tone: 'green' },
+]
+
+const certifications = [
+  { icon: '⌘', title: 'Automatización con IA', description: 'Diseño de flujos, agentes y sistemas evaluables.', date: '2026', color: 'blue' },
+  { icon: '◇', title: 'n8n & Make', description: 'Integraciones, webhooks y procesos mantenibles.', date: '2026', color: 'orange' },
+  { icon: '▥', title: 'Análisis de datos con Python', description: 'Decisiones basadas en datos, no en intuición.', date: '2025', color: 'green' },
+  { icon: '☁', title: 'Cloud fundamentals', description: 'Servicios cloud y arquitecturas prácticas.', date: '2025', color: 'violet' },
+]
+
+function Icon({ name }: { name: 'home' | 'folder' | 'user' | 'arrow' | 'mail' }) {
+  if (name === 'home') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z" /></svg>
+  if (name === 'folder') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l1.8 2H20a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18V8a1.5 1.5 0 0 1 1-1.5Z" /></svg>
+  if (name === 'user') return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M4.5 21c.8-4 3.3-6 7.5-6s6.7 2 7.5 6" /></svg>
+  if (name === 'mail') return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+  return <span aria-hidden="true">→</span>
 }
 
-const cases: CaseStudy[] = [
-  {
-    title: 'Atención inteligente',
-    description: 'Un agente que clasifica mensajes, recupera contexto y deriva cada conversación.',
-    tags: ['n8n', 'OpenAI', 'WhatsApp'],
-    metric: '−62% tiempo de respuesta',
-    tone: 'amber',
-  },
-  {
-    title: 'Pipeline autónomo',
-    description: 'Leads enriquecidos y priorizados antes de llegar al CRM de ventas.',
-    tags: ['Make', 'HubSpot', 'Apollo'],
-    metric: '+31% leads cualificados',
-    tone: 'violet',
-  },
-  {
-    title: 'Radar de operaciones',
-    description: 'Alertas accionables cuando un proceso necesita una persona, no otra hoja de cálculo.',
-    tags: ['Python', 'Slack', 'PostgreSQL'],
-    metric: '24/7 con contexto',
-    tone: 'blue',
-  },
-]
-
-const learning = [
-  ['AI Automation', 'Diseño de flujos, agentes y evaluaciones', 'En progreso'],
-  ['n8n & Make', 'Integraciones robustas y mantenimiento', 'Certificación'],
-  ['Prompt systems', 'Prompts versionados para tareas reales', 'Laboratorio'],
-]
-
 function App() {
-  const [active, setActive] = useState<'cases' | 'studio' | 'learning'>('studio')
-  const [selectedCase, setSelectedCase] = useState(0)
-
-  const scrollTo = (section: 'cases' | 'studio' | 'learning') => {
-    setActive(section)
-    document.getElementById(section)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  const [view, setView] = useState<View>('home')
+  const go = (next: View) => { setView(next); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
   return (
-    <main className="site-shell">
-      <header className="topbar">
-        <button className="brand" onClick={() => scrollTo('studio')} aria-label="Ir al inicio">
-          <span className="brand-dot" />
-          <span>Tu Nombre</span>
-        </button>
-        <nav aria-label="Navegación principal">
-          <button onClick={() => scrollTo('cases')}>Casos</button>
-          <button onClick={() => scrollTo('learning')}>Formación</button>
-          <a href="mailto:tu@email.com">Contactar <span aria-hidden="true">↗</span></a>
+    <main className={`portfolio ${view !== 'home' ? 'is-panel-open' : ''}`}>
+      <div className="room-scene" aria-hidden="true">
+        <picture><source media="(max-width: 700px)" srcSet={mobileRoom} /><img src={desktopRoom} alt="" /></picture>
+        <div className="scene-shade" />
+      </div>
+
+      <header className="site-header">
+        <button className="identity" onClick={() => go('home')}><span className="identity-mark" /> <b>Tu Nombre</b></button>
+        <nav>
+          <button onClick={() => go('projects')}><Icon name="folder" /><span>Proyectos</span></button>
+          <button onClick={() => go('certifications')}><span className="certificate-glyph">✦</span><span>Formación</span></button>
+          <a href="mailto:tu@email.com"><Icon name="mail" /><span>Contacto</span></a>
         </nav>
       </header>
 
-      <section className="hero" id="studio">
-        <div className="hero-copy">
-          <p className="eyebrow"><span /> Automation studio · 2026</p>
-          <h1>Diseño sistemas que <em>trabajan</em> mientras tú avanzas.</h1>
-          <p className="intro">Automatizaciones de IA claras, útiles y medibles para equipos que quieren recuperar tiempo.</p>
-          <div className="hero-actions">
-            <button className="primary" onClick={() => scrollTo('cases')}>Ver casos <span>↓</span></button>
-            <button className="text-button" onClick={() => scrollTo('learning')}>Cómo trabajo <span>→</span></button>
-          </div>
-        </div>
+      {view === 'home' && <Home go={go} />}
+      {view === 'projects' && <Projects go={go} />}
+      {view === 'certifications' && <Certifications go={go} />}
+      {view === 'about' && <About go={go} />}
 
-        <div className="automation-stage" aria-label="Visualización de un flujo de automatización">
-          <div className="stage-grid" />
-          <div className="floating-card source-card">
-            <span className="card-label">ENTRADA</span>
-            <strong>Mensaje nuevo</strong>
-            <small>Cliente · 10:42</small>
-          </div>
-          <div className="connection connection-one" />
-          <div className="connection connection-two" />
-          <div className="orchestrator">
-            <span className="orbit orbit-a" />
-            <span className="orbit orbit-b" />
-            <div className="core-glow" />
-            <div className="core-mark">AI</div>
-            <p>ORQUESTADOR</p>
-          </div>
-          <div className="floating-card outcome-card">
-            <span className="success-dot" />
-            <strong>Acción resuelta</strong>
-            <small>CRM actualizado</small>
-          </div>
-          <div className="stage-status"><i /> Sistema en ejecución</div>
-        </div>
-      </section>
-
-      <section className="section cases-section" id="cases">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow"><span /> Selección de trabajo</p>
-            <h2>Casos que convierten tareas repetidas en tiempo útil.</h2>
-          </div>
-          <p className="section-note">Cada sistema empieza por entender el cuello de botella, no por elegir una herramienta.</p>
-        </div>
-
-        <div className="cases-layout">
-          <div className="case-list" role="tablist" aria-label="Casos de automatización">
-            {cases.map((item, index) => (
-              <button
-                className={`case-item ${selectedCase === index ? 'is-selected' : ''}`}
-                key={item.title}
-                onClick={() => setSelectedCase(index)}
-                role="tab"
-                aria-selected={selectedCase === index}
-              >
-                <span className={`case-index ${item.tone}`}>0{index + 1}</span>
-                <span><strong>{item.title}</strong><small>{item.tags.join(' · ')}</small></span>
-                <b aria-hidden="true">↗</b>
-              </button>
-            ))}
-          </div>
-          <article className={`case-preview ${cases[selectedCase].tone}`}>
-            <div className="preview-top"><span>CASO 0{selectedCase + 1}</span><span>2026</span></div>
-            <div className="preview-graphic">
-              <i className="node node-one" /><i className="node node-two" /><i className="node node-three" />
-              <span className="flow-line flow-a" /><span className="flow-line flow-b" />
-            </div>
-            <p className="preview-metric">{cases[selectedCase].metric}</p>
-            <h3>{cases[selectedCase].title}</h3>
-            <p>{cases[selectedCase].description}</p>
-            <div className="tag-row">{cases[selectedCase].tags.map(tag => <span key={tag}>{tag}</span>)}</div>
-          </article>
-        </div>
-      </section>
-
-      <section className="section method-section">
-        <p className="eyebrow"><span /> Método</p>
-        <div className="method-grid">
-          <article><b>01</b><h3>Entender</h3><p>Mapeamos la operación y localizamos el trabajo que hoy se repite.</p></article>
-          <article><b>02</b><h3>Orquestar</h3><p>Conectamos las herramientas y la IA con reglas que el equipo pueda revisar.</p></article>
-          <article><b>03</b><h3>Medir</h3><p>Observamos calidad, coste y resultado para que el flujo mejore cada semana.</p></article>
-        </div>
-      </section>
-
-      <section className="section learning-section" id="learning">
-        <div className="section-heading"><div><p className="eyebrow"><span /> Formación continua</p><h2>Aprender es parte del sistema.</h2></div></div>
-        <div className="learning-list">
-          {learning.map(([title, description, status], index) => (
-            <article key={title}>
-              <span className="learning-icon">{['✦', '◇', '⌁'][index]}</span>
-              <div><h3>{title}</h3><p>{description}</p></div>
-              <span className="status-pill">{status}</span>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <footer>
-        <p>¿Tienes un proceso que no debería seguir siendo manual?</p>
-        <a href="mailto:tu@email.com">Hablemos <span>↗</span></a>
-        <small>© 2026 · Automation studio</small>
-      </footer>
-
-      <nav className="mobile-nav" aria-label="Navegación móvil">
-        <button className={active === 'cases' ? 'active' : ''} onClick={() => scrollTo('cases')}><span>▣</span>Casos</button>
-        <button className={active === 'studio' ? 'active' : ''} onClick={() => scrollTo('studio')}><span>◉</span>Estudio</button>
-        <button className={active === 'learning' ? 'active' : ''} onClick={() => scrollTo('learning')}><span>✦</span>Formación</button>
+      <nav className="dock" aria-label="Navegación del portafolio">
+        <button className={view === 'projects' ? 'active' : ''} onClick={() => go('projects')}><Icon name="folder" /><span>Proyectos</span></button>
+        <button className={view === 'home' ? 'active' : ''} onClick={() => go('home')}><Icon name="home" /><span>Entrada</span></button>
+        <button className={view === 'about' ? 'active' : ''} onClick={() => go('about')}><Icon name="user" /><span>Sobre mí</span></button>
       </nav>
     </main>
   )
+}
+
+function Home({ go }: { go: (view: View) => void }) {
+  return <section className="home-view">
+    <div className="home-copy"><p className="kicker">PORTAFOLIO · AUTOMATIZACIÓN & IA</p><h1>Ideas claras.<br /><em>Sistemas que avanzan.</em></h1><p>Creo automatizaciones que reducen lo manual y dejan espacio para lo importante.</p></div>
+    <div className="room-hotspots" aria-label="Explora el estudio">
+      <button className="hotspot desk" onClick={() => go('projects')}><i /> <span>Proyectos</span></button>
+      <button className="hotspot shelf" onClick={() => go('certifications')}><i /> <span>Certificaciones</span></button>
+      <button className="hotspot profile" onClick={() => go('about')}><i /> <span>Sobre mí</span></button>
+    </div>
+  </section>
+}
+
+function Back({ go }: { go: (view: View) => void }) { return <button className="back" onClick={() => go('home')}>← <span>Volver al estudio</span></button> }
+
+function Projects({ go }: { go: (view: View) => void }) {
+  return <section className="content-view"><Back go={go} /><div className="content-heading"><p className="kicker">TRABAJO SELECCIONADO</p><h1>Proyectos</h1><p>Automatizaciones pensadas para problemas reales.</p></div><div className="project-list">
+    {projects.map((project, index) => <article className="project-card" key={project.title}><div className={`project-art ${project.tone}`}><span>0{index + 1}</span><i /><i /><i /></div><div className="card-copy"><h2>{project.title}</h2><p>{project.description}</p><div>{project.stack.map(item => <span className="tag" key={item}>{item}</span>)}</div></div><button className="card-arrow" aria-label={`Ver ${project.title}`}><Icon name="arrow" /></button></article>)}
+  </div></section>
+}
+
+function Certifications({ go }: { go: (view: View) => void }) {
+  return <section className="content-view"><Back go={go} /><div className="content-heading"><p className="kicker">FORMACIÓN CONTINUA</p><h1>Certificaciones</h1><p>Aprender, construir y mejorar en cada proyecto.</p></div><div className="certification-list">
+    {certifications.map(cert => <article className="certification" key={cert.title}><span className={`cert-icon ${cert.color}`}>{cert.icon}</span><div><h2>{cert.title}</h2><p>{cert.description}</p><small>{cert.date}</small></div><span className="chevron">›</span></article>)}
+  </div><blockquote>“El aprendizaje nunca se detiene.”</blockquote></section>
+}
+
+function About({ go }: { go: (view: View) => void }) {
+  return <section className="content-view about-view"><Back go={go} /><div className="content-heading"><p className="kicker">SOBRE MÍ</p><h1>Construyo<br /><em>con intención.</em></h1><p>Combino desarrollo web, automatización e IA para transformar procesos complejos en experiencias simples.</p></div><div className="about-grid"><article><span>01</span><h2>Observar</h2><p>Entiendo el proceso antes de tocar una herramienta.</p></article><article><span>02</span><h2>Conectar</h2><p>Diseño sistemas claros que trabajan entre sí.</p></article><article><span>03</span><h2>Mejorar</h2><p>Mido el resultado para que cada flujo evolucione.</p></article></div></section>
 }
 
 export default App
