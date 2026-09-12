@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState, type PointerEvent } from 'react'
 import desktopRoom from './assets/room/studio-desktop.png'
 import mobileRoom from './assets/room/studio-mobile.png'
 
@@ -27,20 +27,34 @@ function Icon({ name }: { name: 'home' | 'folder' | 'user' | 'arrow' | 'mail' })
 
 function App() {
   const [view, setView] = useState<View>('home')
+  const sceneSurface = useRef<HTMLElement>(null)
   const go = (next: View) => { setView(next); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  const moveCamera = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType === 'touch') return
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const x = ((event.clientX - bounds.left) / bounds.width - .5) * -15
+    const y = ((event.clientY - bounds.top) / bounds.height - .5) * -10
+    sceneSurface.current?.style.setProperty('--scene-x', `${x}px`)
+    sceneSurface.current?.style.setProperty('--scene-y', `${y}px`)
+  }
+  const resetCamera = () => {
+    sceneSurface.current?.style.setProperty('--scene-x', '0px')
+    sceneSurface.current?.style.setProperty('--scene-y', '0px')
+  }
 
   return (
-    <main className={`portfolio ${view !== 'home' ? 'is-panel-open' : ''}`}>
+    <main ref={sceneSurface} data-view={view} onPointerMove={moveCamera} onPointerLeave={resetCamera} className={`portfolio ${view !== 'home' ? 'is-panel-open' : ''}`}>
       <div className="room-scene" aria-hidden="true">
         <picture><source media="(max-width: 700px)" srcSet={mobileRoom} /><img src={desktopRoom} alt="" /></picture>
         <div className="scene-shade" />
+        <span className="ambient-light amber-light" />
+        <span className="ambient-light blue-light" />
       </div>
 
       <header className="site-header">
         <button className="identity" onClick={() => go('home')}><span className="identity-mark" /> <b>Tu Nombre</b></button>
         <nav>
-          <button onClick={() => go('projects')}><Icon name="folder" /><span>Proyectos</span></button>
-          <button onClick={() => go('certifications')}><span className="certificate-glyph">✦</span><span>Formación</span></button>
+          <button onClick={() => go('about')}><span className="certificate-glyph">▱</span><span>CV</span></button>
           <a href="mailto:tu@email.com"><Icon name="mail" /><span>Contacto</span></a>
         </nav>
       </header>
@@ -60,14 +74,8 @@ function App() {
 }
 
 function Home({ go }: { go: (view: View) => void }) {
-  return <section className="home-view">
-    <div className="home-copy"><p className="kicker">PORTAFOLIO · AUTOMATIZACIÓN & IA</p><h1>Ideas claras.<br /><em>Sistemas que avanzan.</em></h1><p>Creo automatizaciones que reducen lo manual y dejan espacio para lo importante.</p></div>
-    <div className="room-hotspots" aria-label="Explora el estudio">
-      <button className="hotspot desk" onClick={() => go('projects')}><i /> <span>Proyectos</span></button>
-      <button className="hotspot shelf" onClick={() => go('certifications')}><i /> <span>Certificaciones</span></button>
-      <button className="hotspot profile" onClick={() => go('about')}><i /> <span>Sobre mí</span></button>
-    </div>
-  </section>
+  void go
+  return <section className="home-view" aria-label="Entrada del portafolio" />
 }
 
 function Back({ go }: { go: (view: View) => void }) { return <button className="back" onClick={() => go('home')}>← <span>Volver al estudio</span></button> }
