@@ -1,99 +1,65 @@
 import { useRef, useState, type PointerEvent } from 'react'
-import desktopRoom from './assets/room/studio-desktop.png'
-import mobileRoom from './assets/room/studio-mobile.png'
+import entryDesktop from './assets/room/studio-desktop.png'
+import entryMobile from './assets/room/studio-mobile.png'
+import automationDesktop from './assets/cinematic/automation-desk-desktop-v1.png'
+import automationMobile from './assets/cinematic/automation-desk-mobile-v1.png'
+import aboutDesktop from './assets/cinematic/about-window-desktop-v1.png'
+import aboutMobile from './assets/cinematic/about-chair-mobile-v1.png'
 
-type View = 'home' | 'projects' | 'certifications' | 'about'
+type View = 'home' | 'projects' | 'about'
+type Project = { id: string; number: string; title: string; eyebrow: string; description: string; challenge: string; outcome: string; stack: string[]; tone: 'amber' | 'blue' | 'green'; flow: string[] }
 
-const projects = [
-  { title: 'Asistente de ventas IA', description: 'Clasifica conversaciones, recupera contexto y prepara la siguiente acción comercial.', stack: ['n8n', 'OpenAI', 'HubSpot'], tone: 'warm' },
-  { title: 'Pipeline autónomo', description: 'Convierte formularios y mensajes en leads enriquecidos, ordenados y listos para el equipo.', stack: ['Make', 'Airtable', 'Apollo'], tone: 'blue' },
-  { title: 'Radar de operaciones', description: 'Detecta incidencias, resume la información y avisa a la persona correcta con contexto.', stack: ['Python', 'Slack', 'PostgreSQL'], tone: 'green' },
+const projects: Project[] = [
+  { id: 'sales', number: '01', eyebrow: 'AUTOMATIZACIÓN COMERCIAL', title: 'Asistente de ventas IA', description: 'Convierte conversaciones entrantes en próximas acciones claras para el equipo comercial.', challenge: 'Evitar que los mensajes valiosos se pierdan entre conversaciones y tareas manuales.', outcome: 'Un flujo trazable que entiende el contexto y deja preparada la siguiente acción.', stack: ['n8n', 'OpenAI', 'CRM'], tone: 'amber', flow: ['Mensaje entrante', 'IA entiende intención', 'CRM se actualiza', 'Equipo recibe contexto'] },
+  { id: 'pipeline', number: '02', eyebrow: 'CAPTURA DE LEADS', title: 'Pipeline autónomo', description: 'Organiza formularios y mensajes en un flujo listo para trabajar.', challenge: 'Conectar fuentes distintas sin copiar y pegar datos entre herramientas.', outcome: 'Leads normalizados, enriquecidos y asignados con reglas fáciles de mantener.', stack: ['Make', 'Airtable', 'Webhooks'], tone: 'blue', flow: ['Formulario o mensaje', 'Datos se validan', 'Lead se enriquece', 'Seguimiento asignado'] },
+  { id: 'radar', number: '03', eyebrow: 'OPERACIONES', title: 'Radar de operaciones', description: 'Resume incidencias y avisa a la persona correcta con el contexto necesario.', challenge: 'Detectar problemas a tiempo sin llenar de alertas al equipo.', outcome: 'Avisos concretos, priorizados y conectados con información relevante.', stack: ['Python', 'Slack', 'PostgreSQL'], tone: 'green', flow: ['Se detecta un evento', 'Datos se resumen', 'Se calcula prioridad', 'Alerta con contexto'] },
 ]
+const stack = ['n8n', 'Make', 'OpenAI', 'Python', 'APIs', 'PostgreSQL']
 
-const certifications = [
-  { icon: '⌘', title: 'Automatización con IA', description: 'Diseño de flujos, agentes y sistemas evaluables.', date: '2026', color: 'blue' },
-  { icon: '◇', title: 'n8n & Make', description: 'Integraciones, webhooks y procesos mantenibles.', date: '2026', color: 'orange' },
-  { icon: '▥', title: 'Análisis de datos con Python', description: 'Decisiones basadas en datos, no en intuición.', date: '2025', color: 'green' },
-  { icon: '☁', title: 'Cloud fundamentals', description: 'Servicios cloud y arquitecturas prácticas.', date: '2025', color: 'violet' },
-]
-
-function Icon({ name }: { name: 'home' | 'folder' | 'user' | 'arrow' | 'mail' }) {
-  if (name === 'home') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z" /></svg>
-  if (name === 'folder') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l1.8 2H20a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18V8a1.5 1.5 0 0 1 1-1.5Z" /></svg>
-  if (name === 'user') return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M4.5 21c.8-4 3.3-6 7.5-6s6.7 2 7.5 6" /></svg>
-  if (name === 'mail') return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+function Icon({ name }: { name: 'home' | 'folder' | 'user' | 'arrow' | 'mail' | 'close' | 'github' | 'link' | 'spark' | 'download' }) {
+  const props = { viewBox: '0 0 24 24', 'aria-hidden': true }
+  if (name === 'home') return <svg {...props}><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z" /></svg>
+  if (name === 'folder') return <svg {...props}><path d="M3.5 6.5h6l1.8 2H20a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18V8a1.5 1.5 0 0 1 1-1.5Z" /></svg>
+  if (name === 'user') return <svg {...props}><circle cx="12" cy="8" r="3.5" /><path d="M4.5 21c.8-4 3.3-6 7.5-6s6.7 2 7.5 6" /></svg>
+  if (name === 'mail') return <svg {...props}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+  if (name === 'close') return <svg {...props}><path d="m6 6 12 12M18 6 6 18" /></svg>
+  if (name === 'github') return <svg {...props}><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9c0-1.1.1-1.6-.5-2.2 2.1-.2 4.4-1 4.4-5a3.9 3.9 0 0 0-1.1-2.7 3.6 3.6 0 0 0-.1-2.7s-.8-.3-2.8 1.1a9.7 9.7 0 0 0-5 0C8.9 5.2 8.1 5.5 8.1 5.5A3.6 3.6 0 0 0 8 8.2a3.9 3.9 0 0 0-1.1 2.7c0 4 2.3 4.8 4.4 5-.6.6-.6 1.3-.6 2.2V22" /></svg>
+  if (name === 'link') return <svg {...props}><path d="M10 14a4.5 4.5 0 0 0 6.4.1l2.1-2.1a4.5 4.5 0 0 0-6.4-6.4L11 6.7" /><path d="M14 10a4.5 4.5 0 0 0-6.4-.1l-2.1 2.1a4.5 4.5 0 0 0 6.4 6.4l1.1-1.1" /></svg>
+  if (name === 'spark') return <svg {...props}><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z" /></svg>
+  if (name === 'download') return <svg {...props}><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M4 20h16" /></svg>
   return <span aria-hidden="true">→</span>
+}
+
+function ScenePhoto({ desktop, mobile, active, name }: { desktop: string; mobile: string; active: boolean; name: string }) {
+  return <picture className={`scene-photo scene-photo-${name} ${active ? 'is-active' : ''}`} style={{ '--scene-backdrop': `url(${desktop})` } as React.CSSProperties} aria-hidden={!active}><source media="(max-width: 700px)" srcSet={mobile} /><img src={desktop} alt="" /><span className={`scene-vignette vignette-${name}`} /></picture>
 }
 
 function App() {
   const [view, setView] = useState<View>('home')
-  const sceneSurface = useRef<HTMLElement>(null)
-  const go = (next: View) => { setView(next); window.scrollTo({ top: 0, behavior: 'smooth' }) }
-  const moveCamera = (event: PointerEvent<HTMLElement>) => {
-    if (event.pointerType === 'touch') return
-    const bounds = event.currentTarget.getBoundingClientRect()
-    const x = ((event.clientX - bounds.left) / bounds.width - .5) * -15
-    const y = ((event.clientY - bounds.top) / bounds.height - .5) * -10
-    sceneSurface.current?.style.setProperty('--scene-x', `${x}px`)
-    sceneSurface.current?.style.setProperty('--scene-y', `${y}px`)
-  }
-  const resetCamera = () => {
-    sceneSurface.current?.style.setProperty('--scene-x', '0px')
-    sceneSurface.current?.style.setProperty('--scene-y', '0px')
-  }
-
-  return (
-    <main ref={sceneSurface} data-view={view} onPointerMove={moveCamera} onPointerLeave={resetCamera} className={`portfolio ${view !== 'home' ? 'is-panel-open' : ''}`}>
-      <div className="room-scene" aria-hidden="true">
-        <picture><source media="(max-width: 700px)" srcSet={mobileRoom} /><img src={desktopRoom} alt="" /></picture>
-        <div className="scene-shade" />
-        <span className="ambient-light amber-light" />
-        <span className="ambient-light blue-light" />
-      </div>
-
-      <header className="site-header">
-        <button className="identity" onClick={() => go('home')}><span className="identity-mark" /> <b>Tu Nombre</b></button>
-        <nav>
-          <button onClick={() => go('about')}><span className="certificate-glyph">▱</span><span>CV</span></button>
-          <a href="mailto:tu@email.com"><Icon name="mail" /><span>Contacto</span></a>
-        </nav>
-      </header>
-
-      {view === 'home' && <Home go={go} />}
-      {view === 'projects' && <Projects go={go} />}
-      {view === 'certifications' && <Certifications go={go} />}
-      {view === 'about' && <About go={go} />}
-
-      <nav className="dock" aria-label="Navegación del portafolio">
-        <button className={view === 'projects' ? 'active' : ''} onClick={() => go('projects')}><Icon name="folder" /><span>Proyectos</span></button>
-        <button className={view === 'home' ? 'active' : ''} onClick={() => go('home')}><Icon name="home" /><span>Entrada</span></button>
-        <button className={view === 'about' ? 'active' : ''} onClick={() => go('about')}><Icon name="user" /><span>Sobre mí</span></button>
-      </nav>
-    </main>
-  )
+  const [selected, setSelected] = useState<Project | null>(null)
+  const surface = useRef<HTMLElement>(null)
+  const go = (next: View) => { setSelected(null); setView(next); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  const moveCamera = (event: PointerEvent<HTMLElement>) => { if (event.pointerType === 'touch') return; const rect = event.currentTarget.getBoundingClientRect(); surface.current?.style.setProperty('--scene-x', `${((event.clientX - rect.left) / rect.width - .5) * -14}px`); surface.current?.style.setProperty('--scene-y', `${((event.clientY - rect.top) / rect.height - .5) * -10}px`) }
+  const resetCamera = () => { surface.current?.style.setProperty('--scene-x', '0px'); surface.current?.style.setProperty('--scene-y', '0px') }
+  return <main ref={surface} onPointerMove={moveCamera} onPointerLeave={resetCamera} className={`portfolio scene-${view}`}>
+    <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={view === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={view === 'projects'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={view === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
+    <header className="site-header"><button className="identity" onClick={() => go('home')} aria-label="Volver a la entrada"><span className="identity-mark" /><b>YEISON</b><small>AI AUTOMATION STUDIO</small></button><nav className="header-actions" aria-label="Enlaces profesionales"><a href="https://github.com/yeisondev001" target="_blank" rel="noreferrer"><Icon name="github" /><span>GitHub</span></a><a href="mailto:yeisonrojas03@gmail.com"><Icon name="mail" /><span>Gmail</span></a><a className="cv-download" href="/cv/yeison-rojas-cv.pdf" download><Icon name="download" /><span>CV</span></a></nav></header>
+    {view === 'home' && <Home go={go} />}{view === 'projects' && <Projects go={go} openProject={setSelected} />}{view === 'about' && <About go={go} />}
+    <nav className="dock" aria-label="Navegación del portafolio"><button className={view === 'projects' ? 'active' : ''} onClick={() => go('projects')}><Icon name="folder" /><span>Portafolio</span></button><button className={view === 'home' ? 'active' : ''} onClick={() => go('home')}><Icon name="home" /><span>Entrada</span></button><button className={view === 'about' ? 'active' : ''} onClick={() => go('about')}><Icon name="user" /><span>Sobre mí</span></button></nav>
+    {selected && <ProjectDialog project={selected} close={() => setSelected(null)} />}
+  </main>
 }
 
-function Home({ go }: { go: (view: View) => void }) {
-  void go
-  return <section className="home-view" aria-label="Entrada del portafolio" />
-}
-
+function Home({ go }: { go: (view: View) => void }) { return <section className="home-view" aria-label="Entrada del portafolio"><div className="intro-card"><p className="kicker">AUTOMATIZACIÓN + IA</p><h1>Sistemas que<br /><em>trabajan contigo.</em></h1><p>Diseño automatizaciones inteligentes para que los equipos se muevan con más claridad, contexto y velocidad.</p><button className="text-action" onClick={() => go('projects')}>Entrar al portafolio <Icon name="arrow" /></button></div><button className="scene-hotspot home-project-link" onClick={() => go('projects')}><span><Icon name="spark" /></span><b>Estación de trabajo</b><small>Ver automatizaciones IA</small></button><p className="scene-hint">Mueve el cursor para explorar el estudio <span>•</span> cada estación cuenta una parte de la historia</p></section> }
 function Back({ go }: { go: (view: View) => void }) { return <button className="back" onClick={() => go('home')}>← <span>Volver al estudio</span></button> }
-
-function Projects({ go }: { go: (view: View) => void }) {
-  return <section className="content-view"><Back go={go} /><div className="content-heading"><p className="kicker">TRABAJO SELECCIONADO</p><h1>Proyectos</h1><p>Automatizaciones pensadas para problemas reales.</p></div><div className="project-list">
-    {projects.map((project, index) => <article className="project-card" key={project.title}><div className={`project-art ${project.tone}`}><span>0{index + 1}</span><i /><i /><i /></div><div className="card-copy"><h2>{project.title}</h2><p>{project.description}</p><div>{project.stack.map(item => <span className="tag" key={item}>{item}</span>)}</div></div><button className="card-arrow" aria-label={`Ver ${project.title}`}><Icon name="arrow" /></button></article>)}
-  </div></section>
-}
-
-function Certifications({ go }: { go: (view: View) => void }) {
-  return <section className="content-view"><Back go={go} /><div className="content-heading"><p className="kicker">FORMACIÓN CONTINUA</p><h1>Certificaciones</h1><p>Aprender, construir y mejorar en cada proyecto.</p></div><div className="certification-list">
-    {certifications.map(cert => <article className="certification" key={cert.title}><span className={`cert-icon ${cert.color}`}>{cert.icon}</span><div><h2>{cert.title}</h2><p>{cert.description}</p><small>{cert.date}</small></div><span className="chevron">›</span></article>)}
-  </div><blockquote>“El aprendizaje nunca se detiene.”</blockquote></section>
-}
-
+function SceneMoment({ desktop, mobile, caption }: { desktop: string; mobile: string; caption: string }) { return <figure className="scene-moment"><picture><source media="(max-width: 700px)" srcSet={mobile} /><img src={desktop} alt="" /></picture><figcaption>{caption}</figcaption></figure> }
+function Projects({ go, openProject }: { go: (view: View) => void; openProject: (project: Project) => void }) { return <section className="content-view projects-view"><Back go={go} /><SceneMoment desktop={automationDesktop} mobile={automationMobile} caption="01 — ESTACIÓN DE AUTOMATIZACIÓN" /><div className="content-heading"><p className="kicker">ESTACIÓN 01 · ESCRITORIO</p><h1>Automatizaciones<br /><em>que escalan.</em></h1><p>Desde este escritorio conecto IA, datos y herramientas para eliminar trabajo repetitivo y mejorar decisiones.</p></div><div className="project-list">{projects.map((project, index) => <ProjectCard project={project} key={project.id} index={index} open={() => openProject(project)} />)}</div></section> }
+function ProjectCard({ project, index, open }: { project: Project; index: number; open: () => void }) { return <article className={`project-card ${project.tone}`} style={{ '--delay': `${index * 90}ms` } as React.CSSProperties}><button className="project-click-target" onClick={open} aria-label={`Abrir ${project.title}`} /><div className="project-art"><span>{project.number}</span><i /><i /><i /></div><div className="card-copy"><p className="card-eyebrow">{project.eyebrow}</p><h2>{project.title}</h2><p>{project.description}</p><div>{project.stack.map(item => <span className="tag" key={item}>{item}</span>)}</div></div><span className="card-arrow"><Icon name="arrow" /></span></article> }
 function About({ go }: { go: (view: View) => void }) {
-  return <section className="content-view about-view"><Back go={go} /><div className="content-heading"><p className="kicker">SOBRE MÍ</p><h1>Construyo<br /><em>con intención.</em></h1><p>Combino desarrollo web, automatización e IA para transformar procesos complejos en experiencias simples.</p></div><div className="about-grid"><article><span>01</span><h2>Observar</h2><p>Entiendo el proceso antes de tocar una herramienta.</p></article><article><span>02</span><h2>Conectar</h2><p>Diseño sistemas claros que trabajan entre sí.</p></article><article><span>03</span><h2>Mejorar</h2><p>Mido el resultado para que cada flujo evolucione.</p></article></div></section>
+  const [audioOpen, setAudioOpen] = useState(false)
+  const openAudio = () => setAudioOpen(true)
+  return <section className="content-view about-view"><Back go={go} /><SceneMoment desktop={aboutDesktop} mobile={aboutMobile} caption="02 — PERFIL / NOCHE EN EL ESTUDIO" /><div className="content-heading"><p className="kicker">ESTACIÓN 02 · PERFIL</p><h1>Construyo<br /><em>con intención.</em></h1><p>Combino automatización, desarrollo e IA para convertir operaciones complejas en sistemas simples, visibles y medibles.</p></div><section className={`audio-profile ${audioOpen ? 'is-open' : ''}`}><button className="audio-trigger" onClick={openAudio} aria-expanded={audioOpen}><span className="audio-orb">▶</span><span><b>Escuchar mi historia</b><small>Mi voz · trayectoria y enfoque</small></span><i /></button>{audioOpen && <div className="audio-player"><audio controls preload="metadata"><source src="/audio/yeison-profile.mp3" type="audio/mpeg" />Tu navegador no puede reproducir este audio.</audio><p>Grabación de Yeison · añade el archivo <code>public/audio/yeison-profile.mp3</code> para activarla.</p></div>}</section><div className="profile-note"><button onClick={openAudio}><span>01</span><p>Entender el proceso real antes de conectar herramientas.</p></button><button onClick={openAudio}><span>02</span><p>Diseñar flujos claros que el equipo pueda mantener.</p></button><button onClick={openAudio}><span>03</span><p>Medir, aprender y mejorar con datos.</p></button></div><section className="stack-block"><p className="detail-label">STACK DE TRABAJO</p><div>{stack.map(item => <span key={item}>{item}</span>)}</div></section><section className="timeline"><p className="detail-label">TRAYECTORIA</p><article><small>2026 — HOY</small><h2>Automatización con IA</h2><p>Flujos, asistentes y sistemas conectados que resuelven trabajo real.</p></article><article><small>2025 — 2026</small><h2>Datos & desarrollo</h2><p>Fundamentos técnicos para integrar APIs, bases de datos y experiencias web.</p></article></section><div className="contact-card" id="contacto"><div><p className="kicker">¿HABLAMOS?</p><h2>Convirtamos una idea en un sistema.</h2></div><a href="mailto:yeisonrojas03@gmail.com">Escríbeme <Icon name="arrow" /></a></div></section>
 }
-
+function ProjectDialog({ project, close }: { project: Project; close: () => void }) { return <div className="dialog-backdrop" role="presentation" onMouseDown={close}><article className="project-dialog" role="dialog" aria-modal="true" aria-labelledby="project-title" onMouseDown={event => event.stopPropagation()}><header><div><p className="kicker">{project.eyebrow} · {project.number}</p><h2 id="project-title">{project.title}</h2></div><button className="dialog-close" onClick={close} aria-label="Cerrar detalle"><Icon name="close" /></button></header><p className="dialog-description">{project.description}</p><div className="detail-grid"><section><p className="detail-label">RETO</p><p>{project.challenge}</p></section><section><p className="detail-label">RESULTADO</p><p>{project.outcome}</p></section></div><Flow flow={project.flow} tone={project.tone} /><section className="demo-frame"><div className="demo-topbar"><i /><i /><i /><span>live automation preview</span></div><div className="demo-nodes"><b>Evento</b><i>IA</i><b>Acción</b><i>Datos</i></div><p>Captura visual del flujo. Aquí se podrá insertar la grabación real o captura de cada proyecto cuando esté disponible.</p></section><footer className="project-links"><span><Icon name="github" /> Repositorio por añadir</span><span><Icon name="link" /> Demo por añadir</span></footer></article></div> }
+function Flow({ flow, tone }: { flow: string[]; tone: Project['tone'] }) { return <section className={`flow flow-${tone}`}><p className="detail-label">FLUJO DEL SISTEMA</p><div className="flow-steps">{flow.map((step, index) => <div className="flow-step" key={step}><span>{String(index + 1).padStart(2, '0')}</span><b>{step}</b></div>)}</div></section> }
 export default App
