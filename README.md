@@ -1,32 +1,45 @@
-# React + TypeScript + Vite
+# Yeison Rojas — Automation Systems
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Portafolio cinematográfico y responsive enfocado en automatizaciones con inteligencia artificial. La experiencia utiliza fotografías independientes para móvil y escritorio, transiciones entre escenas, profundidad, iluminación ambiental y movimiento sutil controlado desde la interfaz.
 
-Currently, two official plugins are available:
+## Experiencia
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Entrada inmersiva en un estudio nocturno.
+- Estación de proyectos con casos de automatización e IA.
+- Perfil profesional, stack y trayectoria.
+- Navegación adaptada a escritorio horizontal y móvil vertical.
+- Enlaces directos a GitHub, correo y descarga del CV.
+- Fotografías WebP optimizadas, conservando los PNG originales como fuente.
 
-## React Compiler
+Los casos visibles enlazan proyectos reales: automatización documental, inventario multi-tenant y gestión de citas. Las demos públicas y las capturas detalladas se incorporarán cuando cada despliegue esté listo.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the Oxlint configuration
+- React 19
+- TypeScript
+- Vite
+- CSS responsivo y animaciones nativas
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Desarrollo local
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+La aplicación queda disponible normalmente en `http://127.0.0.1:5173/`.
+
+## Verificación
+
+```bash
+npm run lint
+npm run build
+```
+
+## Estructura visual
+
+- `src/assets/room`: escena de entrada para escritorio y móvil.
+- `src/assets/cinematic`: escenas de automatizaciones y perfil.
+- `public/cv`: CV descargable.
+
+Las imágenes generadas o editadas se guardan como versiones nuevas; los archivos originales no se sobrescriben.
