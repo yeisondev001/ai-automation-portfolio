@@ -11,7 +11,7 @@ Portafolio cinematográfico y responsive enfocado en automatizaciones con inteli
 - Enlaces directos a GitHub, correo y descarga del CV.
 - Fotografías WebP optimizadas, conservando los PNG originales como fuente.
 
-Los casos visibles enlazan proyectos reales: automatización documental, inventario multi-tenant y gestión de citas. El sistema de solicitudes legales está actualmente en funcionamiento dentro de una oficina de abogados, donde recupera horas de trabajo cada semana, reduce tareas repetitivas y permite que el equipo dedique más tiempo al trabajo jurídico. Las demos públicas de los demás proyectos se incorporarán cuando cada despliegue esté listo.
+Los casos visibles presentan proyectos reales: automatización documental jurídica, la aplicación de pedidos de Plásticos Duralón conectada a un ERP corporativo privado y un inventario SaaS multi-tenant. El sistema legal recupera aproximadamente cinco horas de trabajo cada semana y la aplicación móvil permite recibir pedidos a cualquier hora sin depender de llamadas ni del horario comercial.
 
 ## Stack
 
