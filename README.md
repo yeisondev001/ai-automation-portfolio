@@ -11,7 +11,7 @@ Portafolio cinematográfico y responsive enfocado en automatizaciones con inteli
 - Enlaces directos a GitHub, correo y descarga del CV.
 - Fotografías WebP optimizadas, conservando los PNG originales como fuente.
 
-Los casos visibles enlazan proyectos reales: automatización documental, inventario multi-tenant y gestión de citas. Las demos públicas y las capturas detalladas se incorporarán cuando cada despliegue esté listo.
+Los casos visibles enlazan proyectos reales: automatización documental, inventario multi-tenant y gestión de citas. El sistema de solicitudes legales está actualmente en funcionamiento dentro de una oficina de abogados; las demos públicas y las capturas detalladas de los demás proyectos se incorporarán cuando cada despliegue esté listo.
 
 ## Stack
 
