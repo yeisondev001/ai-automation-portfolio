@@ -1,5 +1,6 @@
 import { useRef, useState, type PointerEvent } from 'react'
 import './archive.css'
+import './mobile.css'
 import entryDesktop from './assets/room/studio-desktop-v2.webp'
 import entryMobile from './assets/room/studio-mobile-v2.webp'
 import automationDesktop from './assets/cinematic/automation-desk-desktop-v2.webp'
@@ -59,7 +60,7 @@ function App() {
     <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={view === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={view === 'projects'} /><ScenePhoto name="archive" desktop={archiveDesktop} mobile={archiveMobile} active={view === 'archive'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={view === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
     <header className="site-header"><button className="identity" onClick={() => go('home')} aria-label="Volver a la entrada"><span className="identity-mark" /><b>YEISON ROJAS</b><small>AUTOMATION SYSTEMS</small></button><nav className="header-actions" aria-label="Enlaces profesionales"><a href="https://github.com/yeisondev001" target="_blank" rel="noreferrer"><Icon name="github" /><span>GitHub</span></a><a href="mailto:yeisonrojas03@gmail.com"><Icon name="mail" /><span>Gmail</span></a><a className="cv-download" href="/cv/yeison-rojas-cv.pdf" download><Icon name="download" /><span>CV</span></a></nav></header>
     {view === 'home' && <Home go={go} />}{view === 'projects' && <Projects go={go} openProject={setSelected} />}{view === 'archive' && <Archive go={go} openProject={setSelected} />}{view === 'about' && <About go={go} />}
-    <nav className="dock" aria-label="Navegación del portafolio"><button className={(view === 'projects' || view === 'archive') ? 'active' : ''} onClick={() => go('projects')}><Icon name="folder" /><span>Portafolio</span></button><button className={view === 'home' ? 'active' : ''} onClick={() => go('home')}><Icon name="home" /><span>Entrada</span></button><button className={view === 'about' ? 'active' : ''} onClick={() => go('about')}><Icon name="user" /><span>Sobre mí</span></button></nav>
+    <nav className={`dock dock-${view}`} aria-label="Navegación del portafolio"><button className={(view === 'projects' || view === 'archive') ? 'active' : ''} onClick={() => go('projects')}><Icon name="folder" /><span>Portafolio</span></button><button className={view === 'home' ? 'active' : ''} onClick={() => go('home')}><Icon name="home" /><span>Entrada</span></button><button className={view === 'about' ? 'active' : ''} onClick={() => go('about')}><Icon name="user" /><span>Sobre mí</span></button></nav>
     {selected && <ProjectDialog project={selected} close={() => setSelected(null)} />}
   </main>
 }
