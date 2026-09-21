@@ -1,0 +1,12 @@
+.archive-project.has-demo button{grid-template-columns:37px 58px 1fr 22px}
+.archive-project-preview{display:block;width:52px;height:82px;object-fit:cover;object-position:center;border:1px solid rgba(116,209,255,.45);border-radius:7px;background:#091017;box-shadow:0 7px 18px rgba(0,0,0,.3)}
+.app-gallery.is-demo{border-color:rgba(101,194,235,.38);background:linear-gradient(145deg,rgba(20,63,92,.34),rgba(255,255,255,.025))}
+.app-gallery.is-demo .app-gallery-track{grid-template-columns:minmax(0,320px);justify-content:center}
+.app-gallery.is-demo figure{background:#090d11}
+
+@media(max-width:700px){
+  .archive-project.has-demo button{grid-template-columns:29px 50px 1fr 19px;gap:8px}
+  .archive-project-preview{width:44px;height:70px}
+  .app-gallery.is-demo .app-gallery-track{display:flex;justify-content:initial}
+  .app-gallery.is-demo figure{flex-basis:78%}
+}
