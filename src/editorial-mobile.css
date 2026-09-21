@@ -1,0 +1,57 @@
+/* Dirección editorial para móvil: una escena, una lectura y una jerarquía clara. */
+.mobile-home-hero{display:none}
+
+@media (max-width:700px){
+  .portfolio{padding-bottom:22px;background:#080b0e}
+  .scene-home .scene-stage,.scene-projects .scene-stage,.scene-archive .scene-stage,.scene-about .scene-stage{background:#080b0e}
+  .scene-home .scene-photo,.scene-projects .scene-photo,.scene-archive .scene-photo,.scene-about .scene-photo{opacity:0!important}
+
+  .site-header{width:calc(100% - 28px);margin:14px auto 10px;border-color:rgba(255,255,255,.18);background:rgba(10,14,17,.94)}
+  .identity{font-size:14px}.identity-mark,.identity small{display:none}
+
+  .home-view{display:flex;flex-direction:column;width:100%;min-height:0;margin:0;padding:0 0 28px}
+  .mobile-home-hero{position:relative;display:block;order:0;width:100%;height:min(64svh,560px);margin:0;overflow:hidden;background:#0b0e11}
+  .mobile-home-hero picture,.mobile-home-hero img{display:block;width:100%;height:100%}
+  .mobile-home-hero img{object-fit:cover;object-position:50% 18%}
+  .mobile-home-hero:after{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,7,9,.76),transparent 28%);content:''}
+  .mobile-home-hero figcaption{position:absolute;z-index:1;bottom:17px;left:24px;color:#efc773;font:9px 'DM Mono',monospace;letter-spacing:.12em;text-shadow:0 1px 7px #000}
+  .intro-card{position:relative;bottom:auto;left:auto;order:1;width:auto;margin:0;padding:26px 24px 12px;background:#080b0e;text-shadow:none}
+  .intro-card h1{margin:9px 0 13px;font-size:clamp(3rem,14vw,4.25rem);line-height:.89;letter-spacing:-.08em}
+  .intro-card>p:not(.kicker){max-width:none;color:#d8d5cf;font-size:15px;line-height:1.55}
+  .intro-card .text-action{margin-top:19px}
+  .home-project-link,.scene-hint{display:none}
+
+  .content-view{width:100%;margin:0;padding:16px 0 30px;border:0;border-radius:0;background:#080b0e;box-shadow:none}
+  .content-view .back{margin:0 24px 16px}
+  .scene-moment{width:100%;height:auto!important;aspect-ratio:4 / 5;margin:0;overflow:hidden;border:0;border-radius:0;background:#090c0f;box-shadow:none}
+  .scene-moment img{object-fit:cover!important;transform:none!important}
+  .projects-view .scene-moment img{object-position:50% 24%!important}
+  .archive-view .scene-moment img{object-position:49% 22%!important}
+  .about-view .scene-moment img{object-position:50% 20%!important}
+  .scene-moment:after{background:linear-gradient(0deg,rgba(5,7,9,.72),transparent 30%)}
+  .scene-moment figcaption{bottom:16px;left:24px;color:#efc773;font-size:9px;text-shadow:0 1px 7px #000}
+
+  .content-heading{margin:27px 24px 0}
+  .content-heading h1{max-width:340px;margin:8px 0 14px;font-size:clamp(3rem,13.5vw,4rem);line-height:.88;letter-spacing:-.075em;text-shadow:none;-webkit-text-stroke:0}
+  .content-heading>p:last-child{max-width:350px;color:#cfcfc9;font-size:15px;line-height:1.5}
+  .kicker{font-size:9px;letter-spacing:.13em}
+
+  .project-list,.archive-project-grid{margin:24px 18px 0;gap:10px}
+  .project-card{min-height:116px;padding:9px;border-color:#263039;border-radius:12px;background:#10161a;box-shadow:none}
+  .project-art{min-height:96px;border-radius:9px}
+  .card-copy p:not(.card-eyebrow){-webkit-line-clamp:2}
+  .all-projects-action{width:calc(100% - 36px);margin:22px 18px 0;border-color:rgba(103,184,222,.52);border-radius:12px;background:#0d151a}
+
+  .archive-status{margin:20px 24px 0;padding:10px 0}
+  .archive-project-grid{margin-top:10px}
+  .archive-project{border-radius:12px;background:#10161a}
+  .archive-project button{min-height:78px;padding:11px 12px}
+
+  .profile-note,.stack-block,.timeline,.contact-card{margin-right:24px;margin-left:24px}
+  .profile-note{margin-top:23px;background:#10161a}
+  .contact-card{padding:18px;background:#10161a}
+
+  /* La navegación es un cierre de sección, no una capa que cubre la lectura. */
+  .dock,.scene-projects .dock,.scene-archive .dock,.scene-about .dock{position:relative;bottom:auto;width:calc(100% - 28px);min-height:78px;margin:20px auto calc(18px + env(safe-area-inset-bottom));padding:5px;border-radius:18px;background:#10161a;box-shadow:none;backdrop-filter:none}
+  .dock button{min-height:64px}
+}
