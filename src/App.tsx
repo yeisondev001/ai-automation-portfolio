@@ -1,9 +1,10 @@
-import { useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import './archive.css'
 import './mobile.css'
 import './editorial-mobile.css'
 import './project-covers.css'
 import './air-draw.css'
+import './cinematic.css'
 import entryDesktop from './assets/room/studio-desktop-v2.webp'
 import entryMobile from './assets/room/studio-mobile-v2.webp'
 import automationDesktop from './assets/cinematic/automation-desk-desktop-v2.webp'
@@ -65,6 +66,64 @@ function ScenePhoto({ desktop, mobile, active, name }: { desktop: string; mobile
   return <picture className={`scene-photo scene-photo-${name} ${active ? 'is-active' : ''}`} style={{ '--scene-backdrop': `url(${desktop})` } as React.CSSProperties} aria-hidden={!active}><source media="(max-width: 700px)" srcSet={mobile} /><img src={desktop} alt="" /><span className={`scene-vignette vignette-${name}`} /></picture>
 }
 
+type CinematicVideoProps = {
+  src: string
+  poster: string
+  label: string
+  priority?: boolean
+}
+
+function CinematicVideo({ src, poster, label, priority = false }: CinematicVideoProps) {
+  const container = useRef<HTMLDivElement>(null)
+  const video = useRef<HTMLVideoElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  useEffect(() => {
+    const containerElement = container.current
+    const videoElement = video.current
+    if (!containerElement || !videoElement) return
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !reducedMotion.matches) {
+        videoElement.play().catch(() => setIsPlaying(false))
+      } else {
+        videoElement.pause()
+      }
+    }, { threshold: 0.52 })
+
+    observer.observe(containerElement)
+    return () => observer.disconnect()
+  }, [])
+
+  const togglePlayback = () => {
+    const videoElement = video.current
+    if (!videoElement) return
+    if (videoElement.paused) videoElement.play().catch(() => setIsPlaying(false))
+    else videoElement.pause()
+  }
+
+  return <div className="cinematic-media" ref={container}>
+    <video
+      ref={video}
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload={priority ? 'auto' : 'metadata'}
+      onPlay={() => setIsPlaying(true)}
+      onPause={() => setIsPlaying(false)}
+      aria-label={label}
+    />
+    <span className="cinematic-film-layer" aria-hidden="true" />
+    <button className="cinematic-playback" type="button" onClick={togglePlayback} aria-label={isPlaying ? `Pausar ${label}` : `Reproducir ${label}`}>
+      <span aria-hidden="true">{isPlaying ? 'Ⅱ' : '▶'}</span>
+      {isPlaying ? 'Pausar' : 'Reproducir'}
+    </button>
+  </div>
+}
+
 function App() {
   const [view, setView] = useState<View>('home')
   const [selected, setSelected] = useState<Project | null>(null)
@@ -81,7 +140,62 @@ function App() {
   </main>
 }
 
-function Home({ go }: { go: (view: View) => void }) { return <section className="home-view" aria-label="Entrada del portafolio"><figure className="mobile-home-hero"><picture><source media="(max-width: 700px)" srcSet={entryMobile} /><img src={entryDesktop} alt="Yeison en su estudio de automatización" /></picture><figcaption>01 — SISTEMAS + AUTOMATIZACIÓN</figcaption></figure><div className="intro-card"><p className="kicker">SISTEMAS + AUTOMATIZACIÓN</p><h1>Sistemas que<br /><em>trabajan contigo.</em></h1><p>Construyo soluciones que conectan procesos, datos y software, preparadas para incorporar inteligencia artificial donde aporta valor real.</p><button className="text-action" onClick={() => go('projects')}>Entrar al portafolio <Icon name="arrow" /></button></div><button className="scene-hotspot home-project-link" onClick={() => go('projects')}><span><Icon name="spark" /></span><b>Estación de trabajo</b><small>Ver proyectos reales</small></button><p className="scene-hint">Mueve el cursor para explorar el estudio <span>•</span> cada estación cuenta una parte de la historia</p></section> }
+function Home({ go }: { go: (view: View) => void }) {
+  const scrollToChapter = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  return <section className="cinematic-home" aria-label="Experiencia cinematográfica del portafolio">
+    <article className="cinematic-chapter cinematic-intro" id="cinematic-intro">
+      <CinematicVideo src="/videos/cinematic/01-entrada-mobile.mp4" poster="/videos/cinematic/posters/01-entrada.webp" label="Presentación de Yeison en su estudio" priority />
+      <div className="cinematic-copy">
+        <p className="cinematic-index">01 / ENTRADA</p>
+        <h1>Diseño sistemas que<br /><em>trabajan contigo.</em></h1>
+        <p>Automatización, software e inteligencia artificial aplicados a procesos que necesitan resultados reales.</p>
+        <button className="cinematic-action" type="button" onClick={() => scrollToChapter('cinematic-process')}>Comenzar el recorrido <Icon name="arrow" /></button>
+      </div>
+      <button className="cinematic-scroll-cue" type="button" onClick={() => scrollToChapter('cinematic-process')}><span /> Desliza para entrar</button>
+    </article>
+
+    <article className="cinematic-chapter cinematic-process" id="cinematic-process">
+      <CinematicVideo src="/videos/cinematic/02-transicion-monitores-mobile.mp4" poster="/videos/cinematic/posters/02-monitores.webp" label="Movimiento cinematográfico hacia la estación de trabajo" />
+      <div className="cinematic-copy">
+        <p className="cinematic-index">02 / EL PROCESO</p>
+        <h2>Del trabajo repetitivo<br /><em>a un sistema conectado.</em></h2>
+        <p>No se trata de sumar herramientas. Primero entiendo el proceso, después conecto datos, decisiones y acciones.</p>
+        <div className="cinematic-flow" aria-label="Proceso de automatización">
+          <span><b>01</b> Proceso</span>
+          <i />
+          <span><b>02</b> Inteligencia</span>
+          <i />
+          <span><b>03</b> Resultado</span>
+        </div>
+        <button className="cinematic-action" type="button" onClick={() => scrollToChapter('cinematic-work')}>Ver los sistemas <Icon name="arrow" /></button>
+      </div>
+    </article>
+
+    <article className="cinematic-chapter cinematic-work" id="cinematic-work">
+      <CinematicVideo src="/videos/cinematic/03-automatizaciones-mobile.mp4" poster="/videos/cinematic/posters/03-automatizaciones.webp" label="Monitores mostrando flujos de automatización" />
+      <div className="cinematic-copy">
+        <p className="cinematic-index">03 / SISTEMAS REALES</p>
+        <h2>La automatización<br /><em>se vuelve visible.</em></h2>
+        <p>Cada proyecto muestra el problema, el flujo construido y el resultado que produjo.</p>
+        <div className="cinematic-project-preview">
+          {projects.map(project => <button type="button" key={project.id} onClick={() => go('projects')}>
+            <span>{project.number}</span>
+            <div><small>{project.eyebrow.split('·')[0]}</small><b>{project.title}</b></div>
+            <Icon name="arrow" />
+          </button>)}
+        </div>
+        <button className="cinematic-action cinematic-primary" type="button" onClick={() => go('projects')}>Explorar proyectos <Icon name="arrow" /></button>
+      </div>
+    </article>
+
+    <footer className="cinematic-outro">
+      <p className="cinematic-index">FIN DEL RECORRIDO / INICIO DE LA CONVERSACIÓN</p>
+      <h2>¿Tienes un proceso que<br /><em>debería funcionar mejor?</em></h2>
+      <div><button type="button" onClick={() => go('about')}>Conocer mi perfil <Icon name="arrow" /></button><a href="mailto:yeisonrojas03@gmail.com">Escríbeme <Icon name="mail" /></a></div>
+    </footer>
+  </section>
+}
 function Back({ go }: { go: (view: View) => void }) { return <button className="back" onClick={() => go('home')}>← <span>Volver al estudio</span></button> }
 function SceneMoment({ desktop, mobile, caption }: { desktop: string; mobile: string; caption: string }) { return <figure className="scene-moment"><picture><source media="(max-width: 700px)" srcSet={mobile} /><img src={desktop} alt="" /></picture><figcaption>{caption}</figcaption></figure> }
 function Projects({ go, openProject }: { go: (view: View) => void; openProject: (project: Project) => void }) { return <section className="content-view projects-view"><Back go={go} /><SceneMoment desktop={automationDesktop} mobile={automationMobile} caption="01 — ESTACIÓN DE AUTOMATIZACIÓN" /><div className="content-heading"><p className="kicker">ESTACIÓN 01 · ESCRITORIO</p><h1>Sistemas reales<br /><em>que escalan.</em></h1><p>Proyectos construidos para automatizar documentos, organizar operaciones y conectar servicios mediante APIs.</p></div><div className="project-list">{projects.map((project, index) => <ProjectCard project={project} key={project.id} index={index} open={() => openProject(project)} />)}</div><button className="all-projects-action" onClick={() => go('archive')}><span><Icon name="spark" /></span><div><small>COLECCIÓN COMPLETA</small><b>Ver todos los proyectos</b></div><Icon name="arrow" /></button></section> }
