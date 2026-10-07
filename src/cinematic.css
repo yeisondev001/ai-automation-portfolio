@@ -98,6 +98,30 @@
   object-fit: cover;
 }
 
+@media (min-width: 701px) {
+  /* En escritorio la toma horizontal abre el recorrido como una escena completa. */
+  .cinematic-intro .cinematic-media {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .cinematic-intro .cinematic-media video {
+    object-position: center;
+  }
+
+  .cinematic-intro .cinematic-film-layer {
+    background:
+      linear-gradient(90deg, rgba(4, 6, 8, .87) 0%, rgba(4, 6, 8, .62) 34%, rgba(4, 6, 8, .12) 68%, rgba(4, 6, 8, .32)),
+      linear-gradient(0deg, rgba(4, 6, 8, .54), transparent 44%);
+  }
+}
+
 .cinematic-film-layer {
   position: absolute;
   inset: 0;

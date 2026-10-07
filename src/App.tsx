@@ -67,16 +67,28 @@ function ScenePhoto({ desktop, mobile, active, name }: { desktop: string; mobile
 }
 
 type CinematicVideoProps = {
-  src: string
+  mobileSrc: string
+  desktopSrc?: string
   poster: string
+  desktopPoster?: string
   label: string
   priority?: boolean
 }
 
-function CinematicVideo({ src, poster, label, priority = false }: CinematicVideoProps) {
+function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, priority = false }: CinematicVideoProps) {
   const container = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 701px)').matches)
+  const source = isDesktop && desktopSrc ? desktopSrc : mobileSrc
+  const activePoster = isDesktop && desktopPoster ? desktopPoster : poster
+
+  useEffect(() => {
+    const query = window.matchMedia('(min-width: 701px)')
+    const updateDevice = () => setIsDesktop(query.matches)
+    query.addEventListener('change', updateDevice)
+    return () => query.removeEventListener('change', updateDevice)
+  }, [])
 
   useEffect(() => {
     const containerElement = container.current
@@ -106,8 +118,8 @@ function CinematicVideo({ src, poster, label, priority = false }: CinematicVideo
   return <div className="cinematic-media" ref={container}>
     <video
       ref={video}
-      src={src}
-      poster={poster}
+      src={source}
+      poster={activePoster}
       muted
       loop
       playsInline
@@ -145,7 +157,7 @@ function Home({ go }: { go: (view: View) => void }) {
 
   return <section className="cinematic-home" aria-label="Experiencia cinematográfica del portafolio">
     <article className="cinematic-chapter cinematic-intro" id="cinematic-intro">
-      <CinematicVideo src="/videos/cinematic/01-entrada-mobile.mp4" poster="/videos/cinematic/posters/01-entrada.webp" label="Presentación de Yeison en su estudio" priority />
+      <CinematicVideo mobileSrc="/videos/cinematic/01-entrada-mobile.mp4" desktopSrc="/videos/cinematic/04-entrada-desktop.mp4" poster="/videos/cinematic/posters/01-entrada.webp" desktopPoster="/videos/cinematic/posters/04-entrada-desktop.webp" label="Presentación de Yeison en su estudio" priority />
       <div className="cinematic-copy">
         <p className="cinematic-index">01 / ENTRADA</p>
         <h1>Diseño sistemas que<br /><em>trabajan contigo.</em></h1>
@@ -156,7 +168,7 @@ function Home({ go }: { go: (view: View) => void }) {
     </article>
 
     <article className="cinematic-chapter cinematic-process" id="cinematic-process">
-      <CinematicVideo src="/videos/cinematic/02-transicion-monitores-mobile.mp4" poster="/videos/cinematic/posters/02-monitores.webp" label="Movimiento cinematográfico hacia la estación de trabajo" />
+      <CinematicVideo mobileSrc="/videos/cinematic/02-transicion-monitores-mobile.mp4" poster="/videos/cinematic/posters/02-monitores.webp" label="Movimiento cinematográfico hacia la estación de trabajo" />
       <div className="cinematic-copy">
         <p className="cinematic-index">02 / EL PROCESO</p>
         <h2>Del trabajo repetitivo<br /><em>a un sistema conectado.</em></h2>
@@ -173,7 +185,7 @@ function Home({ go }: { go: (view: View) => void }) {
     </article>
 
     <article className="cinematic-chapter cinematic-work" id="cinematic-work">
-      <CinematicVideo src="/videos/cinematic/03-automatizaciones-mobile.mp4" poster="/videos/cinematic/posters/03-automatizaciones.webp" label="Monitores mostrando flujos de automatización" />
+      <CinematicVideo mobileSrc="/videos/cinematic/03-automatizaciones-mobile.mp4" poster="/videos/cinematic/posters/03-automatizaciones.webp" label="Monitores mostrando flujos de automatización" />
       <div className="cinematic-copy">
         <p className="cinematic-index">03 / SISTEMAS REALES</p>
         <h2>La automatización<br /><em>se vuelve visible.</em></h2>
