@@ -1,11 +1,14 @@
 /* Evidencia visual real en las tarjetas de proyecto. */
-.project-art.has-cover{background:#080b0e}
-.project-art.has-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) contrast(1.04);transition:transform .45s ease,filter .45s ease}
-.project-art.has-cover:before{z-index:1;background:linear-gradient(145deg,rgba(5,8,10,.05),rgba(5,8,10,.54))}
+.project-art.has-cover{display:grid;place-items:center;background:#0b141a}
+.project-art.has-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.94) contrast(1.04);transition:transform .45s ease,filter .45s ease}
+.project-art.has-cover.is-landscape img{inset:auto;width:calc(100% - 12px);height:auto;max-height:calc(100% - 14px);border:1px solid rgba(255,255,255,.18);border-radius:4px;box-shadow:0 8px 18px rgba(0,0,0,.33);object-fit:contain}
+.project-art.has-cover.is-portrait img{object-position:50% 25%}
+.project-art.has-cover:before{z-index:1;background:linear-gradient(145deg,rgba(5,8,10,.08),rgba(5,8,10,.52))}
 .project-art.has-cover span{z-index:2;padding:4px 6px;border-radius:5px;background:rgba(6,9,11,.7);box-shadow:0 2px 10px rgba(0,0,0,.3)}
 .project-card:hover .project-art.has-cover img{transform:scale(1.06);filter:saturate(1.08) contrast(1.07)}
+.project-card:hover .project-art.has-cover.is-landscape img{transform:scale(1.025)}
 
 @media(max-width:700px){
-  .project-art.has-cover img{object-position:center top}
-  .project-card:nth-child(1) .project-art.has-cover img{object-position:44% top}
+  .project-art.has-cover.is-landscape img{width:calc(100% - 10px);max-height:calc(100% - 12px)}
+  .project-art.has-cover.is-portrait img{object-position:50% 20%}
 }
