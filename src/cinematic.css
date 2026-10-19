@@ -91,11 +91,24 @@
   grid-column: 1;
 }
 
+/* El poster es una imagen real debajo del video: si el video carga lento o falla, nunca queda un cuadro negro. */
+.cinematic-poster,
 .cinematic-media video {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.cinematic-media video {
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+
+.cinematic-media.is-video-ready video {
+  opacity: 1;
 }
 
 @media (min-width: 701px) {
@@ -103,6 +116,11 @@
   .cinematic-intro .cinematic-media {
     position: absolute;
     inset: 0;
+    /* Sin área de grid, el bloque contenedor es todo el capítulo y no la columna 2. */
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: stretch;
+    align-self: stretch;
     width: auto;
     height: auto;
     aspect-ratio: auto;
@@ -111,6 +129,7 @@
     box-shadow: none;
   }
 
+  .cinematic-intro .cinematic-poster,
   .cinematic-intro .cinematic-media video {
     object-position: center;
   }
@@ -565,5 +584,9 @@
 @media (prefers-reduced-motion: reduce) {
   .cinematic-scroll-cue span {
     animation: none;
+  }
+
+  .cinematic-media video {
+    transition: none;
   }
 }

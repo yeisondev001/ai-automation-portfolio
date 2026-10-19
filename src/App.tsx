@@ -82,6 +82,11 @@ function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, p
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 701px)').matches)
   const source = isDesktop && desktopSrc ? desktopSrc : mobileSrc
   const activePoster = isDesktop && desktopPoster ? desktopPoster : poster
+  // Se guarda la fuente para que un cambio móvil/desktop vuelva a mostrar el poster hasta tener cuadros nuevos.
+  const [readySource, setReadySource] = useState<string | null>(null)
+  const [failedSource, setFailedSource] = useState<string | null>(null)
+  const isReady = readySource === source
+  const hasFailed = failedSource === source
 
   useEffect(() => {
     const query = window.matchMedia('(min-width: 701px)')
@@ -95,6 +100,11 @@ function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, p
     const videoElement = video.current
     if (!containerElement || !videoElement) return
 
+    // React no refleja el atributo muted; Safari lo exige para permitir play() sin gesto.
+    videoElement.muted = true
+    videoElement.defaultMuted = true
+    videoElement.setAttribute('muted', '')
+
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !reducedMotion.matches) {
@@ -106,17 +116,19 @@ function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, p
 
     observer.observe(containerElement)
     return () => observer.disconnect()
-  }, [])
+  }, [source])
 
   const togglePlayback = () => {
     const videoElement = video.current
-    if (!videoElement) return
+    if (!videoElement || hasFailed) return
     if (videoElement.paused) videoElement.play().catch(() => setIsPlaying(false))
     else videoElement.pause()
   }
 
-  return <div className="cinematic-media" ref={container}>
-    <video
+  return <div className={`cinematic-media ${isReady && !hasFailed ? 'is-video-ready' : ''}`} ref={container}>
+    <img className="cinematic-poster" src={activePoster} alt="" aria-hidden="true" decoding="async" fetchPriority={priority ? 'high' : 'auto'} />
+    {!hasFailed && <video
+      key={source}
       ref={video}
       src={source}
       poster={activePoster}
@@ -126,13 +138,15 @@ function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, p
       preload={priority ? 'auto' : 'metadata'}
       onPlay={() => setIsPlaying(true)}
       onPause={() => setIsPlaying(false)}
+      onTimeUpdate={event => { if (event.currentTarget.currentTime > 0 && !isReady) setReadySource(source) }}
+      onError={() => { setFailedSource(source); setIsPlaying(false) }}
       aria-label={label}
-    />
+    />}
     <span className="cinematic-film-layer" aria-hidden="true" />
-    <button className="cinematic-playback" type="button" onClick={togglePlayback} aria-label={isPlaying ? `Pausar ${label}` : `Reproducir ${label}`}>
+    {!hasFailed && <button className="cinematic-playback" type="button" onClick={togglePlayback} aria-label={isPlaying ? `Pausar ${label}` : `Reproducir ${label}`}>
       <span aria-hidden="true">{isPlaying ? 'Ⅱ' : '▶'}</span>
       {isPlaying ? 'Pausar' : 'Reproducir'}
-    </button>
+    </button>}
   </div>
 }
 
