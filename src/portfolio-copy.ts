@@ -3,7 +3,7 @@ export type Language = 'en' | 'es'
 export const copy = {
   en: {
     header: { home: 'Return to home', links: 'Professional links', language: 'Switch to Spanish' },
-    nav: { aria: 'Portfolio navigation', portfolio: 'Portfolio', entry: 'Home', about: 'About' },
+    nav: { aria: 'Main navigation', home: 'Home', projects: 'Projects', collection: 'Collection', about: 'About', contact: 'Contact' },
     home: { aria: 'Portfolio home', caption: '01 — SYSTEMS + AUTOMATION', kicker: 'SYSTEMS + AUTOMATION', lead: 'Systems that', accent: 'work with you.', body: 'I build solutions that connect processes, data, and software, ready to use artificial intelligence where it delivers real value.', action: 'Explore portfolio', station: 'Workstation', stationHint: 'See real projects', hint: 'Move the cursor to explore the studio', hintEnd: 'each station tells part of the story', imageAlt: 'Yeison in his automation studio' },
     common: { back: 'Back to the studio', open: 'Open', close: 'Close details', evidence: 'project evidence', galleryHint: 'Select a screenshot to view it in full.' },
     projects: { caption: '01 — AUTOMATION STATION', kicker: 'STATION 01 · DESK', lead: 'Real systems', accent: 'that scale.', body: 'Projects built to automate documents, organize operations, and connect services through APIs.', allKicker: 'FULL COLLECTION', all: 'View all projects' },
@@ -13,7 +13,7 @@ export const copy = {
   },
   es: {
     header: { home: 'Volver a la entrada', links: 'Enlaces profesionales', language: 'Cambiar a inglés' },
-    nav: { aria: 'Navegación del portafolio', portfolio: 'Portafolio', entry: 'Entrada', about: 'Sobre mí' },
+    nav: { aria: 'Navegación principal', home: 'Inicio', projects: 'Proyectos', collection: 'Colección', about: 'Sobre mí', contact: 'Contacto' },
     home: { aria: 'Entrada del portafolio', caption: '01 — SISTEMAS + AUTOMATIZACIÓN', kicker: 'SISTEMAS + AUTOMATIZACIÓN', lead: 'Sistemas que', accent: 'trabajan contigo.', body: 'Construyo soluciones que conectan procesos, datos y software, preparadas para incorporar inteligencia artificial donde aporta valor real.', action: 'Entrar al portafolio', station: 'Estación de trabajo', stationHint: 'Ver proyectos reales', hint: 'Mueve el cursor para explorar el estudio', hintEnd: 'cada estación cuenta una parte de la historia', imageAlt: 'Yeison en su estudio de automatización' },
     common: { back: 'Volver al estudio', open: 'Abrir', close: 'Cerrar detalle', evidence: 'evidencia del proyecto', galleryHint: 'Selecciona una captura para verla completa.' },
     projects: { caption: '01 — ESTACIÓN DE AUTOMATIZACIÓN', kicker: 'ESTACIÓN 01 · ESCRITORIO', lead: 'Sistemas reales', accent: 'que escalan.', body: 'Proyectos construidos para automatizar documentos, organizar operaciones y conectar servicios mediante APIs.', allKicker: 'COLECCIÓN COMPLETA', all: 'Ver todos los proyectos' },
