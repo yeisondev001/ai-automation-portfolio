@@ -24,6 +24,7 @@
   .content-view{width:100%;margin:0;padding:16px 0 30px;border:0;border-radius:0;background:#080b0e;box-shadow:none}
   .content-view .back{margin:0 24px 16px}
   .scene-moment{width:100%;height:auto!important;aspect-ratio:4 / 5;margin:0;overflow:hidden;border:0;border-radius:0;background:#090c0f;box-shadow:none}
+  .projects-view .scene-moment{aspect-ratio:1 / 1.05}
   .scene-moment img{object-fit:cover!important;transform:none!important}
   .projects-view .scene-moment img{object-position:50% 24%!important}
   .archive-view .scene-moment img{object-position:49% 22%!important}
@@ -37,9 +38,12 @@
   .kicker{font-size:9px;letter-spacing:.13em}
 
   .project-list,.archive-project-grid{margin:24px 18px 0;gap:10px}
-  .project-card{min-height:116px;padding:9px;border-color:#263039;border-radius:12px;background:#10161a;box-shadow:none}
-  .project-art{min-height:96px;border-radius:9px}
-  .card-copy p:not(.card-eyebrow){-webkit-line-clamp:2}
+  .project-card{min-height:122px;padding:9px;border-color:#263039;border-radius:12px;background:#10161a;box-shadow:none}
+  .project-art{min-height:102px;border-radius:9px}
+  .card-eyebrow{font-size:8.5px;letter-spacing:.08em}
+  .card-copy h2{font-size:15px}
+  .card-copy p:not(.card-eyebrow){-webkit-line-clamp:2;font-size:11.5px;line-height:1.38}
+  .tag{font-size:8.5px}
   .all-projects-action{width:calc(100% - 36px);margin:22px 18px 0;border-color:rgba(103,184,222,.52);border-radius:12px;background:#0d151a}
 
   .archive-status{margin:20px 24px 0;padding:10px 0}
