@@ -223,7 +223,7 @@ function Home({ go, text, projects: homeProjects }: { go: (view: View) => void; 
 
   return <section className="cinematic-home" aria-label={c.aria}>
     <article className="cinematic-chapter cinematic-intro" id="cinematic-intro">
-      <CinematicVideo mobileSrc="/videos/cinematic/01-entrada-mobile.mp4" desktopSrc="/videos/cinematic/04-entrada-desktop.mp4" poster="/videos/cinematic/posters/01-entrada.webp" desktopPoster="/videos/cinematic/posters/04-entrada-desktop.webp" label={c.introLabel} priority />
+      <CinematicVideo mobileSrc="/videos/cinematic/01-entrada-mobile-v2.mp4" desktopSrc="/videos/cinematic/04-entrada-desktop-v2.mp4" poster="/videos/cinematic/posters/01-entrada-v2.webp" desktopPoster="/videos/cinematic/posters/04-entrada-desktop.webp" label={c.introLabel} priority />
       <div className="cinematic-copy">
         <p className="cinematic-index">{c.introIndex}</p>
         <h1>{c.introLead}<br /><em>{c.introAccent}</em></h1>
@@ -234,7 +234,7 @@ function Home({ go, text, projects: homeProjects }: { go: (view: View) => void; 
     </article>
 
     <article className="cinematic-chapter cinematic-process" id="cinematic-process">
-      <CinematicVideo mobileSrc="/videos/cinematic/02-transicion-monitores-mobile.mp4" poster="/videos/cinematic/posters/02-monitores.webp" label={c.processLabel} />
+      <CinematicVideo mobileSrc="/videos/cinematic/02-transicion-monitores-mobile-v2.mp4" poster="/videos/cinematic/posters/02-monitores.webp" label={c.processLabel} />
       <div className="cinematic-copy">
         <p className="cinematic-index">{c.processIndex}</p>
         <h2>{c.processLead}<br /><em>{c.processAccent}</em></h2>
@@ -251,7 +251,7 @@ function Home({ go, text, projects: homeProjects }: { go: (view: View) => void; 
     </article>
 
     <article className="cinematic-chapter cinematic-work" id="cinematic-work">
-      <CinematicVideo mobileSrc="/videos/cinematic/03-automatizaciones-mobile.mp4" poster="/videos/cinematic/posters/03-automatizaciones.webp" label={c.workLabel} />
+      <CinematicVideo mobileSrc="/videos/cinematic/03-automatizaciones-mobile-v2.mp4" poster="/videos/cinematic/posters/03-automatizaciones.webp" label={c.workLabel} />
       <div className="cinematic-copy">
         <p className="cinematic-index">{c.workIndex}</p>
         <h2>{c.workLead}<br /><em>{c.workAccent}</em></h2>
