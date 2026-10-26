@@ -9,8 +9,9 @@
 .collection-tile{animation:panel-in .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--delay)}
 .collection-tile button{position:relative;display:block;width:100%;height:100%;padding:8px 8px 14px;border:1px solid rgba(255,255,255,.13);border-radius:14px;color:#f5f1e9;background:rgba(21,26,29,.82);text-align:left;cursor:pointer;transition:transform .25s ease,border-color .25s ease}
 .collection-tile button:hover{transform:translateY(-3px);border-color:rgba(240,201,133,.55)}
-.collection-preview{position:relative;height:112px;overflow:hidden;border-radius:9px;background:#0b141a}
-.collection-preview img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+/* La captura se ve completa: se encaja sin recortar sobre un fondo oscuro. */
+.collection-preview{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:9px;background:#0b141a}
+.collection-preview img{width:100%;height:100%;object-fit:contain}
 .collection-preview span{position:absolute;top:7px;left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.2);border-radius:5px;color:#fff6e9;background:rgba(6,10,12,.72);font:500 11px 'DM Mono',monospace}
 .collection-tile p{margin:10px 4px 0;color:#c8c2b9;font:11px 'DM Mono',monospace;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .collection-tile h2{margin:4px 4px 0;font-size:16px;letter-spacing:-.03em}
@@ -20,7 +21,6 @@
 @media(max-width:700px){
   .collection-filters{margin:16px 24px 12px}
   .collection-grid{margin:0 24px}
-  .collection-preview{height:96px}
   .collection-tile h2{font-size:14px}
   .collection-tile strong{font-size:13px}
 }

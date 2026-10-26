@@ -28,6 +28,9 @@
   .project-card.is-featured .project-art{min-height:188px}
 }
 @media(max-width:700px){
-  .card-impact dt{font-size:16px}
-  .card-impact dd{font-size:11px}
+  /* En móvil solo caben las cifras: el detalle se lee al abrir el proyecto. */
+  .card-impact{gap:6px;margin-bottom:8px}
+  .card-impact div{padding:7px 8px}
+  .card-impact dt{font-size:14px}
+  .card-impact dd{display:none}
 }
