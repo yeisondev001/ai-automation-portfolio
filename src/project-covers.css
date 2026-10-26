@@ -12,3 +12,7 @@
   .project-art.has-cover.is-landscape img{width:calc(100% - 10px);max-height:calc(100% - 12px)}
   .project-art.has-cover.is-portrait img{object-position:50% 20%}
 }
+
+/* Rotación de capturas en la portada: solo la activa es visible. */
+.project-art.has-cover img{opacity:0;transition:opacity .9s ease,transform .45s ease,filter .45s ease}
+.project-art.has-cover img.is-active{opacity:1}

@@ -1,0 +1,16 @@
+/* Encuadre de escritorio: la persona queda en el espacio libre, sin quedar tapada por el panel ni por la cabecera. */
+@media(min-width:701px){
+  /* Proyectos: la foto ocupa solo la franja izquierda que deja libre el panel de 720px. */
+  /* El fondo a pantalla completa repetiría a la persona junto al panel; se sustituye por un tono oscuro. */
+  .scene-photo-projects{background:radial-gradient(circle at 82% 18%,rgba(28,67,96,.42),transparent 52%),#0a0d11}
+  .scene-photo-projects img{position:absolute;top:0;left:0;width:max(42%,calc(100% - 744px - max(32px,(100% - 1290px)/2)));height:100%;object-fit:cover;object-position:38% 30%;-webkit-mask-image:linear-gradient(90deg,#000 86%,transparent);mask-image:linear-gradient(90deg,#000 86%,transparent)}
+  /* Sobre mí: se baja la foto por debajo de la cabecera fija para no cortar la cabeza. */
+  .scene-photo-about{inset:96px 0 0;-webkit-mask-image:linear-gradient(180deg,transparent,#000 48px);mask-image:linear-gradient(180deg,transparent,#000 48px)}
+  .scene-photo-about img{object-position:72% 100%}
+}
+
+/* Colección: el panel se coloca junto a la persona y deja visible el muro holográfico de la derecha. */
+@media(min-width:701px){
+  .scene-photo-archive img{object-fit:cover;object-position:50% 0%}
+  .content-view.archive-view{margin-left:calc(27% + 8px);margin-right:auto}
+}
