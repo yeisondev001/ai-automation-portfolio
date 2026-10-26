@@ -12,34 +12,34 @@ import automationDesktop from './assets/cinematic/automation-desk-desktop-v2.web
 import automationMobile from './assets/cinematic/automation-desk-mobile-v2.webp'
 import aboutDesktop from './assets/cinematic/about-window-desktop-v2.webp'
 import aboutMobile from './assets/cinematic/about-chair-mobile-v2.webp'
-import archiveDesktop from './assets/cinematic/project-archive-desktop-v1.png'
-import archiveMobile from './assets/cinematic/project-archive-mobile-v1.png'
+import archiveDesktop from './assets/cinematic/project-archive-desktop-v1.webp'
+import archiveMobile from './assets/cinematic/project-archive-mobile-v1.webp'
 import duralonIcon from './assets/projects/duralon-app/duralon-app-icon-v2.webp'
-import duralonCatalogStory from './assets/projects/duralon-app/duralon-catalog-story-v1.png'
-import duralonProductStory from './assets/projects/duralon-app/duralon-product-story-v1.png'
-import duralonOrderStory from './assets/projects/duralon-app/duralon-order-story-v1.png'
-import duralonSectionsStory from './assets/projects/duralon-app/duralon-sections-story-v1.png'
-import duralonAccountStory from './assets/projects/duralon-app/duralon-account-story-v1.png'
+import duralonCatalogStory from './assets/projects/duralon-app/duralon-catalog-story-v1.webp'
+import duralonProductStory from './assets/projects/duralon-app/duralon-product-story-v1.webp'
+import duralonOrderStory from './assets/projects/duralon-app/duralon-order-story-v1.webp'
+import duralonSectionsStory from './assets/projects/duralon-app/duralon-sections-story-v1.webp'
+import duralonAccountStory from './assets/projects/duralon-app/duralon-account-story-v1.webp'
 import legalInforme from './assets/projects/legal-system/legal-system-informe-v3.webp'
 import legalArchivo from './assets/projects/legal-system/legal-system-archivo-v3.webp'
 import legalAudiencia from './assets/projects/legal-system/legal-system-audiencia-v3.webp'
 import legalCobros from './assets/projects/legal-system/legal-system-cobros-v3.webp'
-import airDrawDemo from './assets/projects/air-draw/air-draw-demo.gif'
+import airDrawDemo from './assets/projects/air-draw/air-draw-demo.webp'
 import airDrawLeaderboard from './assets/projects/air-draw/air-draw-leaderboard-v1.png'
 import jojoDemo from './assets/projects/jojo-fan-hub/jojo-demo.webp'
 import toolboxDemo from './assets/projects/toolbox/toolbox-demo.webp'
-import inventoryAccess from './assets/projects/inventory/inventory-access.png'
+import inventoryAccess from './assets/projects/inventory/inventory-access.webp'
 import wmsLogin from './assets/projects/wms-materia-prima/wms-login-v1.png'
 import wmsDashboard from './assets/projects/wms-materia-prima/wms-dashboard-v1.png'
-import calidadWelcome from './assets/projects/calidad-app/calidad-welcome-v1.png'
+import calidadWelcome from './assets/projects/calidad-app/calidad-welcome-v1.webp'
 import calidadDashboard from './assets/projects/calidad-app/calidad-dashboard-v2.png'
 import calidadReports from './assets/projects/calidad-app/calidad-reports-v2.png'
 import calidadProcess from './assets/projects/calidad-app/calidad-process-v1.png'
 import calidadOrder from './assets/projects/calidad-app/calidad-order-v2.png'
-import jfEfficiency from './assets/projects/jf-produccion/jf-efficiency-v2.png'
-import jfLossAnalysis from './assets/projects/jf-produccion/jf-loss-analysis-v1.png'
-import jfQuality from './assets/projects/jf-produccion/jf-quality-v1.png'
-import jfLogin from './assets/projects/jf-produccion/jf-login-v1.png'
+import jfEfficiency from './assets/projects/jf-produccion/jf-efficiency-v2.webp'
+import jfLossAnalysis from './assets/projects/jf-produccion/jf-loss-analysis-v1.webp'
+import jfQuality from './assets/projects/jf-produccion/jf-quality-v1.webp'
+import jfLogin from './assets/projects/jf-produccion/jf-login-v1.webp'
 import ojoSafeDemo from './assets/projects/ojosafe/ojosafe-demo.webp'
 import { copy, englishProjects, type Language, type ProjectLocale } from './portfolio-copy'
 
@@ -149,7 +149,7 @@ function Archive({ openProject, projects, text }: { openProject: (project: Proje
     <div className="archive-project-grid">{projects.map((project, index) => <article className={`archive-project ${project.tone} has-preview`} key={project.id} style={{ '--delay': `${index * 110}ms` } as React.CSSProperties}><button onClick={() => openProject(project)} aria-label={`${text.common.open} ${project.title}`}><span>{String(index + 1).padStart(2, '0')}</span>{project.screenshots?.[0] && <img className="archive-project-preview" src={project.screenshots[0].src} alt="" />}<div><p>{project.eyebrow}</p><h2>{project.title}</h2><small>{project.stack.join(' · ')}</small></div><Icon name="arrow" /></button></article>)}</div>
   </section>
 }
-function ProjectCard({ project, index, open, text }: { project: Project; index: number; open: () => void; text: typeof copy.en }) { const cover = project.cardCover; return <article className={`project-card project-${project.id} ${project.tone}`} style={{ '--delay': `${index * 90}ms` } as React.CSSProperties}><button className="project-click-target" onClick={open} aria-label={`${text.common.open} ${project.title}`} /><div className={`project-art ${cover ? `has-cover is-${cover.orientation}` : project.icon ? 'with-icon' : project.visual ? `is-system visual-${project.visual}` : ''}`}><span>{String(index + 1).padStart(2, '0')}</span>{cover ? <CoverRotation project={project} cover={cover} index={index} /> : project.icon ? <img src={project.icon} alt="" /> : project.visual ? <div className="system-signal" aria-hidden="true"><i /><i /><i /><b>{project.status}</b></div> : <><i /><i /><i /></>}</div><div className="card-copy"><p className="card-eyebrow">{project.eyebrow}</p><h2>{project.title}</h2><p>{project.description}</p><div>{project.stack.map(item => <span className="tag" key={item}>{item}</span>)}</div></div><span className="card-arrow"><Icon name="arrow" /></span></article> }
+function ProjectCard({ project, index, open, text }: { project: Project; index: number; open: () => void; text: typeof copy.en }) { const cover = project.cardCover; const featured = index === 0 && project.impact; return <article className={`project-card project-${project.id} ${project.tone} ${featured ? 'is-featured' : ''}`} style={{ '--delay': `${index * 90}ms` } as React.CSSProperties}><button className="project-click-target" onClick={open} aria-label={`${text.common.open} ${project.title}`} /><div className={`project-art ${cover ? `has-cover is-${cover.orientation}` : project.icon ? 'with-icon' : project.visual ? `is-system visual-${project.visual}` : ''}`}><span>{String(index + 1).padStart(2, '0')}</span>{cover ? <CoverRotation project={project} cover={cover} index={index} /> : project.icon ? <img src={project.icon} alt="" /> : project.visual ? <div className="system-signal" aria-hidden="true"><i /><i /><i /><b>{project.status}</b></div> : <><i /><i /><i /></>}</div><div className="card-copy"><p className="card-eyebrow">{project.eyebrow}</p><h2>{project.title}</h2><p>{project.description}</p>{featured && <dl className="card-impact">{project.impact!.slice(0, 2).map(item => <div key={item.title}><dt>{item.title}</dt><dd>{item.detail}</dd></div>)}</dl>}<div>{project.stack.map(item => <span className="tag" key={item}>{item}</span>)}</div></div><span className="card-arrow"><Icon name="arrow" /></span></article> }
 // La portada de la tarjeta rota entre las capturas del proyecto; cada tarjeta arranca desfasada para no cambiar todas a la vez.
 function CoverRotation({ project, cover, index }: { project: Project; cover: NonNullable<Project['cardCover']>; index: number }) {
   const slides = [cover, ...(project.screenshots ?? []).filter(screenshot => screenshot.src !== cover.src)]
