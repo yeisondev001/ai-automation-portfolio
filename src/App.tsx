@@ -114,10 +114,12 @@ type CinematicVideoProps = {
   poster: string
   desktopPoster?: string
   label: string
+  playText: string
+  pauseText: string
   priority?: boolean
 }
 
-function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, priority = false }: CinematicVideoProps) {
+function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, playText, pauseText, priority = false }: CinematicVideoProps) {
   const container = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -185,9 +187,9 @@ function CinematicVideo({ mobileSrc, desktopSrc, poster, desktopPoster, label, p
       aria-label={label}
     />}
     <span className="cinematic-film-layer" aria-hidden="true" />
-    {!hasFailed && <button className="cinematic-playback" type="button" onClick={togglePlayback} aria-label={isPlaying ? `Pausar ${label}` : `Reproducir ${label}`}>
+    {!hasFailed && <button className="cinematic-playback" type="button" onClick={togglePlayback} aria-label={`${isPlaying ? pauseText : playText}: ${label}`}>
       <span aria-hidden="true">{isPlaying ? 'Ⅱ' : '▶'}</span>
-      {isPlaying ? 'Pausar' : 'Reproducir'}
+      {isPlaying ? pauseText : playText}
     </button>}
   </div>
 }
@@ -226,11 +228,11 @@ function App() {
 
 function Home({ go, text, projects: homeProjects }: { go: (view: View) => void; text: typeof copy.en; projects: Project[] }) {
   const c = text.cinematic
-  const scrollToChapter = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const scrollToChapter = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
 
   return <section className="cinematic-home" aria-label={c.aria}>
     <article className="cinematic-chapter cinematic-intro" id="cinematic-intro">
-      <CinematicVideo mobileSrc="/videos/cinematic/01-entrada-mobile-v2.mp4" desktopSrc="/videos/cinematic/04-entrada-desktop-v2.mp4" poster="/videos/cinematic/posters/01-entrada-v2.webp" desktopPoster="/videos/cinematic/posters/04-entrada-desktop.webp" label={c.introLabel} priority />
+      <CinematicVideo mobileSrc="/videos/cinematic/01-entrada-mobile-v2.mp4" desktopSrc="/videos/cinematic/04-entrada-desktop-v2.mp4" poster="/videos/cinematic/posters/01-entrada-v2.webp" desktopPoster="/videos/cinematic/posters/04-entrada-desktop.webp" label={c.introLabel} playText={c.play} pauseText={c.pause} priority />
       <div className="cinematic-copy">
         <p className="cinematic-index">{c.introIndex}</p>
         <h1>{c.introLead}<br /><em>{c.introAccent}</em></h1>
@@ -240,8 +242,8 @@ function Home({ go, text, projects: homeProjects }: { go: (view: View) => void; 
       <button className="cinematic-scroll-cue" type="button" onClick={() => scrollToChapter('cinematic-process')}><span /> {c.scrollCue}</button>
     </article>
 
-    <article className="cinematic-chapter cinematic-process" id="cinematic-process">
-      <CinematicVideo mobileSrc="/videos/cinematic/02-transicion-monitores-mobile-v2.mp4" poster="/videos/cinematic/posters/02-monitores.webp" label={c.processLabel} />
+    <article className="cinematic-chapter cinematic-process" id="cinematic-process" style={{ '--chapter-bg': 'url(/videos/cinematic/posters/02-monitores.webp)' } as React.CSSProperties}>
+      <CinematicVideo mobileSrc="/videos/cinematic/02-transicion-monitores-mobile-v2.mp4" poster="/videos/cinematic/posters/02-monitores.webp" label={c.processLabel} playText={c.play} pauseText={c.pause} />
       <div className="cinematic-copy">
         <p className="cinematic-index">{c.processIndex}</p>
         <h2>{c.processLead}<br /><em>{c.processAccent}</em></h2>
@@ -257,8 +259,8 @@ function Home({ go, text, projects: homeProjects }: { go: (view: View) => void; 
       </div>
     </article>
 
-    <article className="cinematic-chapter cinematic-work" id="cinematic-work">
-      <CinematicVideo mobileSrc="/videos/cinematic/03-automatizaciones-mobile-v2.mp4" poster="/videos/cinematic/posters/03-automatizaciones.webp" label={c.workLabel} />
+    <article className="cinematic-chapter cinematic-work" id="cinematic-work" style={{ '--chapter-bg': 'url(/videos/cinematic/posters/03-automatizaciones.webp)' } as React.CSSProperties}>
+      <CinematicVideo mobileSrc="/videos/cinematic/03-automatizaciones-mobile-v2.mp4" poster="/videos/cinematic/posters/03-automatizaciones.webp" label={c.workLabel} playText={c.play} pauseText={c.pause} />
       <div className="cinematic-copy">
         <p className="cinematic-index">{c.workIndex}</p>
         <h2>{c.workLead}<br /><em>{c.workAccent}</em></h2>

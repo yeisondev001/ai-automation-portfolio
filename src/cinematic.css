@@ -44,7 +44,6 @@
   min-height: 100svh;
   padding: 82px max(32px, calc((100vw - 1290px) / 2)) 90px;
   overflow: hidden;
-  scroll-snap-align: start;
   isolation: isolate;
 }
 
@@ -59,14 +58,34 @@
     #07090b;
 }
 
-.cinematic-process::before {
+.cinematic-process::before,
+.cinematic-work::before {
+  inset: -80px;
+  background:
+    linear-gradient(rgba(7, 9, 11, .5), rgba(7, 9, 11, .5)),
+    var(--chapter-bg) center / cover no-repeat,
+    #07090b;
+  filter: blur(46px) saturate(1.15);
+}
+
+.cinematic-process::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  pointer-events: none;
   background:
     radial-gradient(circle at 27% 52%, rgba(48, 117, 150, .17), transparent 29%),
     radial-gradient(circle at 80% 18%, rgba(184, 126, 59, .11), transparent 28%),
     #080b0d;
 }
 
-.cinematic-work::before {
+.cinematic-work::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  pointer-events: none;
   background:
     radial-gradient(circle at 74% 44%, rgba(38, 116, 157, .19), transparent 30%),
     radial-gradient(circle at 16% 72%, rgba(201, 142, 69, .12), transparent 31%),
@@ -158,20 +177,23 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 8px 10px;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 999px;
   color: rgba(255, 255, 255, .82);
   background: rgba(6, 8, 10, .55);
   backdrop-filter: blur(12px);
-  font: 9px 'DM Mono', monospace;
+  font: 11px 'DM Mono', monospace;
   letter-spacing: .04em;
 }
 
 .cinematic-playback span {
   min-width: 10px;
   color: #efc578;
-  font-size: 8px;
+  font-size: 13px;
   text-align: center;
 }
 
@@ -195,7 +217,7 @@
 .cinematic-index {
   margin: 0 0 18px;
   color: #e8be77;
-  font: 500 10px/1.2 'DM Mono', monospace;
+  font: 500 11px/1.2 'DM Mono', monospace;
   letter-spacing: .15em;
 }
 
@@ -238,7 +260,8 @@
   border-bottom: 1px solid rgba(239, 198, 124, .66);
   color: #fff8eb;
   background: transparent;
-  font-size: 13px;
+  min-height: 44px;
+  font-size: 14px;
 }
 
 .cinematic-action span {
@@ -264,7 +287,7 @@
   border: 0;
   color: rgba(255, 255, 255, .52);
   background: transparent;
-  font: 9px 'DM Mono', monospace;
+  font: 11px 'DM Mono', monospace;
   letter-spacing: .12em;
   text-transform: uppercase;
 }
@@ -296,7 +319,7 @@
 
 .cinematic-flow b {
   color: #8ccbe7;
-  font: 9px 'DM Mono', monospace;
+  font: 11px 'DM Mono', monospace;
 }
 
 .cinematic-flow i {
@@ -346,7 +369,7 @@
 .cinematic-project-preview small {
   overflow: hidden;
   color: rgba(221, 217, 208, .55);
-  font: 8px 'DM Mono', monospace;
+  font: 10px 'DM Mono', monospace;
   letter-spacing: .06em;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -392,7 +415,8 @@
   border-radius: 10px;
   color: #f8f2e8;
   background: rgba(255, 255, 255, .06);
-  font-size: 12px;
+  min-height: 44px;
+  font-size: 13px;
 }
 
 .cinematic-outro button {
@@ -463,12 +487,12 @@
     top: 74px;
     right: 14px;
     bottom: auto;
-    padding: 7px 9px;
+    padding: 0;
     font-size: 0;
   }
 
   .cinematic-playback span {
-    font-size: 8px;
+    font-size: 15px;
   }
 
   .cinematic-copy,
@@ -491,7 +515,7 @@
 
   .cinematic-index {
     margin-bottom: 11px;
-    font-size: 8px;
+    font-size: 11px;
   }
 
   .cinematic-copy h1,
@@ -510,12 +534,13 @@
 
   .cinematic-action {
     margin-top: 16px;
-    font-size: 11px;
+    min-height: 44px;
+    font-size: 13px;
   }
 
   .cinematic-primary {
     margin-top: 12px;
-    padding: 9px 12px;
+    padding: 11px 14px;
   }
 
   .cinematic-scroll-cue {
@@ -528,11 +553,11 @@
   }
 
   .cinematic-flow span {
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .cinematic-flow b {
-    font-size: 7px;
+    font-size: 10px;
   }
 
   .cinematic-flow i {
@@ -554,11 +579,11 @@
   }
 
   .cinematic-project-preview b {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .cinematic-project-preview small {
-    font-size: 7px;
+    font-size: 10px;
   }
 
   .cinematic-outro {
@@ -579,6 +604,20 @@
   .cinematic-outro button,
   .cinematic-outro a {
     justify-content: center;
+  }
+}
+
+.cinematic-chapter + .cinematic-chapter .cinematic-film-layer {
+  background:
+    linear-gradient(180deg, #07090b 0%, rgba(7, 9, 11, .55) 9%, transparent 24%, transparent 67%, rgba(3, 5, 7, .6)),
+    radial-gradient(circle at center, transparent 58%, rgba(0, 0, 0, .25));
+}
+
+@media (max-width: 700px) {
+  .cinematic-chapter + .cinematic-chapter .cinematic-film-layer {
+    background:
+      linear-gradient(180deg, #07090b 0%, rgba(7, 9, 11, .6) 10%, transparent 26%, transparent 42%, rgba(4, 6, 8, .92) 82%, #07090b),
+      radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, .22));
   }
 }
 
