@@ -1,0 +1,35 @@
+/* Detalle de proyecto contado como caso de estudio: reto → lo que construí → resultado, y después las cifras. */
+.case-study{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 28px 21px;padding:0;list-style:none}
+.case-study li{position:relative;padding:15px 15px 16px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04)}
+.case-study li>span{display:block;margin-bottom:8px;color:rgba(245,241,233,.42);font:500 11px 'DM Mono',monospace;letter-spacing:.08em}
+.case-study li p:last-child{margin:8px 0 0;color:#d6d0c7;font-size:13px;line-height:1.5}
+.case-challenge .detail-label{color:#f09a8a}
+.case-built .detail-label{color:#8ec5ea}
+.case-study .case-result{border-color:rgba(240,201,133,.42);background:linear-gradient(150deg,rgba(139,91,31,.22),rgba(255,255,255,.03))}
+/* Cifras con la misma voz serif dorada que la tarjeta destacada. */
+.impact-grid strong{color:#f0c985;font:500 22px/1.1 'Fraunces',Georgia,serif;letter-spacing:-.01em}
+.impact-grid small{font-size:12px}
+@media(max-width:700px){
+  .case-study{grid-template-columns:1fr;margin:0 18px 18px}
+  .impact-grid strong{font-size:19px}
+}
+
+/* Proyectos en cuadrícula «bento»: el destacado ocupa todo el ancho y el resto se reparte en mosaicos. */
+.card-metric{display:none}
+@media(min-width:701px){
+  .project-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .project-list .project-card.is-featured{grid-column:1/-1}
+  .project-list .project-card:not(.is-featured){grid-template-columns:1fr;grid-template-rows:150px auto;align-items:start;gap:12px;min-height:0;padding:10px 10px 14px}
+  .project-list .project-card:not(.is-featured) .project-art{min-height:150px;height:150px}
+  .project-list .project-card:not(.is-featured) .project-art.has-cover img{inset:0;width:100%;height:100%;max-height:none;border:0;border-radius:0;box-shadow:none;object-fit:contain}
+  .project-list .project-card:not(.is-featured) .card-copy{padding:0 4px}
+  .project-list .project-card:not(.is-featured) .card-copy p:not(.card-eyebrow){display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .project-list .project-card:not(.is-featured) .card-arrow{position:absolute;right:16px;bottom:14px}
+  .project-list .project-card:hover{transform:translateY(-3px)}
+  .card-metric{display:block;margin-top:5px;color:#f0c985;font:500 17px/1.15 'Fraunces',Georgia,serif}
+}
+
+/* Video explicativo del proyecto, antes de la galería. */
+.project-video{margin:0 28px 21px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035)}
+.project-video video{display:block;width:100%;margin-top:10px;border-radius:10px;background:#000;aspect-ratio:16/9}
+@media(max-width:700px){.project-video{margin:0 18px 18px;padding:10px}}

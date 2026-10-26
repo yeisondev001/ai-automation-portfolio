@@ -14,9 +14,9 @@
   .mobile-home-hero picture,.mobile-home-hero img{display:block;width:100%;height:100%}
   .mobile-home-hero img{object-fit:cover;object-position:50% 18%}
   .mobile-home-hero:after{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,7,9,.76),transparent 28%);content:''}
-  .mobile-home-hero figcaption{position:absolute;z-index:1;bottom:17px;left:24px;color:#efc773;font:9px 'DM Mono',monospace;letter-spacing:.12em;text-shadow:0 1px 7px #000}
+  .mobile-home-hero figcaption{position:absolute;z-index:1;bottom:17px;left:24px;color:#efc773;font:11px 'DM Mono',monospace;letter-spacing:.12em;text-shadow:0 1px 7px #000}
   .intro-card{position:relative;bottom:auto;left:auto;order:1;width:auto;margin:0;padding:26px 24px 12px;background:#080b0e;text-shadow:none}
-  .intro-card h1{margin:9px 0 13px;font-size:clamp(3rem,14vw,4.25rem);line-height:.89;letter-spacing:-.08em}
+  .intro-card h1{margin:9px 0 13px;font-size:clamp(2.5rem,11.5vw,3.6rem);line-height:.89;letter-spacing:-.035em}
   .intro-card>p:not(.kicker){max-width:none;color:#d8d5cf;font-size:15px;line-height:1.55}
   .intro-card .text-action{margin-top:19px}
   .home-project-link,.scene-hint{display:none}
@@ -30,12 +30,12 @@
   .archive-view .scene-moment img{object-position:49% 22%!important}
   .about-view .scene-moment img{object-position:50% 20%!important}
   .scene-moment:after{background:linear-gradient(0deg,rgba(5,7,9,.72),transparent 30%)}
-  .scene-moment figcaption{bottom:16px;left:24px;color:#efc773;font-size:9px;text-shadow:0 1px 7px #000}
+  .scene-moment figcaption{bottom:16px;left:24px;color:#efc773;font-size:11px;text-shadow:0 1px 7px #000}
 
   .content-heading{margin:27px 24px 0}
-  .content-heading h1{max-width:340px;margin:8px 0 14px;font-size:clamp(3rem,13.5vw,4rem);line-height:.88;letter-spacing:-.075em;text-shadow:none;-webkit-text-stroke:0}
+  .content-heading h1{max-width:340px;margin:8px 0 14px;font-size:clamp(2.5rem,11.5vw,3.5rem);line-height:.88;letter-spacing:-.035em;text-shadow:none;-webkit-text-stroke:0}
   .content-heading>p:last-child{max-width:350px;color:#cfcfc9;font-size:15px;line-height:1.5}
-  .kicker{font-size:9px;letter-spacing:.13em}
+  .kicker{font-size:11px;letter-spacing:.13em}
 
   .project-list,.archive-project-grid{margin:24px 18px 0;gap:10px}
   .project-card{min-height:122px;padding:9px;border-color:#263039;border-radius:12px;background:#10161a;box-shadow:none}

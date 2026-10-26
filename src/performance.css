@@ -1,0 +1,10 @@
+/* Rendimiento: el fondo queda quieto. Cualquier movimiento bajo un panel con backdrop-filter obliga a recalcular el desenfoque en cada fotograma. */
+.scene-photo img,.ambient-light,.scene-hotspot{animation:none!important}
+/* Las escenas inactivas dejan de pintarse cuando termina su fundido. */
+.scene-photo{transition:opacity .72s ease,transform 1.2s cubic-bezier(.2,.75,.2,1),filter .72s ease,visibility 0s linear .72s}
+.scene-photo:not(.is-active){visibility:hidden}
+.scene-photo.is-active{visibility:visible;transition-delay:0s}
+/* Desenfoques más ligeros: se ven casi igual y cuestan bastante menos. */
+.site-header{backdrop-filter:blur(10px)}
+.dialog-backdrop{backdrop-filter:blur(6px)}
+@media(min-width:701px){.content-view,.intro-card{backdrop-filter:blur(10px)}}

@@ -132,7 +132,7 @@ public/
 
 [![GitHub](https://img.shields.io/badge/GitHub-yeisondev001-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/yeisondev001)
 [![Email](https://img.shields.io/badge/yeisonrojas03@gmail.com-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:yeisonrojas03@gmail.com)
-[![CV](https://img.shields.io/badge/⬇_Descargar-CV-4285F4?style=flat-square)](public/cv/yeison-rojas-cv.pdf)
+[![CV](https://img.shields.io/badge/⬇_Descargar-CV-4285F4?style=flat-square)](public/cv/YeisonRojasCV.pdf)
 
 </div>
 
