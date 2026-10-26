@@ -28,3 +28,8 @@
   .project-list .project-card:hover{transform:translateY(-3px)}
   .card-metric{display:block;margin-top:5px;color:#f0c985;font:500 17px/1.15 'Fraunces',Georgia,serif}
 }
+
+/* Video explicativo del proyecto, antes de la galería. */
+.project-video{margin:0 28px 21px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035)}
+.project-video video{display:block;width:100%;margin-top:10px;border-radius:10px;background:#000;aspect-ratio:16/9}
+@media(max-width:700px){.project-video{margin:0 18px 18px;padding:10px}}
