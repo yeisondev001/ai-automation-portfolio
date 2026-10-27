@@ -107,16 +107,86 @@ function ScenePhoto({ desktop, mobile, active, name }: { desktop: string; mobile
   return <picture className={`scene-photo scene-photo-${name} ${active ? 'is-active' : ''}`} style={{ '--scene-backdrop': `url(${desktop})` } as React.CSSProperties} aria-hidden={!active}><source media="(max-width: 700px)" srcSet={mobile} /><img src={desktop} alt="" /><span className={`scene-vignette vignette-${name}`} /></picture>
 }
 
+// Cada vista y cada proyecto tienen su propia URL: el botón atrás funciona y se pueden compartir enlaces directos.
+const viewPaths: Record<View, string> = { home: '/', projects: '/proyectos', archive: '/coleccion', about: '/sobre-mi' }
+const projectPath = (id: string) => `/proyecto/${id}`
+type Route = { view: View; projectId: string | null }
+type HistoryState = { view?: View; inApp?: boolean } | null
+
+function readRoute(): Route {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/'
+  const projectId = path.match(/^\/proyecto\/([\w-]+)$/)?.[1]
+  if (projectId && archiveProjects.some(project => project.id === projectId)) {
+    // Si el proyecto se abrió dentro del sitio se conserva la vista de fondo; en un enlace directo se elige la más lógica.
+    const fallback: View = projects.some(project => project.id === projectId) ? 'projects' : 'archive'
+    return { view: (window.history.state as HistoryState)?.view ?? fallback, projectId }
+  }
+  const view = (Object.keys(viewPaths) as View[]).find(key => viewPaths[key] === path) ?? 'home'
+  return { view, projectId: null }
+}
+
+function savedLanguage(): Language {
+  try { return localStorage.getItem('portfolio-language') === 'es' ? 'es' : 'en' } catch { return 'en' }
+}
+
 function App() {
-  const [view, setView] = useState<View>('home')
-  const [language, setLanguage] = useState<Language>('en')
-  const [selected, setSelected] = useState<Project | null>(null)
+  const [route, setRoute] = useState<Route>(readRoute)
+  const { view, projectId } = route
+  const [language, setLanguage] = useState<Language>(savedLanguage)
   const text = copy[language]
   const localizedProjects = projects.map(project => localizeProject(project, language))
   const localizedArchiveProjects = archiveProjects.map(project => localizeProject(project, language))
-  const go = (next: View) => { setSelected(null); setView(next); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  const selected = projectId ? localizedArchiveProjects.find(project => project.id === projectId) ?? null : null
+  const pageTitle = selected?.title ?? { home: '', projects: text.nav.projects, archive: text.nav.collection, about: text.nav.about }[view]
+
+  useEffect(() => {
+    // Normaliza la entrada inicial (rutas desconocidas vuelven al inicio) y guarda la vista para el botón atrás.
+    const initial = readRoute()
+    const canonical = initial.projectId ? projectPath(initial.projectId) : viewPaths[initial.view]
+    window.history.replaceState({ view: initial.view }, '', canonical + window.location.hash)
+    const onPopState = () => setRoute(readRoute())
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.lang = language
+    document.querySelector('meta[name="description"]')?.setAttribute('content', text.meta.description)
+    try { localStorage.setItem('portfolio-language', language) } catch { /* Sin almacenamiento el idioma solo dura la visita. */ }
+  }, [language, text.meta.description])
+
+  useEffect(() => {
+    document.title = pageTitle ? `${pageTitle} · Yeison Rojas` : 'Yeison Rojas · Automation Systems'
+  }, [pageTitle])
+
+  const go = (next: View) => {
+    if (next !== view || projectId) window.history.pushState({ view: next }, '', viewPaths[next])
+    setRoute({ view: next, projectId: null })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
   // Contacto vive al final de "Sobre mí": se cambia de vista y luego se desplaza a la tarjeta.
-  const goContact = () => { setSelected(null); setView('about'); window.setTimeout(() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80) }
+  const goContact = () => {
+    window.history.pushState({ view: 'about' }, '', `${viewPaths.about}#contacto`)
+    setRoute({ view: 'about', projectId: null })
+    // Si el desplazamiento suave no arranca (por ejemplo, sin cuadros pintados todavía), se salta directo a la tarjeta.
+    window.setTimeout(() => {
+      const card = document.getElementById('contacto')
+      if (!card) return
+      const start = window.scrollY
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      window.setTimeout(() => { if (window.scrollY === start) card.scrollIntoView({ behavior: 'instant', block: 'center' }) }, 450)
+    }, 80)
+  }
+  const openProject = (project: Project) => {
+    window.history.pushState({ view, inApp: true }, '', projectPath(project.id))
+    setRoute({ view, projectId: project.id })
+  }
+  // Si el proyecto se abrió desde el sitio, cerrar equivale a volver atrás; si llegó por enlace directo, se reemplaza la URL.
+  const closeProject = () => {
+    if ((window.history.state as HistoryState)?.inApp) { window.history.back(); return }
+    window.history.replaceState({ view }, '', viewPaths[view])
+    setRoute({ view, projectId: null })
+  }
   const isProjects = view === 'projects' || view === 'archive'
   const siteLinks = [
     { id: 'projects', label: text.nav.projects, active: view === 'projects', onClick: () => go('projects') },
@@ -132,10 +202,10 @@ function App() {
   ]
   return <main className={`portfolio scene-${view}`}>
     <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={view === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={view === 'projects'} /><ScenePhoto name="archive" desktop={archiveDesktop} mobile={archiveMobile} active={view === 'archive'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={view === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
-    <header className="site-header"><button className="identity" onClick={() => go('home')} aria-label={text.header.home}><span className="identity-mark" /><b>YEISON ROJAS</b><small>AUTOMATION SYSTEMS</small></button><nav className="site-nav" aria-label={text.nav.aria}>{siteLinks.map(link => <button key={link.id} type="button" className={link.active ? 'is-active' : ''} aria-current={link.active ? 'page' : undefined} onClick={link.onClick}>{link.label}</button>)}</nav><div className="header-actions" aria-label={text.header.links}><a className="header-github" href="https://github.com/yeisondev001" target="_blank" rel="noreferrer" aria-label="GitHub"><Icon name="github" /></a><button className="language-toggle" type="button" onClick={() => { setSelected(null); setLanguage(current => current === 'en' ? 'es' : 'en') }} aria-label={text.header.language} aria-pressed={language === 'es'}><span className={language === 'en' ? 'is-active' : ''}>EN</span><i aria-hidden="true" /><span className={language === 'es' ? 'is-active' : ''}>ES</span></button><a className="cv-download" href="/cv/YeisonRojasCV.pdf" download="YeisonRojasCV.pdf"><Icon name="download" /><span>CV</span></a></div></header>
-    {view === 'home' && <Home go={go} text={text} />}{view === 'projects' && <Projects go={go} openProject={setSelected} projects={localizedProjects} text={text} />}{view === 'archive' && <Archive openProject={setSelected} projects={localizedArchiveProjects} text={text} />}{view === 'about' && <About text={text} projects={localizedArchiveProjects} openProject={setSelected} />}
+    <header className="site-header"><button className="identity" onClick={() => go('home')} aria-label={text.header.home}><span className="identity-mark" /><b>YEISON ROJAS</b><small>AUTOMATION SYSTEMS</small></button><nav className="site-nav" aria-label={text.nav.aria}>{siteLinks.map(link => <button key={link.id} type="button" className={link.active ? 'is-active' : ''} aria-current={link.active ? 'page' : undefined} onClick={link.onClick}>{link.label}</button>)}</nav><div className="header-actions" aria-label={text.header.links}><a className="header-github" href="https://github.com/yeisondev001" target="_blank" rel="noreferrer" aria-label="GitHub"><Icon name="github" /></a><button className="language-toggle" type="button" onClick={() => setLanguage(current => current === 'en' ? 'es' : 'en')} aria-label={text.header.language} aria-pressed={language === 'es'}><span className={language === 'en' ? 'is-active' : ''}>EN</span><i aria-hidden="true" /><span className={language === 'es' ? 'is-active' : ''}>ES</span></button><a className="cv-download" href="/cv/YeisonRojasCV.pdf" download="YeisonRojasCV.pdf"><Icon name="download" /><span>CV</span></a></div></header>
+    {view === 'home' && <Home go={go} text={text} />}{view === 'projects' && <Projects go={go} openProject={openProject} projects={localizedProjects} text={text} />}{view === 'archive' && <Archive openProject={openProject} projects={localizedArchiveProjects} text={text} />}{view === 'about' && <About text={text} projects={localizedArchiveProjects} openProject={openProject} />}
     {!selected && <nav className="tab-bar" aria-label={text.nav.aria}>{tabs.map(tab => <button key={tab.id} type="button" className={tab.active ? 'is-active' : ''} aria-current={tab.active ? 'page' : undefined} onClick={tab.onClick}><Icon name={tab.icon} /><span>{tab.label}</span></button>)}</nav>}
-    {selected && <ProjectDialog project={selected} close={() => setSelected(null)} text={text} />}
+    {selected && <ProjectDialog project={selected} close={closeProject} text={text} />}
   </main>
 }
 
