@@ -1,0 +1,44 @@
+/* Primera impresión: cifras y proyecto destacado en la entrada, lectura cómoda y detalles para enseñarlo desde el móvil. */
+.home-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:20px 0 0;padding:0}
+.home-stats div{padding:11px 13px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.04)}
+.home-stats dt{color:#f0c985;font:500 22px/1.1 'Fraunces',Georgia,serif;letter-spacing:-.01em}
+.home-stats dd{margin:4px 0 0;color:rgba(247,242,234,.8);font-size:12px;line-height:1.35}
+
+.home-featured{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;margin-top:14px;padding:9px 14px 9px 9px;border:1px solid rgba(240,201,133,.32);border-radius:14px;color:inherit;background:rgba(240,201,133,.06);text-align:left;cursor:pointer;transition:border-color .2s,background .2s}
+.home-featured:hover{border-color:rgba(240,201,133,.68);background:rgba(240,201,133,.11)}
+.home-featured:focus-visible{outline:2px solid #e8c184;outline-offset:2px}
+.home-featured img{width:60px;height:60px;border-radius:10px;object-fit:cover;object-position:50% 18%}
+.home-featured small{display:block;color:#e8c184;font:500 11px 'DM Mono',monospace;letter-spacing:.08em}
+.home-featured b{display:block;margin-top:3px;font-size:16px}
+.home-featured em{display:block;margin-top:2px;color:rgba(247,242,234,.78);font-style:normal;font-size:13px}
+.home-featured svg{width:18px}
+
+/* Párrafos a unos 65-70 caracteres por línea (34em en DM Sans) para que el caso de estudio se lea sin esfuerzo. */
+.project-dialog p,.about-view .content-heading>p,.about-timeline p,.about-stack p{max-width:min(100%,34em)}
+.case-study li>span{color:rgba(245,241,233,.66)}
+
+/* Solicitudes legales: la portada se acerca a la cabecera azul y al título del formulario en lugar de mostrarlo entero y reducido. */
+.project-art.has-cover:has(img){overflow:hidden}
+.project-list .project-card.project-legal-docs .project-art.has-cover img{object-fit:cover;object-position:0 0;transform:scale(1.55);transform-origin:0 0}
+
+@media(min-width:701px){
+  /* La foto se muestra completa (contain) y el hueco se rellenaba con la misma foto nítida, duplicando a la persona
+     en pantallas que no son 16:9. El relleno pasa a ser una versión desenfocada y oscura que solo aporta ambiente. */
+  .scene-photo:not(.scene-photo-projects){background-image:none}
+  .scene-photo:not(.scene-photo-projects)::before{content:'';position:absolute;inset:-60px;background:var(--scene-backdrop) center/cover;filter:blur(36px) brightness(.45) saturate(.85)}
+  .scene-photo img{position:relative;z-index:1}
+  .scene-photo .scene-vignette{z-index:2}
+
+  .intro-card{width:min(620px,46vw)}
+  .intro-card h1{font-size:clamp(2.6rem,3.8vw,3.4rem);line-height:.95}
+  .home-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .home-stats dt{font-size:21px}
+}
+
+@media(max-width:700px){
+  .tag{padding:4px 8px;font-size:12px}
+  .intro-card .text-action{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;border:0;border-radius:12px;color:#17130d;background:#f0c985;font-weight:500;font-size:14px}
+  .contact-card .about-actions-buttons a,.about-now div button{display:inline-flex;align-items:center;min-height:46px}
+  .card-eyebrow{font-size:11px;line-height:1.35}
+  .home-stats dt{font-size:20px}
+}
