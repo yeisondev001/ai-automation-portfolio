@@ -9,10 +9,21 @@
 .about-now-label i{width:7px;height:7px;border-radius:50%;background:#6ed39a;box-shadow:0 0 10px rgba(110,211,154,.7)}
 .about-now h2{margin:6px 0 12px;font-size:20px;letter-spacing:-.03em}
 .about-now h2 span,.about-timeline h2 span{color:#f0c985}
-.about-now>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.about-now button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:99px;color:#f5f1e9;background:rgba(8,10,12,.45);font-size:13px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
-.about-now button:hover{border-color:#f0c985;background:rgba(240,201,133,.12)}
-.about-now button span{color:#f0c985}
+.about-now>div,.about-now-systems>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.about-now button,.about-now-systems button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:99px;color:#f5f1e9;background:rgba(8,10,12,.45);font-size:13px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
+.about-now button:hover,.about-now-systems button:hover{border-color:#f0c985;background:rgba(240,201,133,.12)}
+.about-now button span,.about-now-systems button span{color:#f0c985}
+
+/* El puesto actual vive en la trayectoria: etiqueta «Ahora» y los sistemas construidos allí. */
+.about-timeline .about-now-label{margin:0 0 4px}
+.about-now-systems{margin-top:10px}
+.about-now-systems .detail-label{margin:0}
+
+/* Panel más opaco: la foto de la oficina ya no compite con el texto, y el titular no deja una palabra suelta. */
+@media(min-width:701px){
+  .about-view.content-view{background:rgba(9,12,15,.9);backdrop-filter:blur(16px)}
+  .about-view .content-heading h1{font-size:clamp(2.6rem,4vw,3.6rem);text-wrap:balance}
+}
 
 /* Trayectoria con puntos: el puesto actual se ilumina. */
 .about-timeline article{padding-left:20px;border-left-color:rgba(255,255,255,.14)}
@@ -27,7 +38,7 @@
 
 .about-actions h2{max-width:none}
 .about-actions-buttons{display:flex;flex-wrap:wrap;gap:8px}
-.contact-card .about-actions-buttons a{gap:7px;padding:9px 14px;border:1px solid rgba(255,255,255,.22);border-radius:10px;color:#f5f1e9;font-size:13px}
+.contact-card .about-actions-buttons a,.contact-card .about-actions-buttons button{display:inline-flex;align-items:center;cursor:pointer;background:transparent;gap:7px;padding:9px 14px;border:1px solid rgba(255,255,255,.22);border-radius:10px;color:#f5f1e9;font-size:13px}
 .contact-card .about-actions-buttons a.is-primary{border-color:#f0c985;color:#17130d;background:#f0c985;font-weight:500}
 
 @media(max-width:700px){

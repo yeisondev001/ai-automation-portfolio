@@ -260,17 +260,23 @@ function CoverRotation({ project, cover, index }: { project: Project; cover: Non
 }
 // Proyectos del puesto actual: se abren desde el bloque «Ahora» de Sobre mí.
 const currentJobProjects = ['duralon-orders', 'calidad-app', 'wms-materia-prima', 'jf-produccion']
+const contactEmail = 'yeisonrojas03@gmail.com'
 
 function About({ text, projects, openProject }: { text: typeof copy.en; projects: Project[]; openProject: (project: Project) => void }) {
   const about = text.about
-  const current = about.experience[0]
   const built = currentJobProjects.map(id => projects.find(project => project.id === id)).filter((project): project is Project => Boolean(project))
+  // "Escríbeme" abre el programa de correo, que muchos equipos no tienen configurado; copiar el correo siempre funciona.
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle')
+  const copyEmail = async () => {
+    try { await navigator.clipboard.writeText(contactEmail); setCopyState('copied') } catch { setCopyState('failed') }
+    window.setTimeout(() => setCopyState('idle'), 2400)
+  }
   return <section className="content-view about-view"><SceneMoment desktop={aboutDesktop} mobile={aboutMobile} caption={about.caption} />
     <div className="content-heading"><p className="kicker">{about.kicker}</p><h1>{about.lead}<br /><em>{about.accent}</em></h1><p>{about.body}</p></div>
-    <section className="about-now"><p className="about-now-label"><i /> {about.now} · {current.period}</p><h2>{current.title}{'place' in current && <span> · {current.place}</span>}</h2><p className="detail-label">{about.nowSystems}</p><div>{built.map(project => <button key={project.id} type="button" onClick={() => openProject(project)}>{project.title} <Icon name="arrow" /></button>)}</div></section>
-    <section className="timeline about-timeline"><p className="detail-label">{about.timeline}</p>{about.experience.map((job, index) => <article key={job.period} className={index === 0 ? 'is-current' : ''}><small>{job.period}</small><h2>{job.title}{'place' in job && <span> · {job.place}</span>}</h2>{index > 0 && <p>{job.body}</p>}</article>)}</section>
+    {/* El puesto actual vive en la trayectoria (sin repetirlo en un bloque aparte) y enlaza a los sistemas construidos allí. */}
+    <section className="timeline about-timeline"><p className="detail-label">{about.timeline}</p>{about.experience.map((job, index) => <article key={job.period} className={index === 0 ? 'is-current' : ''}>{index === 0 ? <p className="about-now-label"><i /> {about.now} · {job.period}</p> : <small>{job.period}</small>}<h2>{job.title}{'place' in job && <span> · {job.place}</span>}</h2>{index === 0 ? <div className="about-now-systems"><p className="detail-label">{about.nowSystems}</p><div>{built.map(project => <button key={project.id} type="button" onClick={() => openProject(project)}>{project.title} <Icon name="arrow" /></button>)}</div></div> : <p>{job.body}</p>}</article>)}</section>
     <section className="stack-block about-stack"><p className="detail-label">{about.stack}</p><div>{about.stackGroups.map(group => <article key={group.label}><b>{group.label}</b><p>{group.items}</p></article>)}</div></section>
-    <div className="contact-card about-actions" id="contacto"><div><p className="kicker">{about.contact}</p><h2>{about.contactTitle}</h2></div><div className="about-actions-buttons"><a className="is-primary" href="mailto:yeisonrojas03@gmail.com"><Icon name="mail" /> {about.contactAction}</a><a href="/cv/YeisonRojasCV.pdf" download="YeisonRojasCV.pdf"><Icon name="download" /> {about.cv}</a><a href="https://www.linkedin.com/in/yeison-rojas-henriquez/" target="_blank" rel="noreferrer"><Icon name="link" /> LinkedIn</a></div></div>
+    <div className="contact-card about-actions" id="contacto"><div><p className="kicker">{about.contact}</p><h2>{about.contactTitle}</h2></div><div className="about-actions-buttons"><a className="is-primary" href="mailto:yeisonrojas03@gmail.com"><Icon name="mail" /> {about.contactAction}</a><button type="button" onClick={copyEmail} aria-live="polite"><Icon name="link" /> {copyState === 'copied' ? about.copied : copyState === 'failed' ? contactEmail : about.copyEmail}</button><a href="/cv/YeisonRojasCV.pdf" download="YeisonRojasCV.pdf"><Icon name="download" /> {about.cv}</a><a href="https://www.linkedin.com/in/yeison-rojas-henriquez/" target="_blank" rel="noreferrer"><Icon name="link" /> LinkedIn</a></div></div>
   </section>
 }
 function ProjectDialog({ project, close, text }: { project: Project; close: () => void; text: typeof copy.en }) {

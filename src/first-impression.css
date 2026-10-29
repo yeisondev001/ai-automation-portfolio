@@ -58,7 +58,7 @@
   .home-view .intro-card{padding-top:20px}
   .tag{padding:4px 8px;font-size:12px}
   .intro-card .text-action{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;border:0;border-radius:12px;color:#17130d;background:#f0c985;font-weight:500;font-size:14px}
-  .contact-card .about-actions-buttons a,.about-now div button{display:inline-flex;align-items:center;min-height:46px}
+  .contact-card .about-actions-buttons a,.contact-card .about-actions-buttons button,.about-now-systems button{display:inline-flex;align-items:center;min-height:46px}
   .card-eyebrow{font-size:11px;line-height:1.35}
   .home-stats dt{font-size:20px}
 }
