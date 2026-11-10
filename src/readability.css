@@ -1,0 +1,30 @@
+/* Lectura: textos de las tarjetas a un tamaño cómodo, cifras que no se salen de su caja y, en el móvil, los proyectos antes que la foto. */
+
+/* Etiquetas y descripciones que estaban en 11–13px. */
+.tag{font-size:12px}
+.card-copy p:not(.card-eyebrow){font-size:14px;line-height:1.45}
+.case-study li p:last-child{font-size:14.5px;line-height:1.55}
+.archive-project small{font-size:12px}
+
+/* "≈RD$120M" no cabe en cuatro columnas cuando la tarjeta de la entrada se estrecha. */
+@media(min-width:701px) and (max-width:1359px){
+  .home-stats dt{font-size:18px}
+}
+@media(min-width:701px) and (max-width:1179px){
+  /* Dos columnas, y la tarjeta algo más ancha para que la entrada no crezca en altura. */
+  .intro-card{width:min(500px,56vw)}
+  .home-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .home-stats div{padding:8px 11px}
+}
+
+@media(max-width:700px){
+  /* En Proyectos y Colección el trabajo va primero: la foto queda para Inicio y Sobre mí. */
+  .projects-view .scene-moment,.archive-view .scene-moment{display:none}
+  .projects-view .content-heading,.archive-view .content-heading{margin-top:14px}
+
+  .card-copy p:not(.card-eyebrow){font-size:13px;line-height:1.42}
+  .tag{font-size:12px}
+}
+
+/* Marca de la cabecera: monograma con la misma serif dorada de los titulares, en lugar del círculo genérico. */
+.identity-mark{display:grid;place-items:center;flex:none;width:32px;height:32px;border:1px solid rgba(240,201,133,.5);border-radius:10px;color:#f0c985;background:rgba(240,201,133,.08);box-shadow:none;font:500 14px/1 'Fraunces',Georgia,serif;letter-spacing:-.03em}
