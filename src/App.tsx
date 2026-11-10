@@ -132,6 +132,9 @@ function readRoute(): Route {
 }
 
 function savedLanguage(): Language {
+  // Un enlace con ?lang=es (o ?lang=en) abre el sitio en ese idioma, para compartirlo según a quién va dirigido.
+  const requested = new URLSearchParams(window.location.search).get('lang')
+  if (requested === 'es' || requested === 'en') return requested
   try { return localStorage.getItem('portfolio-language') === 'es' ? 'es' : 'en' } catch { return 'en' }
 }
 
