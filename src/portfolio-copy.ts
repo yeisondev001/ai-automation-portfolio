@@ -3,6 +3,7 @@ export type Language = 'en' | 'es'
 export const copy = {
   en: {
     meta: { description: 'Yeison Rojas, software engineer: apps, backend, integrations, and automation in production, from B2B ordering to quality control and analytics.' },
+    cv: { href: '/cv/YeisonRojasCV-EN.pdf', file: 'YeisonRojasCV-EN.pdf' },
     header: { home: 'Return to home', links: 'Professional links', language: 'Switch to Spanish' },
     nav: { aria: 'Main navigation', home: 'Home', projects: 'Projects', collection: 'Collection', about: 'About', contact: 'Contact' },
     home: { aria: 'Portfolio home', caption: '01 — SOFTWARE ENGINEER', kicker: 'SOFTWARE ENGINEER', lead: 'From manual process', accent: 'to production software.', body: 'Apps, backend, integrations, and automation built end to end. Five of my systems are in daily use today: B2B ordering, quality control, inventory, and production analytics.', action: 'See the projects', featured: 'FEATURED PROJECT', station: 'Workstation', stationHint: 'See real projects', hint: 'Move the cursor to explore the studio', hintEnd: 'each station tells part of the story', imageAlt: 'Yeison in his automation studio' },
@@ -14,6 +15,7 @@ export const copy = {
   },
   es: {
     meta: { description: 'Yeison Rojas, ingeniero de software: apps, backend, integraciones y automatización en producción, desde pedidos B2B hasta control de calidad y analítica.' },
+    cv: { href: '/cv/YeisonRojasCV.pdf', file: 'YeisonRojasCV.pdf' },
     header: { home: 'Volver a la entrada', links: 'Enlaces profesionales', language: 'Cambiar a inglés' },
     nav: { aria: 'Navegación principal', home: 'Inicio', projects: 'Proyectos', collection: 'Colección', about: 'Sobre mí', contact: 'Contacto' },
     home: { aria: 'Entrada del portafolio', caption: '01 — INGENIERO DE SOFTWARE', kicker: 'INGENIERO DE SOFTWARE', lead: 'De proceso manual', accent: 'a software en producción.', body: 'Apps, backend, integraciones y automatización construidos de punta a punta. Hoy cinco de mis sistemas están en uso diario: pedidos B2B, control de calidad, inventario y analítica de producción.', action: 'Ver los proyectos', featured: 'PROYECTO DESTACADO', station: 'Estación de trabajo', stationHint: 'Ver proyectos reales', hint: 'Mueve el cursor para explorar el estudio', hintEnd: 'cada estación cuenta una parte de la historia', imageAlt: 'Yeison en su estudio de automatización' },
