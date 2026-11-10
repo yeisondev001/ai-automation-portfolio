@@ -5,7 +5,7 @@
 Para regenerar un PDF después de editar el HTML:
 
 ```bash
-"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf="public/cv/YeisonRojasCV-EN.pdf" "file:///$PWD/cv-source/cv-en.html"
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf="$PWD/public/cv/YeisonRojasCV-EN.pdf" "file:///$PWD/cv-source/cv-en.html"
 ```
 
 Cambia los nombres de archivo para la versión en español. Revisa que siga cabiendo en una página.
