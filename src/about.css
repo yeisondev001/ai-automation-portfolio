@@ -47,3 +47,13 @@
   .about-stats dt{font-size:22px}
   .about-stack>div{grid-template-columns:1fr}
 }
+
+/* Certificaciones: lista compacta en dos columnas, con la institución en un tono más apagado. */
+.about-certs ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;margin:10px 0 0;padding:0;list-style:none}
+.about-certs li{padding:9px 12px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.03)}
+.about-certs li b{display:block;color:#f5f1e9;font-weight:500;font-size:13.5px;line-height:1.35}
+.about-certs li span{display:block;margin-top:2px;padding:0;border:0;border-radius:0;color:rgba(245,241,233,.62);background:none;font:12.5px/1.35 'DM Sans',sans-serif}
+@media(max-width:700px){
+  .about-certs{margin-right:24px;margin-left:24px}
+  .about-certs ul{grid-template-columns:1fr}
+}
