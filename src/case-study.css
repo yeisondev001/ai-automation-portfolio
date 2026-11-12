@@ -33,3 +33,10 @@
 .project-video{margin:0 28px 21px;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035)}
 .project-video video{display:block;width:100%;margin-top:10px;border-radius:10px;background:#000;aspect-ratio:16/9}
 @media(max-width:700px){.project-video{margin:0 18px 18px;padding:10px}}
+/* Botón para activar la música del recorrido, sobre la esquina del video. */
+.project-video-frame{position:relative;margin-top:10px}
+.project-video-frame video{margin-top:0}
+.project-video-sound{position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(240,201,133,.55);border-radius:999px;color:#f6f2eb;background:rgba(11,14,17,.82);font-size:13px;cursor:pointer}
+.project-video-sound:hover{background:rgba(11,14,17,.95)}
+.project-video-sound:focus-visible{outline:2px solid #e8c184;outline-offset:2px}
+.project-video-sound svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
