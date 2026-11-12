@@ -39,3 +39,19 @@
   .tab-bar button.is-active{color:#26221e;background:#f0e8dc}
   .tab-bar button.is-active svg{stroke:#7a5130}
 }
+
+/* Burbuja flotante de música de fondo. */
+.music-bubble{position:fixed;z-index:10;right:24px;bottom:24px;display:grid;place-items:center;width:52px;height:52px;padding:0;border:1px solid rgba(240,201,133,.55);border-radius:50%;color:#f0c985;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.22),rgba(255,255,255,0) 42%),rgba(14,18,21,.86);box-shadow:0 10px 30px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.06);backdrop-filter:blur(12px);cursor:pointer;animation:bubble-float 4.5s ease-in-out infinite;transition:border-color .25s,background .25s}
+.music-bubble:hover{border-color:#f0c985}
+.music-bubble:focus-visible{outline:2px solid #e8c184;outline-offset:3px}
+.music-bubble svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.music-bubble.is-playing{background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.28),rgba(255,255,255,0) 42%),rgba(64,48,26,.9)}
+.music-bubble.is-playing:after{position:absolute;inset:-1px;border:1px solid rgba(240,201,133,.6);border-radius:50%;animation:bubble-ring 2.2s ease-out infinite;content:''}
+.music-bars{display:flex;align-items:flex-end;gap:3px;height:18px}
+.music-bars i{display:block;width:3px;height:100%;border-radius:2px;background:currentColor;transform-origin:bottom;animation:music-bar 1s ease-in-out infinite}
+.music-bars i:nth-child(2){animation-delay:-.4s}.music-bars i:nth-child(3){animation-delay:-.7s}.music-bars i:nth-child(4){animation-delay:-.2s}
+@keyframes bubble-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes bubble-ring{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.55)}}
+@keyframes music-bar{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+@media(max-width:700px){.music-bubble{right:14px;bottom:calc(98px + env(safe-area-inset-bottom));width:46px;height:46px}}
+@media(prefers-reduced-motion:reduce){.music-bubble,.music-bubble.is-playing:after,.music-bars i{animation:none}}

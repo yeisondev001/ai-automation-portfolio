@@ -272,6 +272,7 @@ function App() {
     {flow ? <div className="mobile-flow"><div id="flow-home" data-flow-view="home"><Home go={go} openProject={openProject} featured={localizedProjects[0]} text={text} /></div><div id="flow-projects" data-flow-view="projects"><Projects go={go} openProject={openProject} projects={localizedProjects} text={text} /></div><div id="flow-about" data-flow-view="about"><About text={text} projects={localizedArchiveProjects} openProject={openProject} /></div></div> : <>{view === 'home' && <Home go={go} openProject={openProject} featured={localizedProjects[0]} text={text} />}{view === 'projects' && <Projects go={go} openProject={openProject} projects={localizedProjects} text={text} />}{view === 'archive' && <Archive openProject={openProject} projects={localizedArchiveProjects} text={text} />}{view === 'about' && <About text={text} projects={localizedArchiveProjects} openProject={openProject} />}</>}
     {!selected && <nav className="tab-bar" aria-label={text.nav.aria}>{tabs.map(tab => <button key={tab.id} type="button" className={tab.active ? 'is-active' : ''} aria-current={tab.active ? 'page' : undefined} onClick={tab.onClick}><Icon name={tab.icon} /><span>{tab.label}</span></button>)}</nav>}
     {selected && <ProjectDialog project={selected} close={closeProject} text={text} />}
+    <MusicBubble text={text} />
   </main>
 }
 
@@ -308,6 +309,30 @@ function Archive({ openProject, projects, text }: { openProject: (project: Proje
 }
 function ProjectCard({ project, index, open, text }: { project: Project; index: number; open: () => void; text: typeof copy.en }) { const cover = project.cardCover; const featured = index === 0 && project.impact; return <article className={`project-card project-${project.id} ${project.tone} ${featured ? 'is-featured' : ''}`} style={{ '--delay': `${index * 90}ms` } as React.CSSProperties}><button className="project-click-target" onClick={open} aria-label={`${text.common.open} ${project.title}`} /><div className={`project-art ${cover ? `has-cover is-${cover.orientation}` : project.icon ? 'with-icon' : project.visual ? `is-system visual-${project.visual}` : ''}`}><span>{projectNumber(project.id)}</span>{project.video?.card ? <CardVideo key={project.video.card.src} card={project.video.card} /> : cover ? <CoverRotation project={project} cover={cover} index={index} /> : project.icon ? <img src={project.icon} alt="" /> : project.visual ? <div className="system-signal" aria-hidden="true"><i /><i /><i /><b>{project.status}</b></div> : <><i /><i /><i /></>}</div><div className="card-copy"><p className="card-eyebrow">{project.eyebrow}</p><h2>{project.title}</h2>{!featured && project.impact && <strong className="card-metric">{project.impact[0].title}</strong>}<p>{project.description}</p>{featured && <dl className="card-impact">{project.impact!.slice(0, 2).map(item => <div key={item.title}><dt>{item.title}</dt><dd>{item.detail}</dd></div>)}</dl>}<div>{project.stack.map(item => <span className="tag" key={item}>{item}</span>)}</div></div><span className="card-arrow"><Icon name="arrow" /></span></article> }
 // La portada de la tarjeta rota entre las capturas del proyecto; cada tarjeta arranca desfasada para no cambiar todas a la vez.
+// Burbuja de música de fondo: apagada al entrar y solo suena cuando el visitante la toca.
+// Pista: "Lofi Study" de FASSounds en Pixabay (licencia de contenido de Pixabay, uso comercial sin atribución).
+// Si se activa el sonido de un video de proyecto, la música se pausa para no mezclarse.
+const projectSoundEvent = 'portfolio:project-sound'
+function MusicBubble({ text }: { text: typeof copy.en }) {
+  const ref = useRef<HTMLAudioElement>(null)
+  const [playing, setPlaying] = useState(false)
+  useEffect(() => {
+    const pause = () => ref.current?.pause()
+    window.addEventListener(projectSoundEvent, pause)
+    return () => window.removeEventListener(projectSoundEvent, pause)
+  }, [])
+  const toggle = () => {
+    const el = ref.current
+    if (!el) return
+    if (el.paused) { el.volume = 0.45; void el.play().catch(() => setPlaying(false)) } else el.pause()
+  }
+  return <>
+    <audio ref={ref} src="/audio/portfolio-ambient.mp3" loop preload="none" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
+    <button type="button" className={`music-bubble ${playing ? 'is-playing' : ''}`} onClick={toggle} aria-pressed={playing} aria-label={playing ? text.music.pause : text.music.play} title={playing ? text.music.pause : text.music.play}>
+      {playing ? <span className="music-bars" aria-hidden="true"><i /><i /><i /><i /></span> : <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12" /><circle cx="6.5" cy="18" r="2.5" /><circle cx="16.5" cy="16" r="2.5" /></svg>}
+    </button>
+  </>
+}
 // Vista previa en la tarjeta: un clip corto y sin sonido que solo corre mientras se ve en pantalla.
 function CardVideo({ card }: { card: NonNullable<NonNullable<Project['video']>['card']> }) {
   const ref = useRef<HTMLVideoElement>(null)
@@ -384,7 +409,7 @@ function ProjectVideo({ video, text }: { video: NonNullable<Project['video']>; t
   const [muted, setMuted] = useState(true)
   const toggle = () => { const el = ref.current; if (!el) return; el.muted = !el.muted; if (!el.muted) void el.play(); setMuted(el.muted) }
   if (!video.loop) return <video controls preload="none" playsInline poster={video.poster} src={video.src} />
-  return <div className="project-video-frame"><video ref={ref} controls playsInline autoPlay muted loop preload="auto" poster={video.poster} src={video.src} onVolumeChange={e => setMuted(e.currentTarget.muted)} /><button type="button" className="project-video-sound" onClick={toggle}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" />{muted ? <path d="M17 9l4 6M21 9l-4 6" /> : <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />}</svg>{muted ? text.dialog.soundOn : text.dialog.soundOff}</button></div>
+  return <div className="project-video-frame"><video ref={ref} controls playsInline autoPlay muted loop preload="auto" poster={video.poster} src={video.src} onVolumeChange={e => { setMuted(e.currentTarget.muted); if (!e.currentTarget.muted) window.dispatchEvent(new Event(projectSoundEvent)) }} /><button type="button" className="project-video-sound" onClick={toggle}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" />{muted ? <path d="M17 9l4 6M21 9l-4 6" /> : <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />}</svg>{muted ? text.dialog.soundOn : text.dialog.soundOff}</button></div>
 }
 
 function AppGallery({ project, text }: { project: Project; text: typeof copy.en }) { const screenshots = project.screenshots ?? []; return <section className={`app-gallery ${project.galleryLayout === 'desktop' ? 'is-landscape' : ''} ${project.galleryLayout === 'mobile' ? 'is-mobile' : ''} ${project.galleryLayout === 'demo' ? 'is-demo' : ''}`} aria-label={project.galleryLabel ?? text.dialog.appGallery}><div className="app-gallery-heading"><p className="detail-label">{project.galleryEyebrow ?? text.dialog.published}</p><span>{project.galleryLabel ?? text.dialog.appGallery}</span></div><div className="app-gallery-track">{screenshots.map(screenshot => <figure key={screenshot.src}><a href={screenshot.src} target="_blank" rel="noreferrer" aria-label={`${text.dialog.expand}: ${screenshot.alt}`}><img src={screenshot.src} alt={screenshot.alt} loading="lazy" /></a></figure>)}</div>{project.galleryLayout === 'desktop' && <p className="gallery-hint">{text.common.galleryHint}</p>}</section> }
