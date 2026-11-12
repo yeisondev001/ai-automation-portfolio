@@ -138,18 +138,7 @@ function savedLanguage(): Language {
   try { return localStorage.getItem('portfolio-language') === 'es' ? 'es' : 'en' } catch { return 'en' }
 }
 
-// En el celular el sitio se recorre bajando: Inicio, Proyectos y Sobre mí (con Contacto) van en una sola página.
-function usePhoneLayout() {
-  const query = '(max-width: 700px)'
-  const [phone, setPhone] = useState(() => window.matchMedia(query).matches)
-  useEffect(() => {
-    const media = window.matchMedia(query)
-    const onChange = () => setPhone(media.matches)
-    media.addEventListener('change', onChange)
-    return () => media.removeEventListener('change', onChange)
-  }, [])
-  return phone
-}
+// El sitio se recorre bajando: Inicio, Proyectos y Sobre mí (con Contacto) van en una sola página; Colección queda aparte.
 const flowViews: View[] = ['home', 'projects', 'about']
 const scrollToFlow = (view: View, behavior: ScrollBehavior) => {
   if (view === 'home') window.scrollTo({ top: 0, behavior })
@@ -164,7 +153,7 @@ function App() {
   const localizedProjects = projects.map(project => localizeProject(project, language))
   const localizedArchiveProjects = archiveProjects.map(project => localizeProject(project, language))
   const selected = projectId ? localizedArchiveProjects.find(project => project.id === projectId) ?? null : null
-  const flow = usePhoneLayout() && view !== 'archive'
+  const flow = view !== 'archive'
   const pageTitle = selected?.title ?? { home: '', projects: text.nav.projects, archive: text.nav.collection, about: text.nav.about }[view]
 
   useEffect(() => {
@@ -257,8 +246,8 @@ function App() {
   const siteLinks = [
     { id: 'projects', label: text.nav.projects, active: view === 'projects', onClick: () => go('projects') },
     { id: 'archive', label: text.nav.collection, active: view === 'archive', onClick: () => go('archive') },
-    { id: 'about', label: text.nav.about, active: view === 'about', onClick: () => go('about') },
-    { id: 'contact', label: text.nav.contact, active: false, onClick: goContact },
+    { id: 'about', label: text.nav.about, active: view === 'about' && !atContact, onClick: () => go('about') },
+    { id: 'contact', label: text.nav.contact, active: atContact, onClick: goContact },
   ]
   const tabs = [
     { id: 'home', icon: 'home' as const, label: text.nav.home, active: view === 'home', onClick: () => go('home') },
@@ -269,7 +258,7 @@ function App() {
   return <main className={`portfolio scene-${view}`}>
     <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={view === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={view === 'projects'} /><ScenePhoto name="archive" desktop={archiveDesktop} mobile={archiveMobile} active={view === 'archive'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={view === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
     <header className="site-header"><button className="identity" onClick={() => go('home')} aria-label={text.header.home}><span className="identity-mark" aria-hidden="true">YR</span><b>YEISON ROJAS</b><small>{text.header.role}</small></button><nav className="site-nav" aria-label={text.nav.aria}>{siteLinks.map(link => <button key={link.id} type="button" className={link.active ? 'is-active' : ''} aria-current={link.active ? 'page' : undefined} onClick={link.onClick}>{link.label}</button>)}</nav><div className="header-actions" aria-label={text.header.links}><a className="header-github" href="https://github.com/yeisondev001" target="_blank" rel="noreferrer" aria-label="GitHub"><Icon name="github" /></a><button className="language-toggle" type="button" onClick={() => setLanguage(current => current === 'en' ? 'es' : 'en')} aria-label={text.header.language} aria-pressed={language === 'es'}><span className={language === 'en' ? 'is-active' : ''}>EN</span><i aria-hidden="true" /><span className={language === 'es' ? 'is-active' : ''}>ES</span></button><a className="cv-download" href={text.cv.href} download={text.cv.file}><Icon name="download" /><span>CV</span></a></div></header>
-    {flow ? <div className="mobile-flow"><div id="flow-home" data-flow-view="home"><Home go={go} openProject={openProject} featured={localizedProjects[0]} text={text} /></div><div id="flow-projects" data-flow-view="projects"><Projects go={go} openProject={openProject} projects={localizedProjects} text={text} /></div><div id="flow-about" data-flow-view="about"><About text={text} projects={localizedArchiveProjects} openProject={openProject} /></div></div> : <>{view === 'home' && <Home go={go} openProject={openProject} featured={localizedProjects[0]} text={text} />}{view === 'projects' && <Projects go={go} openProject={openProject} projects={localizedProjects} text={text} />}{view === 'archive' && <Archive openProject={openProject} projects={localizedArchiveProjects} text={text} />}{view === 'about' && <About text={text} projects={localizedArchiveProjects} openProject={openProject} />}</>}
+    {flow ? <div className="mobile-flow"><div id="flow-home" data-flow-view="home"><Home go={go} openProject={openProject} featured={localizedProjects[0]} text={text} /></div><div id="flow-projects" data-flow-view="projects"><Projects go={go} openProject={openProject} projects={localizedProjects} text={text} /></div><div id="flow-about" data-flow-view="about"><About text={text} projects={localizedArchiveProjects} openProject={openProject} /></div></div> : <Archive openProject={openProject} projects={localizedArchiveProjects} text={text} />}
     {!selected && <nav className="tab-bar" aria-label={text.nav.aria}>{tabs.map(tab => <button key={tab.id} type="button" className={tab.active ? 'is-active' : ''} aria-current={tab.active ? 'page' : undefined} onClick={tab.onClick}><Icon name={tab.icon} /><span>{tab.label}</span></button>)}</nav>}
     {selected && <ProjectDialog project={selected} close={closeProject} text={text} />}
     <MusicBubble text={text} />
