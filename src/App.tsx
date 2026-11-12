@@ -220,6 +220,16 @@ function App() {
   // Al entrar a la página continua se baja al apartado de la URL; luego la barra de abajo sigue el apartado que se ve.
   const viewRef = useRef(view)
   viewRef.current = view
+  // Contacto es el final de Sobre mí: la pestaña Contacto se marca mientras se ve su tarjeta.
+  const [atContact, setAtContact] = useState(false)
+  useEffect(() => {
+    if (!flow) { setAtContact(false); return }
+    const card = document.getElementById('contacto')
+    if (!card) return
+    const observer = new IntersectionObserver(([entry]) => setAtContact(entry.isIntersecting), { threshold: 0.6 })
+    observer.observe(card)
+    return () => observer.disconnect()
+  }, [flow])
   useEffect(() => {
     if (!flow) return
     if (viewRef.current !== 'home') scrollToFlow(viewRef.current, 'instant')
@@ -253,8 +263,8 @@ function App() {
   const tabs = [
     { id: 'home', icon: 'home' as const, label: text.nav.home, active: view === 'home', onClick: () => go('home') },
     { id: 'projects', icon: 'folder' as const, label: text.nav.projects, active: isProjects, onClick: () => go('projects') },
-    { id: 'about', icon: 'user' as const, label: text.nav.about, active: view === 'about', onClick: () => go('about') },
-    { id: 'contact', icon: 'mail' as const, label: text.nav.contact, active: false, onClick: goContact },
+    { id: 'about', icon: 'user' as const, label: text.nav.about, active: view === 'about' && !atContact, onClick: () => go('about') },
+    { id: 'contact', icon: 'mail' as const, label: text.nav.contact, active: atContact, onClick: goContact },
   ]
   return <main className={`portfolio scene-${view}`}>
     <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={view === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={view === 'projects'} /><ScenePhoto name="archive" desktop={archiveDesktop} mobile={archiveMobile} active={view === 'archive'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={view === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
