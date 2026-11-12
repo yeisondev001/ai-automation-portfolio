@@ -18,9 +18,9 @@
 }
 
 @media(max-width:700px){
-  /* En Proyectos y Colección el trabajo va primero: la foto queda para Inicio y Sobre mí. */
-  .projects-view .scene-moment,.archive-view .scene-moment{display:none}
-  .projects-view .content-heading,.archive-view .content-heading{margin-top:14px}
+  /* En Colección el trabajo va primero; en Proyectos la foto abre el apartado al bajar desde Inicio. */
+  .archive-view .scene-moment{display:none}
+  .archive-view .content-heading{margin-top:14px}
 
   .card-copy p:not(.card-eyebrow){font-size:13px;line-height:1.42}
   .tag{font-size:12px}
@@ -28,3 +28,8 @@
 
 /* Marca de la cabecera: monograma con la misma serif dorada de los titulares, en lugar del círculo genérico. */
 .identity-mark{display:grid;place-items:center;flex:none;width:32px;height:32px;border:1px solid rgba(240,201,133,.5);border-radius:10px;color:#f0c985;background:rgba(240,201,133,.08);box-shadow:none;font:500 14px/1 'Fraunces',Georgia,serif;letter-spacing:-.03em}
+
+/* Página continua del celular: cada apartado queda debajo del encabezado fijo al saltar a él. */
+.mobile-flow>[data-flow-view]{scroll-margin-top:84px}
+/* En el celular, Proyectos usa la misma foto del escritorio, encuadrada sobre la persona y el monitor. */
+@media(max-width:700px){.mobile-flow .projects-view .scene-moment img{object-position:30% 45%!important}}
