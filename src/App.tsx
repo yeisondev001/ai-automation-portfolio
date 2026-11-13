@@ -352,7 +352,7 @@ const contactEmail = 'yeisonrojas03@gmail.com'
 
 // Certificado abierto como tarjeta sobre la misma página: sale volando desde su nombre en la lista,
 // gira hasta quedar de frente y al cerrarse regresa al mismo lugar.
-type OpenCertificate = { name: string; issuer: string; image: string; verify: string; from: HTMLElement }
+type OpenCertificate = { name: string; issuer: string; image: string; verify?: string; issued: string; from: HTMLElement }
 function CertificateCard({ cert, labels, close }: { cert: OpenCertificate; labels: typeof copy.en.about; close: () => void }) {
   const card = useRef<HTMLDivElement>(null)
   const backdrop = useRef<HTMLDivElement>(null)
@@ -391,7 +391,7 @@ function CertificateCard({ cert, labels, close }: { cert: OpenCertificate; label
     <div ref={backdrop} className="cert-backdrop" onClick={dismiss} />
     <div ref={card} className="cert-card">
       <div className="cert-frame"><img src={cert.image} alt={`${cert.name} · ${cert.issuer}`} /><i className="cert-shine" aria-hidden="true" /></div>
-      <div className="cert-meta"><div><b>{cert.name}</b><span>{cert.issuer} · {labels.certIssued}</span></div><a href={cert.verify} target="_blank" rel="noreferrer"><Icon name="link" /> {labels.certVerify}</a></div>
+      <div className="cert-meta"><div><b>{cert.name}</b><span>{cert.issuer}{cert.issued && ` · ${cert.issued}`}</span></div>{cert.verify && <a href={cert.verify} target="_blank" rel="noreferrer"><Icon name="link" /> {labels.certVerify}</a>}</div>
       <button type="button" className="cert-close" onClick={dismiss} aria-label={labels.certClose}><Icon name="close" /></button>
     </div>
   </div>, document.body)
@@ -412,7 +412,7 @@ function About({ text, projects, openProject }: { text: typeof copy.en; projects
     <section className="timeline about-timeline"><p className="detail-label">{about.timeline}</p>{about.experience.map((job, index) => <article key={job.period} className={index === 0 ? 'is-current' : ''}>{index === 0 ? <p className="about-now-label"><i /> {about.now} · {job.period}</p> : <small>{job.period}</small>}<h2>{job.title}{'place' in job && <span> · {job.place}</span>}</h2>{index === 0 ? <div className="about-now-systems"><p className="detail-label">{about.nowSystems}</p><div>{built.map(project => <button key={project.id} type="button" onClick={() => openProject(project)}>{project.title} <Icon name="arrow" /></button>)}</div></div> : <p>{job.body}</p>}</article>)}</section>
     <section className="stack-block about-stack"><p className="detail-label">{about.stack}</p><div>{about.stackGroups.map(group => <article key={group.label}><b>{group.label}</b><p>{group.items}</p></article>)}</div></section>
     {/* Certificaciones: un bloque discreto, después del stack, sin competir con los proyectos. */}
-    <section className="stack-block about-certs"><p className="detail-label">{about.certsLabel}</p><ul>{about.certs.map(cert => <li key={cert.name}>{'image' in cert && cert.image && cert.verify ? <button type="button" className="cert-open" onClick={event => setCert({ name: cert.name, issuer: cert.issuer, image: cert.image!, verify: cert.verify!, from: event.currentTarget })} aria-label={`${about.certView}: ${cert.name}`}><b>{cert.name}</b><span>{cert.issuer}</span><em>{about.certView} <Icon name="arrow" /></em></button> : <><b>{cert.name}</b><span>{cert.issuer}</span></>}</li>)}</ul></section>
+    <section className="stack-block about-certs"><p className="detail-label">{about.certsLabel}</p><ul>{about.certs.map(cert => <li key={cert.name}>{'image' in cert && cert.image ? <button type="button" className="cert-open" onClick={event => setCert({ name: cert.name, issuer: cert.issuer, image: cert.image!, verify: 'verify' in cert ? cert.verify : undefined, issued: cert.issued ?? '', from: event.currentTarget })} aria-label={`${about.certView}: ${cert.name}`}><b>{cert.name}</b><span>{cert.issuer}</span><em>{about.certView} <Icon name="arrow" /></em></button> : <><b>{cert.name}</b><span>{cert.issuer}</span></>}</li>)}</ul></section>
     {cert && <CertificateCard cert={cert} labels={about} close={() => setCert(null)} />}
     <div className="contact-card about-actions" id="contacto"><div><p className="kicker">{about.contact}</p><h2>{about.contactTitle}</h2></div><div className="about-actions-buttons"><a className="is-primary" href="mailto:yeisonrojas03@gmail.com"><Icon name="mail" /> {about.contactAction}</a><button type="button" onClick={copyEmail} aria-live="polite"><Icon name="link" /> {copyState === 'copied' ? about.copied : copyState === 'failed' ? contactEmail : about.copyEmail}</button><a href={text.cv.href} download={text.cv.file}><Icon name="download" /> {about.cv}</a><a href="https://www.linkedin.com/in/yeison-rojas-henriquez/" target="_blank" rel="noreferrer"><Icon name="link" /> LinkedIn</a></div></div>
   </section>
