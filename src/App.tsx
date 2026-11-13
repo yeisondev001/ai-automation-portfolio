@@ -352,6 +352,8 @@ const contactEmail = 'yeisonrojas03@gmail.com'
 
 // Certificado abierto como tarjeta sobre la misma página: sale volando desde su nombre en la lista,
 // gira hasta quedar de frente y al cerrarse regresa al mismo lugar.
+// Guarda las imágenes precargadas para que el navegador no las suelte ni vuelva a pedirlas al abrir la tarjeta.
+const preloadedCerts = new Map<string, HTMLImageElement>()
 type OpenCertificate = { name: string; issuer: string; image: string; verify?: string; issued: string; from: HTMLElement }
 function CertificateCard({ cert, labels, close }: { cert: OpenCertificate; labels: typeof copy.en.about; close: () => void }) {
   const card = useRef<HTMLDivElement>(null)
@@ -371,7 +373,14 @@ function CertificateCard({ cert, labels, close }: { cert: OpenCertificate; label
     document.body.classList.add('cert-lock')
     el?.querySelector<HTMLElement>('.cert-close')?.focus({ preventScroll: true })
     backdrop.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: reduced ? 150 : 380, easing: 'ease-out', fill: 'both' })
-    if (el && !reduced) el.animate([{ transform: fromChip(), opacity: 0.35 }, { transform: 'rotateX(-6deg) scale(1.02)', opacity: 1, offset: 0.72 }, { transform: 'none', opacity: 1 }], { duration: 760, easing: 'cubic-bezier(.2,.85,.25,1)', fill: 'both' })
+    // Espera a que la imagen esté decodificada (máximo 400 ms) para que la tarjeta nunca llegue vacía.
+    const img = el?.querySelector('img')
+    const ready = img ? Promise.race([img.decode().catch(() => {}), new Promise(done => window.setTimeout(done, 400))]) : Promise.resolve()
+    void ready.then(() => {
+      if (!el || closing.current) return
+      if (reduced) { el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, fill: 'both' }); return }
+      el.animate([{ transform: fromChip(), opacity: 0.35 }, { transform: 'rotateX(-6deg) scale(1.02)', opacity: 1, offset: 0.72 }, { transform: 'none', opacity: 1 }], { duration: 760, easing: 'cubic-bezier(.2,.85,.25,1)', fill: 'both' })
+    })
     const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') dismiss() }
     window.addEventListener('keydown', onKey)
     return () => { window.removeEventListener('keydown', onKey); document.body.classList.remove('cert-lock') }
@@ -390,7 +399,7 @@ function CertificateCard({ cert, labels, close }: { cert: OpenCertificate; label
   return createPortal(<div className="cert-layer" role="dialog" aria-modal="true" aria-label={cert.name}>
     <div ref={backdrop} className="cert-backdrop" onClick={dismiss} />
     <div ref={card} className="cert-card">
-      <div className="cert-frame"><img src={cert.image} alt={`${cert.name} · ${cert.issuer}`} /><i className="cert-shine" aria-hidden="true" /></div>
+      <div className="cert-frame"><img src={cert.image} decoding="async" alt={`${cert.name} · ${cert.issuer}`} /><i className="cert-shine" aria-hidden="true" /></div>
       <div className="cert-meta"><div><b>{cert.name}</b><span>{cert.issuer}{cert.issued && ` · ${cert.issued}`}</span></div>{cert.verify && <a href={cert.verify} target="_blank" rel="noreferrer"><Icon name="link" /> {labels.certVerify}</a>}</div>
       <button type="button" className="cert-close" onClick={dismiss} aria-label={labels.certClose}><Icon name="close" /></button>
     </div>
@@ -402,6 +411,21 @@ function About({ text, projects, openProject }: { text: typeof copy.en; projects
   // "Escríbeme" abre el programa de correo, que muchos equipos no tienen configurado; copiar el correo siempre funciona.
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle')
   const [cert, setCert] = useState<OpenCertificate | null>(null)
+  // Las imágenes de los certificados se descargan cuando la lista se acerca a la pantalla,
+  // así la tarjeta ya las tiene listas al abrirse en vez de esperar la descarga.
+  const certsRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const el = certsRef.current
+    if (!el) return
+    const images = about.certs.flatMap(item => 'image' in item && item.image ? [item.image] : [])
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
+      images.forEach(src => { if (preloadedCerts.has(src)) return; const img = new Image(); img.decoding = 'async'; img.src = src; preloadedCerts.set(src, img); void img.decode().catch(() => {}) })
+    }, { rootMargin: '900px 0px' })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [about.certs])
   const copyEmail = async () => {
     try { await navigator.clipboard.writeText(contactEmail); setCopyState('copied') } catch { setCopyState('failed') }
     window.setTimeout(() => setCopyState('idle'), 2400)
@@ -412,7 +436,7 @@ function About({ text, projects, openProject }: { text: typeof copy.en; projects
     <section className="timeline about-timeline"><p className="detail-label">{about.timeline}</p>{about.experience.map((job, index) => <article key={job.period} className={index === 0 ? 'is-current' : ''}>{index === 0 ? <p className="about-now-label"><i /> {about.now} · {job.period}</p> : <small>{job.period}</small>}<h2>{job.title}{'place' in job && <span> · {job.place}</span>}</h2>{index === 0 ? <div className="about-now-systems"><p className="detail-label">{about.nowSystems}</p><div>{built.map(project => <button key={project.id} type="button" onClick={() => openProject(project)}>{project.title} <Icon name="arrow" /></button>)}</div></div> : <p>{job.body}</p>}</article>)}</section>
     <section className="stack-block about-stack"><p className="detail-label">{about.stack}</p><div>{about.stackGroups.map(group => <article key={group.label}><b>{group.label}</b><p>{group.items}</p></article>)}</div></section>
     {/* Certificaciones: un bloque discreto, después del stack, sin competir con los proyectos. */}
-    <section className="stack-block about-certs"><p className="detail-label">{about.certsLabel}</p><ul>{about.certs.map(cert => <li key={cert.name}>{'image' in cert && cert.image ? <button type="button" className="cert-open" onClick={event => setCert({ name: cert.name, issuer: cert.issuer, image: cert.image!, verify: 'verify' in cert ? cert.verify : undefined, issued: cert.issued ?? '', from: event.currentTarget })} aria-label={`${about.certView}: ${cert.name}`}><b>{cert.name}</b><span>{cert.issuer}</span><em>{about.certView} <Icon name="arrow" /></em></button> : <><b>{cert.name}</b><span>{cert.issuer}</span></>}</li>)}</ul></section>
+    <section ref={certsRef} className="stack-block about-certs"><p className="detail-label">{about.certsLabel}</p><ul>{about.certs.map(cert => <li key={cert.name}>{'image' in cert && cert.image ? <button type="button" className="cert-open" onClick={event => setCert({ name: cert.name, issuer: cert.issuer, image: cert.image!, verify: 'verify' in cert ? cert.verify : undefined, issued: cert.issued ?? '', from: event.currentTarget })} aria-label={`${about.certView}: ${cert.name}`}><b>{cert.name}</b><span>{cert.issuer}</span><em>{about.certView} <Icon name="arrow" /></em></button> : <><b>{cert.name}</b><span>{cert.issuer}</span></>}</li>)}</ul></section>
     {cert && <CertificateCard cert={cert} labels={about} close={() => setCert(null)} />}
     <div className="contact-card about-actions" id="contacto"><div><p className="kicker">{about.contact}</p><h2>{about.contactTitle}</h2></div><div className="about-actions-buttons"><a className="is-primary" href="mailto:yeisonrojas03@gmail.com"><Icon name="mail" /> {about.contactAction}</a><button type="button" onClick={copyEmail} aria-live="polite"><Icon name="link" /> {copyState === 'copied' ? about.copied : copyState === 'failed' ? contactEmail : about.copyEmail}</button><a href={text.cv.href} download={text.cv.file}><Icon name="download" /> {about.cv}</a><a href="https://www.linkedin.com/in/yeison-rojas-henriquez/" target="_blank" rel="noreferrer"><Icon name="link" /> LinkedIn</a></div></div>
   </section>
