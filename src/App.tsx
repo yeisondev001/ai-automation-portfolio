@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { techLogos } from './tech-logos'
 import './archive.css'
 import './mobile.css'
 import './editorial-mobile.css'
@@ -94,7 +95,7 @@ function localizeProject(project: Project, language: Language): Project {
   }
 }
 
-function Icon({ name }: { name: 'home' | 'folder' | 'user' | 'arrow' | 'mail' | 'close' | 'github' | 'link' | 'spark' | 'download' | 'apple' | 'play' }) {
+function Icon({ name }: { name: 'home' | 'folder' | 'user' | 'arrow' | 'mail' | 'close' | 'github' | 'linkedin' | 'link' | 'spark' | 'download' | 'apple' | 'play' }) {
   const props = { viewBox: '0 0 24 24', 'aria-hidden': true }
   if (name === 'home') return <svg {...props}><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z" /></svg>
   if (name === 'folder') return <svg {...props}><path d="M3.5 6.5h6l1.8 2H20a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18V8a1.5 1.5 0 0 1 1-1.5Z" /></svg>
@@ -102,12 +103,43 @@ function Icon({ name }: { name: 'home' | 'folder' | 'user' | 'arrow' | 'mail' | 
   if (name === 'mail') return <svg {...props}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
   if (name === 'close') return <svg {...props}><path d="m6 6 12 12M18 6 6 18" /></svg>
   if (name === 'github') return <svg {...props}><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9c0-1.1.1-1.6-.5-2.2 2.1-.2 4.4-1 4.4-5a3.9 3.9 0 0 0-1.1-2.7 3.6 3.6 0 0 0-.1-2.7s-.8-.3-2.8 1.1a9.7 9.7 0 0 0-5 0C8.9 5.2 8.1 5.5 8.1 5.5A3.6 3.6 0 0 0 8 8.2a3.9 3.9 0 0 0-1.1 2.7c0 4 2.3 4.8 4.4 5-.6.6-.6 1.3-.6 2.2V22" /></svg>
+  if (name === 'linkedin') return <svg {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
   if (name === 'link') return <svg {...props}><path d="M10 14a4.5 4.5 0 0 0 6.4.1l2.1-2.1a4.5 4.5 0 0 0-6.4-6.4L11 6.7" /><path d="M14 10a4.5 4.5 0 0 0-6.4-.1l-2.1 2.1a4.5 4.5 0 0 0 6.4 6.4l1.1-1.1" /></svg>
   if (name === 'spark') return <svg {...props}><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z" /></svg>
   if (name === 'download') return <svg {...props}><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M4 20h16" /></svg>
   if (name === 'apple') return <svg viewBox="0 0 384 512" aria-hidden="true" style={{ fill: 'currentColor', stroke: 'none' }}><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5c0 26.2 4.8 53.3 14.4 80.5 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.7-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.6-89-61.6-91.2zM260.2 104.5c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" /></svg>
   if (name === 'play') return <svg viewBox="0 0 512 512" aria-hidden="true" style={{ fill: 'currentColor', stroke: 'none' }}><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.8 25.3 35.3v441.3c0 15.5 8.7 28.5 21.7 35.3l256.4-256L47 0zm425.6 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18.1-14.3 18.1-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z" /></svg>
   return <span aria-hidden="true">→</span>
+}
+
+// Cada tecnología del stack lleva su logo; las que no tienen uno libre (C#, SQL Server, pgvector y RAG) usan un trazo propio.
+function TechChip({ name }: { name: string }) {
+  const logo = techLogos[name]
+  const line = name === 'RAG' ? <><path d="M12 21H6.5A1.5 1.5 0 0 1 5 19.5v-15A1.5 1.5 0 0 1 6.5 3H13l5 5v3" /><path d="M13 3v5h5M8.5 9h2.5M8.5 13h3" /><circle cx="16.5" cy="16.5" r="3" /><path d="m18.7 18.7 2.3 2.3" /></> : name === 'C#' ? <><path d="M12 2.5 20.5 7.25v9.5L12 21.5l-8.5-4.75v-9.5Z" /><path d="m10.6 8.8-.9 6.4M14.3 8.8l-.9 6.4M8.6 10.8h6.9M8.2 13.2h6.9" /></> : <><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8" /><path d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8" /></>
+  return <li><svg viewBox="0 0 24 24" aria-hidden="true" className={logo ? 'is-logo' : 'is-line'}>{logo ? <path d={logo} /> : line}</svg>{name}</li>
+}
+
+// El resaltado de la barra es una sola pieza que se desliza hasta el botón marcado; si no hay ninguno, se desvanece.
+// Se guarda el nodo en estado para volver a medir cuando la barra reaparece (por ejemplo, al cerrar un proyecto).
+function useSlide(active: number, labels: string) {
+  const [nav, setNav] = useState<HTMLElement | null>(null)
+  useLayoutEffect(() => {
+    if (!nav) return
+    const place = () => {
+      const button = nav.querySelectorAll('button')[active]
+      nav.classList.toggle('has-slide', Boolean(button))
+      if (!button) return
+      nav.style.setProperty('--slide-x', `${button.offsetLeft}px`)
+      nav.style.setProperty('--slide-w', `${button.offsetWidth}px`)
+    }
+    place()
+    // La primera colocación es directa; las siguientes se animan.
+    const ready = requestAnimationFrame(() => nav.classList.add('is-ready'))
+    const observer = new ResizeObserver(place)
+    observer.observe(nav)
+    return () => { cancelAnimationFrame(ready); observer.disconnect() }
+  }, [nav, active, labels])
+  return setNav
 }
 
 function ScenePhoto({ desktop, mobile, active, name }: { desktop: string; mobile: string; active: boolean; name: string }) {
@@ -145,6 +177,13 @@ const scrollToFlow = (view: View, behavior: ScrollBehavior) => {
   if (view === 'home') window.scrollTo({ top: 0, behavior })
   else document.getElementById(`flow-${view}`)?.scrollIntoView({ behavior, block: 'start' })
 }
+// Apartado que cruza la franja central de la pantalla, la misma que vigila el observador de la página continua.
+const visibleFlowView = () => {
+  const line = window.innerHeight * 0.475
+  const section = [...document.querySelectorAll('[data-flow-view]')].find(item => { const box = item.getBoundingClientRect(); return box.top <= line && box.bottom > line })
+  return section?.getAttribute('data-flow-view') as View | undefined
+}
+type Heading = View | 'contact'
 
 function App() {
   const [route, setRoute] = useState<Route>(readRoute)
@@ -177,10 +216,34 @@ function App() {
     document.title = pageTitle ? `${pageTitle} · Yeison Rojas` : 'Yeison Rojas · Software Engineer'
   }, [pageTitle])
 
+  // Al entrar a la página continua se baja al apartado de la URL; luego la barra de abajo sigue el apartado que se ve.
+  const viewRef = useRef(view)
+  viewRef.current = view
+  const followFlow = (next?: View) => {
+    if (!next || next === viewRef.current || window.location.pathname.startsWith('/proyecto/')) return
+    window.history.replaceState({ view: next }, '', viewPaths[next])
+    setRoute({ view: next, projectId: null })
+  }
+  // Al tocar una pestaña el sitio se desplaza solo: esa pestaña queda marcada hasta que se detiene, sin marcar los apartados que cruza.
+  const [heading, setHeading] = useState<Heading | null>(null)
+  const headingRef = useRef<Heading | null>(null)
+  const stopHeading = useRef(() => {})
+  const headTo = (target: Heading) => {
+    stopHeading.current()
+    headingRef.current = target
+    setHeading(target)
+    let idle = window.setTimeout(done, 400)
+    function settle() { window.clearTimeout(idle); idle = window.setTimeout(done, 160) }
+    function stop() { window.clearTimeout(idle); window.removeEventListener('scroll', settle); headingRef.current = null; setHeading(null) }
+    function done() { stop(); followFlow(visibleFlowView()) }
+    window.addEventListener('scroll', settle, { passive: true })
+    stopHeading.current = stop
+  }
   const go = (next: View) => {
     if (flow && flowViews.includes(next)) {
       window.history.replaceState({ view: next }, '', viewPaths[next])
       setRoute({ view: next, projectId: null })
+      headTo(next)
       scrollToFlow(next, 'smooth')
       return
     }
@@ -190,6 +253,7 @@ function App() {
   }
   // Contacto vive al final de "Sobre mí": se cambia de vista y luego se desplaza a la tarjeta.
   const goContact = () => {
+    headTo('contact')
     if (flow) {
       window.history.replaceState({ view: 'about' }, '', `${viewPaths.about}#contacto`)
       setRoute({ view: 'about', projectId: null })
@@ -207,9 +271,6 @@ function App() {
       window.setTimeout(() => { if (window.scrollY === start) card.scrollIntoView({ behavior: 'instant', block: 'center' }) }, 450)
     }, 80)
   }
-  // Al entrar a la página continua se baja al apartado de la URL; luego la barra de abajo sigue el apartado que se ve.
-  const viewRef = useRef(view)
-  viewRef.current = view
   // Contacto es el final de Sobre mí: la pestaña Contacto se marca mientras se ve su tarjeta.
   const [atContact, setAtContact] = useState(false)
   useEffect(() => {
@@ -220,15 +281,47 @@ function App() {
     observer.observe(card)
     return () => observer.disconnect()
   }, [flow])
+  // La foto de Sobre mí entra en cuanto su apartado asoma por abajo, para no dejar un hueco vacío al terminar Proyectos.
+  const [aboutInSight, setAboutInSight] = useState(false)
+  useEffect(() => {
+    if (!flow) { setAboutInSight(false); return }
+    const section = document.getElementById('flow-about')
+    if (!section) return
+    const observer = new IntersectionObserver(([entry]) => setAboutInSight(entry.isIntersecting), { rootMargin: '0px 0px 15% 0px' })
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [flow])
+  const scene: View = view === 'projects' && aboutInSight ? 'about' : view
+  // La barra de arriba sigue el desplazamiento: línea de avance, versión compacta y, en móvil, se esconde al bajar y vuelve al subir.
+  const headerRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+    let last = window.scrollY
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const y = window.scrollY
+      const room = document.documentElement.scrollHeight - window.innerHeight
+      header.style.setProperty('--progress', room > 0 ? String(Math.min(1, y / room)) : '0')
+      header.classList.toggle('is-compact', y > 40)
+      if (Math.abs(y - last) < 8) return
+      header.classList.toggle('is-tucked', y > last && y > 120)
+      last = y
+    }
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll) }
+  }, [view])
   useEffect(() => {
     if (!flow) return
     if (viewRef.current !== 'home') scrollToFlow(viewRef.current, 'instant')
     const observer = new IntersectionObserver(entries => {
+      if (headingRef.current) return
       const visible = entries.find(entry => entry.isIntersecting)
-      const next = visible?.target.getAttribute('data-flow-view') as View | undefined
-      if (!next || next === viewRef.current || window.location.pathname.startsWith('/proyecto/')) return
-      window.history.replaceState({ view: next }, '', viewPaths[next])
-      setRoute({ view: next, projectId: null })
+      followFlow(visible?.target.getAttribute('data-flow-view') as View | undefined)
     }, { rootMargin: '-45% 0px -50% 0px' })
     document.querySelectorAll('[data-flow-view]').forEach(section => observer.observe(section))
     return () => observer.disconnect()
@@ -243,24 +336,26 @@ function App() {
     window.history.replaceState({ view }, '', viewPaths[view])
     setRoute({ view, projectId: null })
   }
-  const isProjects = view === 'projects' || view === 'archive'
+  const at: Heading = heading ?? (atContact ? 'contact' : view)
   const siteLinks = [
-    { id: 'projects', label: text.nav.projects, active: view === 'projects', onClick: () => go('projects') },
-    { id: 'archive', label: text.nav.collection, active: view === 'archive', onClick: () => go('archive') },
-    { id: 'about', label: text.nav.about, active: view === 'about' && !atContact, onClick: () => go('about') },
-    { id: 'contact', label: text.nav.contact, active: atContact, onClick: goContact },
+    { id: 'projects', label: text.nav.projects, active: at === 'projects', onClick: () => go('projects') },
+    { id: 'archive', label: text.nav.collection, active: at === 'archive', onClick: () => go('archive') },
+    { id: 'about', label: text.nav.about, active: at === 'about', onClick: () => go('about') },
+    { id: 'contact', label: text.nav.contact, active: at === 'contact', onClick: goContact },
   ]
+  const siteNavRef = useSlide(siteLinks.findIndex(link => link.active), siteLinks.map(link => link.label).join())
   const tabs = [
-    { id: 'home', icon: 'home' as const, label: text.nav.home, active: view === 'home', onClick: () => go('home') },
-    { id: 'projects', icon: 'folder' as const, label: text.nav.projects, active: isProjects, onClick: () => go('projects') },
-    { id: 'about', icon: 'user' as const, label: text.nav.about, active: view === 'about' && !atContact, onClick: () => go('about') },
-    { id: 'contact', icon: 'mail' as const, label: text.nav.contact, active: atContact, onClick: goContact },
+    { id: 'home', icon: 'home' as const, label: text.nav.home, active: at === 'home', onClick: () => go('home') },
+    { id: 'projects', icon: 'folder' as const, label: text.nav.projects, active: at === 'projects' || at === 'archive', onClick: () => go('projects') },
+    { id: 'about', icon: 'user' as const, label: text.nav.about, active: at === 'about', onClick: () => go('about') },
+    { id: 'contact', icon: 'mail' as const, label: text.nav.contact, active: at === 'contact', onClick: goContact },
   ]
+  const tabBarRef = useSlide(tabs.findIndex(tab => tab.active), tabs.map(tab => tab.label).join())
   return <main className={`portfolio scene-${view}`}>
-    <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={view === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={view === 'projects'} /><ScenePhoto name="archive" desktop={archiveDesktop} mobile={archiveMobile} active={view === 'archive'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={view === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
-    <header className="site-header"><button className="identity" onClick={() => go('home')} aria-label={text.header.home}><span className="identity-mark" aria-hidden="true">YR</span><b>YEISON ROJAS</b><small>{text.header.role}</small></button><nav className="site-nav" aria-label={text.nav.aria}>{siteLinks.map(link => <button key={link.id} type="button" className={link.active ? 'is-active' : ''} aria-current={link.active ? 'page' : undefined} onClick={link.onClick}>{link.label}</button>)}</nav><div className="header-actions" aria-label={text.header.links}><a className="header-github" href="https://github.com/yeisondev001" target="_blank" rel="noreferrer" aria-label="GitHub"><Icon name="github" /></a><button className="language-toggle" type="button" onClick={() => setLanguage(current => current === 'en' ? 'es' : 'en')} aria-label={text.header.language} aria-pressed={language === 'es'}><span className={language === 'en' ? 'is-active' : ''}>EN</span><i aria-hidden="true" /><span className={language === 'es' ? 'is-active' : ''}>ES</span></button><a className="cv-download" href={text.cv.href} download={text.cv.file}><Icon name="download" /><span>CV</span></a></div></header>
+    <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={scene === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={scene === 'projects'} /><ScenePhoto name="archive" desktop={archiveDesktop} mobile={archiveMobile} active={scene === 'archive'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={scene === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
+    <header className="site-header" ref={headerRef}><button className="identity" onClick={() => go('home')} aria-label={text.header.home}><span className="identity-mark" aria-hidden="true">YR</span><b>YEISON ROJAS</b><small>{text.header.role}</small></button><nav className="site-nav" ref={siteNavRef} aria-label={text.nav.aria}>{siteLinks.map(link => <button key={link.id} type="button" className={link.active ? 'is-active' : ''} aria-current={link.active ? 'page' : undefined} onClick={link.onClick}>{link.label}</button>)}<i className="nav-slide" aria-hidden="true" /></nav><div className="header-actions" aria-label={text.header.links}><a className="header-social" href="https://www.linkedin.com/in/yeison-rojas-henriquez/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Icon name="linkedin" /></a><a className="header-social" href="https://github.com/yeisondev001" target="_blank" rel="noreferrer" aria-label="GitHub"><Icon name="github" /></a><button className="language-toggle" type="button" onClick={() => setLanguage(current => current === 'en' ? 'es' : 'en')} aria-label={text.header.language} aria-pressed={language === 'es'}><span className={language === 'en' ? 'is-active' : ''}>EN</span><i aria-hidden="true" /><span className={language === 'es' ? 'is-active' : ''}>ES</span></button><a className="cv-download" href={text.cv.href} download={text.cv.file}><Icon name="download" /><span>CV</span></a></div><span className="scroll-progress" aria-hidden="true" /></header>
     {flow ? <div className="mobile-flow"><div id="flow-home" data-flow-view="home"><Home go={go} openProject={openProject} featured={localizedProjects[0]} text={text} /></div><div id="flow-projects" data-flow-view="projects"><Projects go={go} openProject={openProject} projects={localizedProjects} text={text} /></div><div id="flow-about" data-flow-view="about"><About text={text} projects={localizedArchiveProjects} openProject={openProject} /></div></div> : <Archive openProject={openProject} projects={localizedArchiveProjects} text={text} />}
-    {!selected && <nav className="tab-bar" aria-label={text.nav.aria}>{tabs.map(tab => <button key={tab.id} type="button" className={tab.active ? 'is-active' : ''} aria-current={tab.active ? 'page' : undefined} onClick={tab.onClick}><Icon name={tab.icon} /><span>{tab.label}</span></button>)}</nav>}
+    {!selected && <nav className="tab-bar" ref={tabBarRef} aria-label={text.nav.aria}>{tabs.map(tab => <button key={tab.id} type="button" className={tab.active ? 'is-active' : ''} aria-current={tab.active ? 'page' : undefined} onClick={tab.onClick}><Icon name={tab.icon} /><span>{tab.label}</span></button>)}<i className="nav-slide" aria-hidden="true" /></nav>}
     {selected && <ProjectDialog project={selected} close={closeProject} text={text} />}
     <MusicBubble text={text} />
   </main>
@@ -274,7 +369,7 @@ function Home({ go, openProject, featured, text }: { go: (view: View) => void; o
   const compact = (value: string) => value.replace(/\s/g, '')
   const repeatsStat = (title: string) => text.about.stats.some(stat => compact(title).startsWith(compact(stat.value)) && !/^[\d.,]/.test(compact(title).slice(compact(stat.value).length)))
   const featuredImpact = featured?.impact?.find(item => !repeatsStat(item.title)) ?? featured?.impact?.[0]
-  return <section className="home-view" aria-label={home.aria}><figure className="mobile-home-hero"><picture><source media="(max-width: 700px)" srcSet={entryMobile} /><img src={entryDesktop} alt={home.imageAlt} /></picture><figcaption>{home.caption}</figcaption></figure><div className="intro-card"><p className="kicker">{home.kicker}</p><h1>{home.lead}<br /><em>{home.accent}</em></h1><p>{home.body}</p><dl className="home-stats">{text.about.stats.map(stat => <div key={stat.label}><dt>{stat.value}</dt><dd>{stat.label}</dd></div>)}</dl><button className="text-action" onClick={() => go('projects')}>{home.action} <Icon name="arrow" /></button>{featured && <button type="button" className="home-featured" onClick={() => openProject(featured)}>{featuredCover && <img src={featuredCover.src} alt="" />}<span><small>{home.featured}</small><b>{featured.title}</b>{featuredImpact && <em>{featuredImpact.title} {featuredImpact.detail}</em>}</span><Icon name="arrow" /></button>}</div><button className="scene-hotspot home-project-link" onClick={() => go('projects')}><span><Icon name="spark" /></span><b>{home.station}</b><small>{home.stationHint}</small></button><p className="scene-hint">{home.hint} <span>•</span> {home.hintEnd}</p></section> }
+  return <section className="home-view" aria-label={home.aria}><figure className="mobile-home-hero"><picture><source media="(max-width: 700px)" srcSet={entryMobile} /><img src={entryDesktop} alt={home.imageAlt} /></picture><figcaption>{home.caption}</figcaption></figure><div className="intro-card"><p className="kicker kicker-split">{home.kicker.split(' | ').map((part, index, parts) => <span key={part}>{part}{index < parts.length - 1 && ' |'}</span>)}</p><h1>{home.lead}<br /><em>{home.accent}</em></h1><p>{home.body}</p><dl className="home-stats">{text.about.stats.map(stat => <div key={stat.label}><dt>{stat.value}</dt><dd>{stat.label}</dd></div>)}</dl><button className="text-action" onClick={() => go('projects')}>{home.action} <Icon name="arrow" /></button>{featured && <button type="button" className="home-featured" onClick={() => openProject(featured)}>{featuredCover && <img src={featuredCover.src} alt="" />}<span><small>{home.featured}</small><b>{featured.title}</b>{featuredImpact && <em>{featuredImpact.title} {featuredImpact.detail}</em>}</span><Icon name="arrow" /></button>}</div><button className="scene-hotspot home-project-link" onClick={() => go('projects')}><span><Icon name="spark" /></span><b>{home.station}</b><small>{home.stationHint}</small></button><p className="scene-hint">{home.hint} <span>•</span> {home.hintEnd}</p></section> }
 function SceneMoment({ desktop, mobile, caption }: { desktop: string; mobile: string; caption: string }) { return <figure className="scene-moment"><picture><source media="(max-width: 700px)" srcSet={mobile} /><img src={desktop} alt="" /></picture><figcaption>{caption}</figcaption></figure> }
 function Projects({ go, openProject, projects, text }: { go: (view: View) => void; openProject: (project: Project) => void; projects: Project[]; text: typeof copy.en }) { const content = text.projects; return <section className="content-view projects-view"><SceneMoment desktop={automationDesktop} mobile={automationDesktop} caption={content.caption} /><div className="content-heading"><p className="kicker">{content.kicker}</p><h1>{content.lead}<br /><em>{content.accent}</em></h1><p>{content.body}</p></div><div className="project-list">{projects.map((project, index) => <ProjectCard project={project} key={project.id} index={index} open={() => openProject(project)} text={text} />)}</div><button className="all-projects-action" onClick={() => go('archive')}><span><Icon name="spark" /></span><div><small>{content.allKicker}</small><b>{content.all}</b></div><Icon name="arrow" /></button></section> }
 // Categoría de cada proyecto para los filtros de Colección.
@@ -434,7 +529,7 @@ function About({ text, projects, openProject }: { text: typeof copy.en; projects
     <div className="content-heading"><p className="kicker">{about.kicker}</p><h1>{about.lead}<br /><em>{about.accent}</em></h1><p>{about.body}</p></div>
     {/* El puesto actual vive en la trayectoria (sin repetirlo en un bloque aparte) y enlaza a los sistemas construidos allí. */}
     <section className="timeline about-timeline"><p className="detail-label">{about.timeline}</p>{about.experience.map((job, index) => <article key={job.period} className={index === 0 ? 'is-current' : ''}>{index === 0 ? <p className="about-now-label"><i /> {about.now} · {job.period}</p> : <small>{job.period}</small>}<h2>{job.title}{'place' in job && <span> · {job.place}</span>}</h2>{index === 0 ? <div className="about-now-systems"><p className="detail-label">{about.nowSystems}</p><div>{built.map(project => <button key={project.id} type="button" onClick={() => openProject(project)}>{project.title} <Icon name="arrow" /></button>)}</div></div> : <p>{job.body}</p>}</article>)}</section>
-    <section className="stack-block about-stack"><p className="detail-label">{about.stack}</p><div>{about.stackGroups.map(group => <article key={group.label}><b>{group.label}</b><p>{group.items}</p></article>)}</div></section>
+    <section className="stack-block about-stack"><p className="detail-label">{about.stack}</p><div>{about.stackGroups.map(group => <article key={group.label}><b>{group.label}</b><ul className="tech-list">{group.items.split(' · ').map(name => <TechChip key={name} name={name} />)}</ul></article>)}</div></section>
     {/* Certificaciones: un bloque discreto, después del stack, sin competir con los proyectos. */}
     <section ref={certsRef} className="stack-block about-certs"><p className="detail-label">{about.certsLabel}</p><ul>{about.certs.map(cert => <li key={cert.name}>{'image' in cert && cert.image ? <button type="button" className="cert-open" onClick={event => setCert({ name: cert.name, issuer: cert.issuer, image: cert.image!, verify: 'verify' in cert ? cert.verify : undefined, issued: cert.issued ?? '', from: event.currentTarget })} aria-label={`${about.certView}: ${cert.name}`}><b>{cert.name}</b><span>{cert.issuer}</span><em>{about.certView} <Icon name="arrow" /></em></button> : <><b>{cert.name}</b><span>{cert.issuer}</span></>}</li>)}</ul></section>
     {cert && <CertificateCard cert={cert} labels={about} close={() => setCert(null)} />}

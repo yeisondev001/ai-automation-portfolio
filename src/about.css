@@ -31,10 +31,14 @@
 .about-timeline article.is-current{border-left-color:rgba(240,201,133,.6)}
 .about-timeline article.is-current:before{background:#f0c985;box-shadow:0 0 10px rgba(240,201,133,.6)}
 
-.about-stack>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.about-stack>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
 .about-stack article{padding:12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.04)}
 .about-stack b{color:#f0c985;font:500 11px 'DM Mono',monospace;letter-spacing:.08em}
-.about-stack article p{margin:6px 0 0;color:#d6d0c7;font-size:13px;line-height:1.45}
+.about-stack .tech-list{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
+.about-stack .tech-list li{display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 8px;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.035);color:#e2dcd2;font-size:12.5px;line-height:1.2;white-space:nowrap}
+.about-stack .tech-list svg{flex:none;width:14px;height:14px}
+.about-stack .tech-list svg.is-logo{fill:#e8c184;stroke:none}
+.about-stack .tech-list svg.is-line{fill:none;stroke:#e8c184;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 .about-actions h2{max-width:none}
 .about-actions-buttons{display:flex;flex-wrap:wrap;gap:8px}
