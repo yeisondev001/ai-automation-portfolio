@@ -84,8 +84,8 @@
 @keyframes bubble-plop{0%,62%{scale:1}74%{scale:1.18 .84}86%{scale:.94 1.06}100%{scale:1}}
 @keyframes bubble-squish{0%{scale:1}14%{scale:1.32 .68}34%{scale:.82 1.2}52%{scale:1.12 .9}70%{scale:.95 1.05}85%{scale:1.02 .98}100%{scale:1}}
 @media(max-width:700px){
-  .music-bubble{right:14px;bottom:calc(108px + env(safe-area-inset-bottom));width:46px;height:46px;transition:translate .5s cubic-bezier(.3,1.5,.55,1) .42s,border-color .25s,background .25s}
-  .nav-lifted .music-bubble{translate:0 88px;transition:translate .55s cubic-bezier(.45,0,.3,1.35) .12s,border-color .25s,background .25s;animation:bubble-float 4.5s ease-in-out infinite,bubble-plop .7s .12s}
-  .nav-landed .music-bubble{animation:bubble-float 4.5s ease-in-out infinite,bubble-squish .8s .38s}
+  .music-bubble{right:14px;bottom:calc(108px + env(safe-area-inset-bottom));width:46px;height:46px;transition:translate .5s cubic-bezier(.3,1.5,.55,1) .54s,border-color .25s,background .25s}
+  .nav-lifted .music-bubble{translate:0 88px;transition:translate .55s cubic-bezier(.45,0,.3,1.35) .16s,border-color .25s,background .25s;animation:bubble-float 4.5s ease-in-out infinite,bubble-plop .7s .16s}
+  .nav-landed .music-bubble{animation:bubble-float 4.5s ease-in-out infinite,bubble-squish .8s .5s}
 }
 @media(prefers-reduced-motion:reduce){.music-bubble,.music-bubble.is-playing:after,.music-bars i,.nav-lifted .music-bubble,.nav-landed .music-bubble{animation:none}.site-header,.is-ready>.nav-slide,.tab-bar,.tab-bar.is-ready,.tab-bar button svg,.nav-lifted .music-bubble,.music-bubble{transition:none}}

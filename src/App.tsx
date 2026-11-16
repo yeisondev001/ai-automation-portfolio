@@ -308,8 +308,9 @@ function App() {
       const room = root.scrollHeight - window.innerHeight
       header.style.setProperty('--progress', room > 0 ? String(Math.min(1, y / room)) : '0')
       header.classList.toggle('is-compact', y > 40)
-      // Umbrales distintos para subir y bajar, así la barra no rebota cerca del límite.
-      const next = lifted ? y > 80 : y > 160
+      // Sube al dejar atrás la foto de inicio (dos tercios de pantalla) y baja al volver cerca del inicio (un tercio);
+      // los umbrales distintos evitan que rebote cerca del límite.
+      const next = y > window.innerHeight * (lifted ? 0.33 : 0.66)
       if (next === lifted) return
       lifted = next
       header.classList.toggle('is-tucked', lifted)
@@ -322,7 +323,7 @@ function App() {
       root.classList.toggle('nav-landed', !lifted)
       if (!bar || from === undefined || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       const shift = from - bar.getBoundingClientRect().top
-      if (shift) move = bar.animate([{ transform: `translateY(${shift}px)` }, { transform: 'none' }], { duration: 600, easing: 'cubic-bezier(.65,0,.25,1)' })
+      if (shift) move = bar.animate([{ transform: `translateY(${shift}px)` }, { transform: 'none' }], { duration: 800, easing: 'cubic-bezier(.55,0,.2,1)' })
     }
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
     update()
