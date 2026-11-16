@@ -292,22 +292,28 @@ function App() {
     return () => observer.disconnect()
   }, [flow])
   const scene: View = view === 'projects' && aboutInSight ? 'about' : view
-  // La barra de arriba sigue el desplazamiento: línea de avance, versión compacta y, en móvil, se esconde al bajar y vuelve al subir.
+  // La barra de arriba sigue el desplazamiento: línea de avance, versión compacta y, en móvil, se esconde pasado el inicio
+  // mientras la de pestañas sube a ocupar su lugar (nav-lifted); al volver al inicio baja y empuja la burbuja de música (nav-landed).
   const headerRef = useRef<HTMLElement>(null)
   useEffect(() => {
     const header = headerRef.current
     if (!header) return
-    let last = window.scrollY
+    const root = document.documentElement
+    let lifted = header.classList.contains('is-tucked')
     let frame = 0
     const update = () => {
       frame = 0
       const y = window.scrollY
-      const room = document.documentElement.scrollHeight - window.innerHeight
+      const room = root.scrollHeight - window.innerHeight
       header.style.setProperty('--progress', room > 0 ? String(Math.min(1, y / room)) : '0')
       header.classList.toggle('is-compact', y > 40)
-      if (Math.abs(y - last) < 8) return
-      header.classList.toggle('is-tucked', y > last && y > 120)
-      last = y
+      // Umbrales distintos para subir y bajar, así la barra no rebota cerca del límite.
+      const next = lifted ? y > 80 : y > 160
+      if (next === lifted) return
+      lifted = next
+      header.classList.toggle('is-tucked', lifted)
+      root.classList.toggle('nav-lifted', lifted)
+      root.classList.toggle('nav-landed', !lifted)
     }
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
     update()
@@ -355,7 +361,7 @@ function App() {
     <div className="scene-stage"><ScenePhoto name="entry" desktop={entryDesktop} mobile={entryMobile} active={scene === 'home'} /><ScenePhoto name="projects" desktop={automationDesktop} mobile={automationMobile} active={scene === 'projects'} /><ScenePhoto name="archive" desktop={archiveDesktop} mobile={archiveMobile} active={scene === 'archive'} /><ScenePhoto name="about" desktop={aboutDesktop} mobile={aboutMobile} active={scene === 'about'} /><div className="ambient-light amber-light" /><div className="ambient-light blue-light" /><div className="film-grain" /></div>
     <header className="site-header" ref={headerRef}><button className="identity" onClick={() => go('home')} aria-label={text.header.home}><span className="identity-mark" aria-hidden="true">YR</span><b>YEISON ROJAS</b><small>{text.header.role}</small></button><nav className="site-nav" ref={siteNavRef} aria-label={text.nav.aria}>{siteLinks.map(link => <button key={link.id} type="button" className={link.active ? 'is-active' : ''} aria-current={link.active ? 'page' : undefined} onClick={link.onClick}>{link.label}</button>)}<i className="nav-slide" aria-hidden="true" /></nav><div className="header-actions" aria-label={text.header.links}><a className="header-social" href="https://www.linkedin.com/in/yeison-rojas-henriquez/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Icon name="linkedin" /></a><a className="header-social" href="https://github.com/yeisondev001" target="_blank" rel="noreferrer" aria-label="GitHub"><Icon name="github" /></a><button className="language-toggle" type="button" onClick={() => setLanguage(current => current === 'en' ? 'es' : 'en')} aria-label={text.header.language} aria-pressed={language === 'es'}><span className={language === 'en' ? 'is-active' : ''}>EN</span><i aria-hidden="true" /><span className={language === 'es' ? 'is-active' : ''}>ES</span></button><a className="cv-download" href={text.cv.href} download={text.cv.file}><Icon name="download" /><span>CV</span></a></div><span className="scroll-progress" aria-hidden="true" /></header>
     {flow ? <div className="mobile-flow"><div id="flow-home" data-flow-view="home"><Home go={go} openProject={openProject} featured={localizedProjects[0]} text={text} /></div><div id="flow-projects" data-flow-view="projects"><Projects go={go} openProject={openProject} projects={localizedProjects} text={text} /></div><div id="flow-about" data-flow-view="about"><About text={text} projects={localizedArchiveProjects} openProject={openProject} /></div></div> : <Archive openProject={openProject} projects={localizedArchiveProjects} text={text} />}
-    {!selected && <nav className="tab-bar" ref={tabBarRef} aria-label={text.nav.aria}>{tabs.map(tab => <button key={tab.id} type="button" className={tab.active ? 'is-active' : ''} aria-current={tab.active ? 'page' : undefined} onClick={tab.onClick}><Icon name={tab.icon} /><span>{tab.label}</span></button>)}<i className="nav-slide" aria-hidden="true" /></nav>}
+    {!selected && <nav className="tab-bar" ref={tabBarRef} aria-label={text.nav.aria}><i className="tab-bar-bg" aria-hidden="true" /><svg className="tab-notch" viewBox="0 0 112 44" aria-hidden="true"><path d="M18.21 0A10 10 0 0 1 28.15 11.05A28 28 0 1 0 83.85 11.05A10 10 0 0 1 93.79 0" /></svg>{tabs.map(tab => <button key={tab.id} type="button" className={tab.active ? 'is-active' : ''} aria-current={tab.active ? 'page' : undefined} onClick={tab.onClick}><Icon name={tab.icon} /><span>{tab.label}</span></button>)}<i className="nav-slide" aria-hidden="true" /></nav>}
     {selected && <ProjectDialog project={selected} close={closeProject} text={text} />}
     <MusicBubble text={text} />
   </main>
