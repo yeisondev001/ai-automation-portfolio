@@ -48,10 +48,11 @@
 
   .portfolio{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
   /* Barra curva: la pestaña activa sube a un círculo dorado metido en una muesca que se desliza con él. */
-  .tab-bar{--nx:calc(var(--slide-x) + var(--slide-w) / 2);position:fixed;z-index:11;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));left:12px;display:grid;grid-template-columns:repeat(4,1fr);padding:0 6px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.5));transition:transform .6s cubic-bezier(.65,0,.25,1)}
-  .tab-bar.is-ready{transition:--slide-x .55s cubic-bezier(.3,1.2,.45,1),--slide-w .55s cubic-bezier(.3,1.2,.45,1),transform .6s cubic-bezier(.65,0,.25,1)}
-  /* Pasado el inicio, la barra sube al lugar de la de arriba (que se esconde) dejando ver el círculo dorado. */
-  .nav-lifted .tab-bar{transform:translateY(calc(100px + env(safe-area-inset-top) + env(safe-area-inset-bottom) - 100vh));transform:translateY(calc(100px + env(safe-area-inset-top) + env(safe-area-inset-bottom) - 100dvh))}
+  .tab-bar{--nx:calc(var(--slide-x) + var(--slide-w) / 2);position:fixed;z-index:11;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));left:12px;display:grid;grid-template-columns:repeat(4,1fr);padding:0 6px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.5))}
+  .tab-bar.is-ready{transition:--slide-x .55s cubic-bezier(.3,1.2,.45,1),--slide-w .55s cubic-bezier(.3,1.2,.45,1)}
+  /* Pasado el inicio, la barra se ancla arriba, en el lugar de la de arriba (que se esconde), dejando ver el círculo dorado.
+     El viaje entre abajo y arriba lo anima App.tsx, porque el alto de la pantalla cambia mientras el navegador esconde su barra. */
+  .nav-lifted .tab-bar{top:calc(18px + env(safe-area-inset-top));bottom:auto}
   .tab-bar-bg{position:absolute;inset:0;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:#0a0e11}
   .tab-bar.has-slide .tab-bar-bg{-webkit-mask-image:var(--notch-mask),linear-gradient(90deg,#000 calc(var(--nx) - 54px),transparent 0 calc(var(--nx) + 54px),#000 0);mask-image:var(--notch-mask),linear-gradient(90deg,#000 calc(var(--nx) - 54px),transparent 0 calc(var(--nx) + 54px),#000 0);-webkit-mask-position:calc(var(--nx) - 56px) 0,0 0;mask-position:calc(var(--nx) - 56px) 0,0 0;-webkit-mask-size:112px 200px,100% 100%;mask-size:112px 200px,100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
   .tab-bar{--notch-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='112' height='200'%3E%3Cpath d='M0 0H18.21A10 10 0 0 1 28.15 11.05A28 28 0 1 0 83.85 11.05A10 10 0 0 1 93.79 0H112V200H0Z'/%3E%3C/svg%3E")}

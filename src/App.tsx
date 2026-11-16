@@ -300,6 +300,7 @@ function App() {
     if (!header) return
     const root = document.documentElement
     let lifted = header.classList.contains('is-tucked')
+    let move: Animation | undefined
     let frame = 0
     const update = () => {
       frame = 0
@@ -312,8 +313,16 @@ function App() {
       if (next === lifted) return
       lifted = next
       header.classList.toggle('is-tucked', lifted)
+      // La barra de pestañas cambia de ancla (abajo o arriba) y viaja desde donde se ve ahora, aunque vaya a medio camino.
+      // Así su destino no depende del alto de la pantalla, que en el celular cambia mientras el navegador esconde su barra.
+      const bar = document.querySelector<HTMLElement>('.tab-bar')
+      const from = bar?.getBoundingClientRect().top
+      move?.cancel()
       root.classList.toggle('nav-lifted', lifted)
       root.classList.toggle('nav-landed', !lifted)
+      if (!bar || from === undefined || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const shift = from - bar.getBoundingClientRect().top
+      if (shift) move = bar.animate([{ transform: `translateY(${shift}px)` }, { transform: 'none' }], { duration: 600, easing: 'cubic-bezier(.65,0,.25,1)' })
     }
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
     update()
