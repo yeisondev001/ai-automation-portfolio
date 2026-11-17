@@ -99,7 +99,6 @@
   .music-bubble{right:14px;bottom:calc(108px + env(safe-area-inset-bottom));width:46px;height:46px;transition:translate .5s cubic-bezier(.3,1.5,.55,1) .54s,border-color .25s,background .25s}
   .nav-lifted .music-bubble{translate:0 88px;transition:translate .55s cubic-bezier(.45,0,.3,1.35) .16s,border-color .25s,background .25s;animation:bubble-float 4.5s ease-in-out infinite,bubble-plop .7s .16s}
   .nav-landed .music-bubble{animation:bubble-float 4.5s ease-in-out infinite,bubble-squish .8s .5s}
-  /* Al seguir bajando con la barra arriba, la burbuja se aparta por la derecha para no tapar las tarjetas; vuelve al subir o al llegar al final. */
-  .nav-lifted.music-away .music-bubble:not(:focus-visible){translate:80px 88px;transition:translate .35s cubic-bezier(.5,0,.75,0),border-color .25s,background .25s}
+  /* La burbuja no se esconde nunca: es el único control del sonido, para ponerlo o quitarlo en cualquier punto de la página. */
 }
-@media(prefers-reduced-motion:reduce){.music-bubble,.music-bubble.is-playing:after,.music-bars i,.nav-lifted .music-bubble,.nav-landed .music-bubble{animation:none}.site-header,.is-ready>.nav-slide,.tab-bar,.tab-bar.is-ready,.tab-bar button svg,.nav-lifted .music-bubble,.music-bubble,.nav-lifted.music-away .music-bubble:not(:focus-visible),.tab-scrim,.nav-lifted .tab-scrim{transition:none}}
+@media(prefers-reduced-motion:reduce){.music-bubble,.music-bubble.is-playing:after,.music-bars i,.nav-lifted .music-bubble,.nav-landed .music-bubble{animation:none}.site-header,.is-ready>.nav-slide,.tab-bar,.tab-bar.is-ready,.tab-bar button svg,.nav-lifted .music-bubble,.music-bubble,.tab-scrim,.nav-lifted .tab-scrim{transition:none}}

@@ -304,15 +304,12 @@ function App() {
     let lifted = header.classList.contains('is-tucked')
     let move: Animation | undefined
     let frame = 0
-    let lastY = window.scrollY
     const update = () => {
       frame = 0
       const y = window.scrollY
       const room = root.scrollHeight - window.innerHeight
       header.style.setProperty('--progress', room > 0 ? String(Math.min(1, y / room)) : '0')
       header.classList.toggle('is-compact', y > 40)
-      // Ya lejos del inicio, la burbuja de música se aparta al bajar (para no tapar las tarjetas) y vuelve al subir o al llegar al final.
-      if (Math.abs(y - lastY) > 8) { root.classList.toggle('music-away', y > lastY && y > window.innerHeight * 1.3 && y < room - 4); lastY = y }
       // Sube al dejar atrás la foto de inicio (dos tercios de pantalla) y baja al volver cerca del inicio (un tercio);
       // los umbrales distintos evitan que rebote cerca del límite.
       const next = y > window.innerHeight * (lifted ? 0.33 : 0.66)
