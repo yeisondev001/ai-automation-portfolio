@@ -2,7 +2,7 @@
 
 /* Etiquetas y descripciones que estaban en 11–13px. */
 .tag{font-size:12px}
-.card-copy p:not(.card-eyebrow){font-size:14px;line-height:1.45}
+.card-copy p:not(.card-eyebrow){font-size:15px;line-height:1.5}
 .case-study li p:last-child{font-size:14.5px;line-height:1.55}
 .archive-project small{font-size:12px}
 
@@ -22,8 +22,27 @@
   .archive-view .scene-moment{display:none}
   .archive-view .content-heading{margin-top:14px}
 
-  .card-copy p:not(.card-eyebrow){font-size:13px;line-height:1.42}
+  .card-copy p:not(.card-eyebrow){font-size:15px;line-height:1.45}
   .tag{font-size:12px}
+}
+
+/* Escala mínima de letra (revisión UI/UX): ninguna etiqueta baja de 12px y los textos de lectura van a 15–16px. */
+.kicker,.detail-label,.card-eyebrow,.project-art span,.timeline small,.flow-step span,.impact-heading>span,.impact-grid small,.app-gallery-heading>span,.gallery-hint,.demo-topbar,.home-featured small,.collection-tile p,.collection-preview span,.collection-filters button span,.about-now-label,.about-stack b,.case-study li>span,.scene-moment figcaption,.all-projects-action small,.stack-block span,.site-header .identity small{font-size:12px}
+.timeline p:not(.detail-label,.about-now-label){font-size:15px;line-height:1.5}
+/* Las etiquetas de la trayectoria («Trayectoria», «Ahora», «Sistemas que construí») vuelven a su estilo: la regla de los párrafos las dejaba grises y grandes. */
+.timeline .detail-label{color:#e8c18a;font-size:12px;line-height:1.3}
+.timeline .about-now-label{color:#a9d98a;font-size:12px}
+/* En escritorio la flecha de la tarjeta va en la esquina de abajo: las etiquetas dejan su hueco para no quedar debajo. */
+@media(min-width:701px){.project-list .project-card:not(.is-featured) .card-copy>div{padding-right:30px}}
+.home-stats dd{font-size:13px}
+.home-featured em{font-size:14px}
+.about-certs li span{font-size:13.5px}
+/* Las descripciones de las tarjetas muestran tres líneas antes de cortar. */
+.project-list .project-card:not(.is-featured) .card-copy p:not(.card-eyebrow),.project-list .project-card.is-featured .card-copy p:not(.card-eyebrow){-webkit-line-clamp:3}
+/* Botones de contacto y accesos a los sistemas: 44px de alto también con mouse. */
+.contact-card .about-actions-buttons a,.contact-card .about-actions-buttons button,.about-now-systems button{min-height:44px;font-size:14px}
+@media(max-width:700px){
+  .intro-card>p:not(.kicker),.content-heading>p:last-child{font-size:16px}
 }
 
 /* Marca de la cabecera: monograma con la misma serif dorada de los titulares, en lugar del círculo genérico. */

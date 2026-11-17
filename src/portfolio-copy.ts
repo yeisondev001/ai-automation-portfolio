@@ -4,7 +4,7 @@ export const copy = {
   en: {
     meta: { description: 'Yeison Rojas, software engineer: apps, backend, integrations, and automation in production, from B2B ordering to quality control and analytics.' },
     cv: { href: '/cv/YeisonRojasCV-EN.pdf', file: 'YeisonRojasCV-EN.pdf' },
-    header: { role: 'SOFTWARE ENGINEER', home: 'Return to home', links: 'Professional links', language: 'Switch to Spanish' },
+    header: { role: 'SOFTWARE ENGINEER', skip: 'Skip to content', home: 'Return to home', links: 'Professional links', language: 'Switch to Spanish' },
     nav: { aria: 'Main navigation', home: 'Home', projects: 'Projects', collection: 'Collection', about: 'About', contact: 'Contact' },
     home: { aria: 'Portfolio home', caption: '01 — SOFTWARE ENGINEER', kicker: 'FULL-STACK SOFTWARE ENGINEER | INTEGRATIONS, AI & AUTOMATION', lead: 'From manual process', accent: 'to production software.', body: 'Apps, backend, integrations, and automation built end to end. Five of my systems are in daily use today: B2B ordering, quality control, inventory, and production analytics.', action: 'See the projects', featured: 'FEATURED PROJECT', station: 'Workstation', stationHint: 'See real projects', hint: 'Move the cursor to explore the studio', hintEnd: 'each station tells part of the story', imageAlt: 'Yeison in his automation studio' },
     common: { back: 'Back to the studio', open: 'Open', close: 'Close details', evidence: 'project evidence', galleryHint: 'Select a screenshot to view it in full.' },
@@ -17,7 +17,7 @@ export const copy = {
   es: {
     meta: { description: 'Yeison Rojas, desarrollador de software full stack: apps, backend, integraciones y automatización en producción, desde pedidos B2B hasta control de calidad y analítica.' },
     cv: { href: '/cv/YeisonRojasCV.pdf', file: 'YeisonRojasCV.pdf' },
-    header: { role: 'DESARROLLADOR DE SOFTWARE', home: 'Volver a la entrada', links: 'Enlaces profesionales', language: 'Cambiar a inglés' },
+    header: { role: 'DESARROLLADOR DE SOFTWARE', skip: 'Saltar al contenido', home: 'Volver a la entrada', links: 'Enlaces profesionales', language: 'Cambiar a inglés' },
     nav: { aria: 'Navegación principal', home: 'Inicio', projects: 'Proyectos', collection: 'Colección', about: 'Sobre mí', contact: 'Contacto' },
     home: { aria: 'Entrada del portafolio', caption: '01 — DESARROLLADOR DE SOFTWARE', kicker: 'DESARROLLADOR DE SOFTWARE FULL STACK | INTEGRACIONES, IA Y AUTOMATIZACIÓN', lead: 'De proceso manual', accent: 'a software en producción.', body: 'Apps, backend, integraciones y automatización construidos de punta a punta. Hoy cinco de mis sistemas están en uso diario: pedidos B2B, control de calidad, inventario y analítica de producción.', action: 'Ver los proyectos', featured: 'PROYECTO DESTACADO', station: 'Estación de trabajo', stationHint: 'Ver proyectos reales', hint: 'Mueve el cursor para explorar el estudio', hintEnd: 'cada estación cuenta una parte de la historia', imageAlt: 'Yeison en su estudio de automatización' },
     common: { back: 'Volver al estudio', open: 'Abrir', close: 'Cerrar detalle', evidence: 'evidencia del proyecto', galleryHint: 'Selecciona una captura para verla completa.' },

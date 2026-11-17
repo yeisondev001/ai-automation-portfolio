@@ -7,8 +7,8 @@
 .about-now{margin-top:18px;padding:16px 18px;border:1px solid rgba(240,201,133,.45);border-radius:14px;background:linear-gradient(120deg,rgba(93,62,31,.32),rgba(20,22,24,.6))}
 .about-now-label{display:flex;align-items:center;gap:7px;margin:0;color:#a9d98a;font:500 11px 'DM Mono',monospace;letter-spacing:.08em}
 .about-now-label i{width:7px;height:7px;border-radius:50%;background:#6ed39a;box-shadow:0 0 10px rgba(110,211,154,.7)}
-.about-now h2{margin:6px 0 12px;font-size:20px;letter-spacing:-.03em}
-.about-now h2 span,.about-timeline h2 span{color:#f0c985}
+.about-now h3{margin:6px 0 12px;font-size:20px;letter-spacing:-.03em}
+.about-now h3 span,.about-timeline h3 span{color:#f0c985}
 .about-now>div,.about-now-systems>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .about-now button,.about-now-systems button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:99px;color:#f5f1e9;background:rgba(8,10,12,.45);font-size:13px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
 .about-now button:hover,.about-now-systems button:hover{border-color:#f0c985;background:rgba(240,201,133,.12)}
@@ -22,7 +22,7 @@
 /* Panel más opaco: la foto de la oficina ya no compite con el texto, y el titular no deja una palabra suelta. */
 @media(min-width:701px){
   .about-view.content-view{background:rgba(9,12,15,.9);backdrop-filter:blur(16px)}
-  .about-view .content-heading h1{font-size:clamp(2.6rem,4vw,3.6rem);text-wrap:balance}
+  .about-view .content-heading :is(h1,h2){font-size:clamp(2.6rem,4vw,3.6rem);text-wrap:balance}
 }
 
 /* Trayectoria con puntos: el puesto actual se ilumina. */
@@ -40,7 +40,7 @@
 .about-stack .tech-list svg.is-logo{fill:#e8c184;stroke:none}
 .about-stack .tech-list svg.is-line{fill:none;stroke:#e8c184;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-.about-actions h2{max-width:none}
+.about-actions h3{max-width:none}
 .about-actions-buttons{display:flex;flex-wrap:wrap;gap:8px}
 .contact-card .about-actions-buttons a,.contact-card .about-actions-buttons button{display:inline-flex;align-items:center;cursor:pointer;background:transparent;gap:7px;padding:9px 14px;border:1px solid rgba(255,255,255,.22);border-radius:10px;color:#f5f1e9;font-size:13px}
 .contact-card .about-actions-buttons a.is-primary{border-color:#f0c985;color:#17130d;background:#f0c985;font-weight:500}
@@ -67,7 +67,7 @@
 .cert-open{display:block;width:100%;padding:9px 12px;border:0;border-radius:10px;color:inherit;background:none;font:inherit;text-align:left;cursor:pointer;transition:background .2s ease}
 .cert-open:hover,.cert-open:focus-visible{background:rgba(232,201,138,.08)}
 .cert-open:focus-visible{outline:2px solid #e8c98a;outline-offset:2px}
-.cert-open em{display:inline-flex;align-items:center;gap:5px;margin-top:6px;color:#e8c98a;font:500 11.5px/1 'IBM Plex Mono',monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase}
+.cert-open em{display:inline-flex;align-items:center;gap:5px;margin-top:6px;color:#e8c98a;font:500 12px/1 'DM Mono',monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase}
 .cert-open em svg{width:13px;height:13px;transition:transform .2s ease}
 .cert-open:hover em svg{transform:translateX(3px)}
 body.cert-lock{overflow:hidden}

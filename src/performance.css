@@ -8,3 +8,13 @@
 .site-header{backdrop-filter:blur(10px)}
 .dialog-backdrop{backdrop-filter:blur(6px)}
 @media(min-width:701px){.content-view,.intro-card{backdrop-filter:blur(10px)}}
+
+/* Mientras llega la foto de la entrada se ve una versión diminuta y borrosa de la misma escena (300 bytes), en vez de un hueco negro. */
+@media(max-width:700px){.mobile-home-hero img{background:url("data:image/webp;base64,UklGRh4BAABXRUJQVlA4IBIBAAAQBwCdASoSACAAPrVQn0qnJSKhsBgIAOAWiWIAnTKDLtGh4d8cBKge/xinoPh01d8IWDAFQrfznhrFHX4ygMNQoAD+8w5jnLjMoB/2JI0qb3q6Fiow1YZjT6Mp7jwYhIsnRbNs5LAqRImAquOpuqw3HeN8+SF3h34x+DB7cu9I9TbWwAyVSEeQO+jbPDlEdcMxFWx8kbtuAXmnHWYCA3Tf5DdErCD1O/2hy1nAEPpiCtAgP3nljQA1uWUt16Sd/mFqjIa2kFH30Y3F+btzitYfXWbG9VXa/psRrzZMmzGqWuNnQ8TGNwELJGhb2w/Qy5rGr1+eROWGsKYeoV2X0obOX0+hlaJekpf1JdfE2BLyOAAA") 50% 22%/cover no-repeat}}
+@media(min-width:701px){.scene-photo-entry img{background:url("data:image/webp;base64,UklGRh4BAABXRUJQVlA4IBIBAADwBQCdASogABIAPrVKn0mnJCKhMAgA4BaJQBOmUGWgWAeAGkCaVDtcIjWVnOlKskIQB1dF9LeDgAD+5m758/CBcWVVBDkewJRwpcOXHlYdg9B+dz59stImIkL96oXEaCd9lm3uWhl6086SaPRK7eInrqoXp0H7n+lKfktqCiGQN9vDTMev+U9SLsUqGax2PNyXM59fME5HkEU2vIHNumlnmBsnX04mKQVJpjlTyHLCl136HRJQdAJI+KC840wylO17t6WKZb7R2WiU54dvxPWICGr6NpcvO3oowbRkl73nlu7TRezrgSHDOknCdKSNrgJvaV6b94cW7Z+L46vd6WPuTCN8bM8rvc6uxI4AtUq+AAAA") 30% 100%/contain no-repeat}}
+
+/* Detalle de proyecto: el video y las capturas muestran un brillo de carga hasta que llegan. */
+@keyframes media-loading{from{background-position:130% 0}to{background-position:-30% 0}}
+.project-video video.is-loading,.app-gallery figure.is-loading{background:linear-gradient(100deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.08) 50%,rgba(255,255,255,0) 65%) 0 0/250% 100% #0f1418;animation:media-loading 1.3s linear infinite}
+.app-gallery figure.is-loading{min-height:180px}
+@media(prefers-reduced-motion:reduce){.project-video video.is-loading,.app-gallery figure.is-loading{animation:none}}

@@ -29,7 +29,13 @@
 .site-header .language-toggle span{height:36px}
 .site-header .header-actions .cv-download{min-height:44px;padding:0 16px;border-radius:10px;font-size:14px}
 
-.tab-bar{display:none}
+.tab-bar,.tab-scrim{display:none}
+
+/* Enlace para saltar el menú con el teclado: invisible hasta recibir el foco. */
+.skip-link{position:fixed;z-index:30;top:12px;left:12px;padding:13px 18px;border-radius:10px;color:#17130d;background:#f0c985;font:500 14px 'DM Sans',Arial,sans-serif;text-decoration:none;transform:translateY(calc(-100% - 24px))}
+.skip-link:focus{transform:none;outline:2px solid #fff6e9;outline-offset:2px}
+.skip-target{scroll-margin-top:120px}
+.skip-target:focus{outline:none}
 
 @media(max-width:1000px){
   .site-header .identity small{display:none}
@@ -53,6 +59,12 @@
   /* Pasado el inicio, la barra se ancla arriba, en el lugar de la de arriba (que se esconde), dejando ver el círculo dorado.
      El viaje entre abajo y arriba lo anima App.tsx, porque el alto de la pantalla cambia mientras el navegador esconde su barra. */
   .nav-lifted .tab-bar{top:calc(18px + env(safe-area-inset-top));bottom:auto}
+  /* Con la barra arriba, un degradado del color del fondo tapa el texto que pasa por encima de la barra y por la muesca.
+     Es una capa fija aparte (no viaja con la barra): aparece cuando la barra ya llegó y se va en cuanto empieza a bajar. */
+  .tab-scrim{position:fixed;z-index:10;top:0;right:0;left:0;display:block;height:calc(116px + env(safe-area-inset-top));background:linear-gradient(#080b0e calc(54px + env(safe-area-inset-top)),rgba(8,11,14,0));opacity:0;pointer-events:none;transition:opacity .2s}
+  .nav-lifted .tab-scrim{opacity:1;transition:opacity .4s .7s}
+  /* Sin la barra abajo, al final de la página solo queda el espacio de la burbuja de música. */
+  .nav-lifted .portfolio{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
   .tab-bar-bg{position:absolute;inset:0;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:#0a0e11}
   .tab-bar.has-slide .tab-bar-bg{-webkit-mask-image:var(--notch-mask),linear-gradient(90deg,#000 calc(var(--nx) - 54px),transparent 0 calc(var(--nx) + 54px),#000 0);mask-image:var(--notch-mask),linear-gradient(90deg,#000 calc(var(--nx) - 54px),transparent 0 calc(var(--nx) + 54px),#000 0);-webkit-mask-position:calc(var(--nx) - 56px) 0,0 0;mask-position:calc(var(--nx) - 56px) 0,0 0;-webkit-mask-size:112px 200px,100% 100%;mask-size:112px 200px,100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
   .tab-bar{--notch-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='112' height='200'%3E%3Cpath d='M0 0H18.21A10 10 0 0 1 28.15 11.05A28 28 0 1 0 83.85 11.05A10 10 0 0 1 93.79 0H112V200H0Z'/%3E%3C/svg%3E")}
@@ -87,5 +99,7 @@
   .music-bubble{right:14px;bottom:calc(108px + env(safe-area-inset-bottom));width:46px;height:46px;transition:translate .5s cubic-bezier(.3,1.5,.55,1) .54s,border-color .25s,background .25s}
   .nav-lifted .music-bubble{translate:0 88px;transition:translate .55s cubic-bezier(.45,0,.3,1.35) .16s,border-color .25s,background .25s;animation:bubble-float 4.5s ease-in-out infinite,bubble-plop .7s .16s}
   .nav-landed .music-bubble{animation:bubble-float 4.5s ease-in-out infinite,bubble-squish .8s .5s}
+  /* Al seguir bajando con la barra arriba, la burbuja se aparta por la derecha para no tapar las tarjetas; vuelve al subir o al llegar al final. */
+  .nav-lifted.music-away .music-bubble:not(:focus-visible){translate:80px 88px;transition:translate .35s cubic-bezier(.5,0,.75,0),border-color .25s,background .25s}
 }
-@media(prefers-reduced-motion:reduce){.music-bubble,.music-bubble.is-playing:after,.music-bars i,.nav-lifted .music-bubble,.nav-landed .music-bubble{animation:none}.site-header,.is-ready>.nav-slide,.tab-bar,.tab-bar.is-ready,.tab-bar button svg,.nav-lifted .music-bubble,.music-bubble{transition:none}}
+@media(prefers-reduced-motion:reduce){.music-bubble,.music-bubble.is-playing:after,.music-bars i,.nav-lifted .music-bubble,.nav-landed .music-bubble{animation:none}.site-header,.is-ready>.nav-slide,.tab-bar,.tab-bar.is-ready,.tab-bar button svg,.nav-lifted .music-bubble,.music-bubble,.nav-lifted.music-away .music-bubble:not(:focus-visible),.tab-scrim,.nav-lifted .tab-scrim{transition:none}}

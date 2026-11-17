@@ -33,7 +33,7 @@
   .scene-moment figcaption{bottom:16px;left:24px;color:#efc773;font-size:11px;text-shadow:0 1px 7px #000}
 
   .content-heading{margin:27px 24px 0}
-  .content-heading h1{max-width:340px;margin:8px 0 14px;font-size:clamp(2.5rem,11.5vw,3.5rem);line-height:.88;letter-spacing:-.035em;text-shadow:none;-webkit-text-stroke:0}
+  .content-heading :is(h1,h2){max-width:340px;margin:8px 0 14px;font-size:clamp(2.5rem,11.5vw,3.5rem);line-height:.88;letter-spacing:-.035em;text-shadow:none;-webkit-text-stroke:0}
   .content-heading>p:last-child{max-width:350px;color:#cfcfc9;font-size:15px;line-height:1.5}
   .kicker{font-size:11px;letter-spacing:.13em}
 
@@ -41,7 +41,7 @@
   .project-card{min-height:122px;padding:9px;border-color:#263039;border-radius:12px;background:#10161a;box-shadow:none}
   .project-art{min-height:102px;border-radius:9px}
   .card-eyebrow{font-size:8.5px;letter-spacing:.08em}
-  .card-copy h2{font-size:15px}
+  .card-copy h3{font-size:15px}
   .card-copy p:not(.card-eyebrow){-webkit-line-clamp:2;font-size:11.5px;line-height:1.38}
   .tag{font-size:8.5px}
   .all-projects-action{width:calc(100% - 36px);margin:22px 18px 0;border-color:rgba(103,184,222,.52);border-radius:12px;background:#0d151a}
