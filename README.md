@@ -22,7 +22,7 @@ Cinco sistemas en uso diario. Cada uno tiene su caso completo (reto, lo que cons
 | # | Sistema | Qué resuelve | Stack | Enlace |
 |---|---------|--------------|-------|--------|
 | 01 | **Plásticos Duralón** | Canal B2B 24/7 de pedidos con precios por cliente, conectado al ERP | iOS · Android · Web · ERP | [App Store](https://apps.apple.com/app/id6805665865) · [Google Play](https://play.google.com/store/apps/details?id=com.plasticosduralon.app) · [Caso de estudio](https://github.com/yeisondev001/app-pedidos-b2b-case-study) |
-| 02 | **Papiniano** | Automatiza la redacción de solicitudes legales: ≈5 horas recuperadas por semana | Python · Flet · python-docx | [Repositorio](https://github.com/yeisondev001/sistema-de-solicitudes-legales) |
+| 02 | **Papiniano** | Oficina digital con IA para abogados dominicanos: sentencias y leyes citadas con su página, escritos en Word y PDF, expedientes y agenda | React · FastAPI · PostgreSQL + pgvector | [En línea](https://sistema-de-solicitudes-legales.onrender.com) · [Repositorio](https://github.com/yeisondev001/sistema-de-solicitudes-legales) |
 | 03 | **Calidad App** | Muestreos de calidad trazables desde equipos móviles y tablero en tiempo real | Móvil · Web | [Caso de estudio](https://github.com/yeisondev001/calidad-app-case-study) |
 | 04 | **WMS materia prima** | Trazabilidad con QR desde la recepción hasta el consumo | Flutter · QR | [Caso de estudio](https://github.com/yeisondev001/wms-materia-prima-case-study) |
 | 05 | **JFProducción** | Une ERP, operación y gerencia para medir eficiencia y explicar pérdidas | Vue 3 · Firebase · ERP | [Caso de estudio](https://github.com/yeisondev001/jf-produccion-case-study) |
