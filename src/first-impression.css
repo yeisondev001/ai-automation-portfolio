@@ -17,7 +17,7 @@
 .project-dialog p,.about-view .content-heading>p,.about-timeline p,.about-stack p{max-width:min(100%,34em)}
 .case-study li>span{color:rgba(245,241,233,.66)}
 
-/* Solicitudes legales: la portada se acerca a la cabecera azul y al título del formulario en lugar de mostrarlo entero y reducido. */
+/* Papiniano (solicitudes legales): la portada se acerca a la cabecera azul y al título del formulario en lugar de mostrarlo entero y reducido. */
 .project-art.has-cover:has(img){overflow:hidden}
 .project-list .project-card.project-legal-docs .project-art.has-cover img{object-fit:cover;object-position:0 0;transform:scale(1.55);transform-origin:0 0}
 

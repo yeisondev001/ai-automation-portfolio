@@ -21,11 +21,13 @@ Cinco sistemas en uso diario. Cada uno tiene su caso completo (reto, lo que cons
 
 | # | Sistema | Qué resuelve | Stack | Enlace |
 |---|---------|--------------|-------|--------|
-| 01 | **Plásticos Duralón** | Canal B2B 24/7 de pedidos con precios por cliente, conectado al ERP | iOS · Android · Web · ERP | [App Store](https://apps.apple.com/app/id6805665865) · [Google Play](https://play.google.com/store/apps/details?id=com.plasticosduralon.app) |
-| 02 | **Solicitudes legales** | Automatiza la redacción de solicitudes: ≈5 horas recuperadas por semana | Python · Flet · python-docx | [Repositorio](https://github.com/yeisondev001/sistema-de-solicitudes-legales) |
-| 03 | **Calidad App** | Muestreos de calidad trazables desde equipos móviles y tablero en tiempo real | Móvil · Web | Código privado |
-| 04 | **WMS materia prima** | Trazabilidad con QR desde la recepción hasta el consumo | Flutter · QR | Código privado |
-| 05 | **JFProducción** | Une ERP, operación y gerencia para medir eficiencia y explicar pérdidas | Vue 3 · Firebase · ERP | Código privado |
+| 01 | **Plásticos Duralón** | Canal B2B 24/7 de pedidos con precios por cliente, conectado al ERP | iOS · Android · Web · ERP | [App Store](https://apps.apple.com/app/id6805665865) · [Google Play](https://play.google.com/store/apps/details?id=com.plasticosduralon.app) · [Caso de estudio](https://github.com/yeisondev001/app-pedidos-b2b-case-study) |
+| 02 | **Papiniano** | Automatiza la redacción de solicitudes legales: ≈5 horas recuperadas por semana | Python · Flet · python-docx | [Repositorio](https://github.com/yeisondev001/sistema-de-solicitudes-legales) |
+| 03 | **Calidad App** | Muestreos de calidad trazables desde equipos móviles y tablero en tiempo real | Móvil · Web | [Caso de estudio](https://github.com/yeisondev001/calidad-app-case-study) |
+| 04 | **WMS materia prima** | Trazabilidad con QR desde la recepción hasta el consumo | Flutter · QR | [Caso de estudio](https://github.com/yeisondev001/wms-materia-prima-case-study) |
+| 05 | **JFProducción** | Une ERP, operación y gerencia para medir eficiencia y explicar pérdidas | Vue 3 · Firebase · ERP | [Caso de estudio](https://github.com/yeisondev001/jf-produccion-case-study) |
+
+El código de los sistemas de la empresa es privado; cada caso de estudio explica el reto, la arquitectura y las decisiones técnicas sin publicar código. También están los de [JF Órdenes de Trabajo](https://github.com/yeisondev001/jf-ordenes-trabajo-case-study), [JF Paradas](https://github.com/yeisondev001/jf-paradas-case-study) y [JF Control de Acceso](https://github.com/yeisondev001/jf-control-acceso-case-study).
 
 Otros proyectos (MVP técnicos y proyectos personales): [Inventario multi-tienda](https://github.com/yeisondev001/Inventario), BlueWave Plumbing (GoHighLevel), [OjoSafe](https://github.com/yeisondev001/OjoSafe), [Air Draw](https://github.com/yeisondev001/air-draw), [JoJoFanHub](https://github.com/yeisondev001/JoJoFanHub) y [Caja de Herramientas](https://github.com/yeisondev001/toolbox).
 
