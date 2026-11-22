@@ -53,7 +53,7 @@
 }
 
 /* Certificaciones: lista compacta en dos columnas, con la institución en un tono más apagado. */
-.about-certs ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;margin:10px 0 0;padding:0;list-style:none}
+.about-certs ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px;margin:10px 0 0;padding:0;list-style:none}
 .about-certs li{padding:9px 12px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.03)}
 .about-certs li b{display:block;color:#f5f1e9;font-weight:500;font-size:13.5px;line-height:1.35}
 .about-certs li span{display:block;margin-top:2px;padding:0;border:0;border-radius:0;color:rgba(245,241,233,.62);background:none;font:12.5px/1.35 'DM Sans',sans-serif}
@@ -63,11 +63,12 @@
 }
 
 /* Certificado con imagen: el nombre es un botón que abre la tarjeta animada en la misma página. */
-.about-certs li:has(.cert-open){padding:0;border-color:rgba(232,201,138,.32);background:linear-gradient(135deg,rgba(232,201,138,.1),rgba(255,255,255,.02))}
-.cert-open{display:block;width:100%;padding:9px 12px;border:0;border-radius:10px;color:inherit;background:none;font:inherit;text-align:left;cursor:pointer;transition:background .2s ease}
+/* El botón llena la tarjeta y "Ver certificado" queda abajo, alineado en cada fila aunque un nombre ocupe dos líneas. */
+.about-certs li:has(.cert-open){display:flex;padding:0;border-color:rgba(232,201,138,.32);background:linear-gradient(135deg,rgba(232,201,138,.1),rgba(255,255,255,.02))}
+.cert-open{display:flex;flex-direction:column;align-items:flex-start;width:100%;padding:11px 14px;border:0;border-radius:10px;color:inherit;background:none;font:inherit;text-align:left;cursor:pointer;transition:background .2s ease}
 .cert-open:hover,.cert-open:focus-visible{background:rgba(232,201,138,.08)}
 .cert-open:focus-visible{outline:2px solid #e8c98a;outline-offset:2px}
-.cert-open em{display:inline-flex;align-items:center;gap:5px;margin-top:6px;color:#e8c98a;font:500 12px/1 'DM Mono',monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase}
+.cert-open em{display:inline-flex;align-items:center;gap:5px;margin-top:auto;padding-top:10px;color:#e8c98a;font:500 12px/1 'DM Mono',monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase}
 .cert-open em svg{width:13px;height:13px;transition:transform .2s ease}
 .cert-open:hover em svg{transform:translateX(3px)}
 body.cert-lock{overflow:hidden}
